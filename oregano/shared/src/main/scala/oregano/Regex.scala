@@ -36,14 +36,19 @@ object Regex {
     }
 }
 
-extension (inline r: String) transparent inline def regex: Regex[?] = ${ isInlineable('r) }
+extension (inline sc: StringContext) {
+    transparent inline def r(): Regex[?] = ${ isInlineable('sc) }
+}
 
-private def isInlineable(regExpr: Expr[String])(using Quotes): Expr[Regex[?]] = regExpr match {
-    // use the macro, inlineable
-    case Expr(s) => internal.compileMacro(s)
-    case '{StringContext.apply(${Expr(s)}).raw()} => internal.compileMacro(StringContext(s).raw())
-    // fallback to runtime compilation
-    case _ => '{ Regex.runtime($regExpr) }
+private def isInlineable(regExpr: Expr[StringContext])(using Quotes): Expr[Regex[?]] = {
+    import quotes.reflect.{Position, report}
+    regExpr match {
+        // use the macro, inlineable
+        case '{ StringContext.apply( ${ Expr(s) } ) } => internal.compileMacro(s)
+        // fallback to runtime compilation
+        // case _ => '{ Regex.runtime($regExpr) }
+        case _ => report.errorAndAbort("Regex string must be a compile-time constant", Position.ofMacroExpansion)
+    }
 }
 
 // FIXME: wrong type, not sure how I want to process the typesafe bit yet, ideally avoid duplication, but might have to :(

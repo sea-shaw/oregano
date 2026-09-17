@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
-import oregano.regex
+import oregano.r
 
 object Main {
   def main(args: Array[String]): Unit = {
@@ -35,9 +35,8 @@ object Main {
     // println(compileTime.findFirstIn("alfbabcdlka"))
     // println(compileTime.matches("abbbbbbcdlka"))
 
-    val splitOn = "(\\s|[,;])+".regex
-    val runtimeSplitExp = "(\\s|[,;])+"
-    val runtimeSplit = runtimeSplitExp.regex
+    val splitOn = r"(\s|[,;])+"
+    val runtimeSplit = r"(\s|[,;])+"
 
     val toSplit = "Hello, world! This is a test; let's see how it works."
     println(splitOn.findFirstIn(toSplit))
@@ -70,9 +69,8 @@ object Main {
 
     // unapply
     //inline val timeEx = "(\\d\\d):(\\d\\d)|(\\d):(\\d\\d)"
-    inline val dateOrTimeEx = "(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)|(\\d\\d):(\\d\\d)"
     //val time = timeEx.regex
-    val dateOrTime = dateOrTimeEx.regex
+    val dateOrTime = r"(\d\d\d\d)-(\d\d)-(\d\d)|(\d\d):(\d\d)"
     "2020-10-12" match {
       case dateOrTime(hour, minute) =>
         println(s"Hour: $hour, Minute: $minute")
