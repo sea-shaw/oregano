@@ -14,7 +14,7 @@ addSbtPlugin("org.typelevel" % "sbt-typelevel" % sbtTypelevelVersion)
 
 // CI Stuff
 addSbtPlugin("org.scala-js" % "sbt-scalajs" % "1.19.0")
-addSbtPlugin("org.scala-native" % "sbt-scala-native" % "0.5.10")
+addSbtPlugin("org.scala-native" % "sbt-scala-native" % "0.5.12")
 
 addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.5.4")
 addSbtPlugin("com.beautiful-scala" % "sbt-scalastyle" % "1.5.1")

@@ -1,7 +1,6 @@
 val projectName = "oregano"
-val Scala3 = "3.7.4"
+val Scala3 = "3.9.0"
 
-val Java11 = JavaSpec.temurin("11")
 val Java17 = JavaSpec.temurin("17")
 val Java21 = JavaSpec.temurin("21")
 
@@ -21,7 +20,8 @@ inThisBuild(List(
     tlCiReleaseBranches := Seq("main"),
     tlCiScalafmtCheck := false,
     tlCiHeaderCheck := true,
-    githubWorkflowJavaVersions := Seq(Java11, Java17, Java21),
+    tlJdkRelease := Some(17),
+    githubWorkflowJavaVersions := Seq(Java17, Java21),
 ))
 
 lazy val root = tlCrossRootProject.aggregate(oregano)
