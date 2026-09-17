@@ -3,6 +3,8 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
+
+/*
 package oregano.internal
 
 import cats.collections.{Diet, Range}
@@ -12,6 +14,7 @@ import parsley.Parsley.pure
 import parsley.errors.combinator.*
 import parsley.templates.*
 import parsley.bridges.ParserSingletonBridge
+
 
 // This is matching with Java 8 Regex
 // TODO: not all constructs can appear within other constructs... perhaps this can be
@@ -236,36 +239,6 @@ private object Regex {
         def singleton = pure(new Class(AllSet -- Word.set))
     }
 
-    object NumericalQuantifier {
-        def apply(start: Parsley[Int], end: Parsley[Option[Option[Int]]]): Parsley[(Regex, QuantifierType) => Regex] =  (start <~> end).mapFilterMsg {
-            case (0, None | Some(Some(0))) => Right((toRegex, _) => Zero(toRegex))
-            case (1, None | Some(Some(1))) => Right((toRegex, _) => toRegex)
-            case (n, None)                 => Right(Exactly(_, n, _))
-            case (0, Some(None))           => Right(Star(_, _))
-            case (n, Some(None))           => Right(AtLeast(_, n, _))
-            case (0, Some(Some(1)))        => Right(Opt(_, _))
-            case (0, Some(Some(m)))        => Right(AtMost(_, m, _))
-            case (n, Some(Some(m)))        => if n == m then Right(Exactly(_, n, _))
-                                              else if n < m then Right(Between(_, n, m, _))
-                                              else Left(Seq("Upper bound cannot be less than lower bound"))
-        }
-    }
-
-    object WithFlags extends PureParserBridge3[List[Char], Option[NonEmptyList[Char]], Option[Regex], Regex] {
-        override def apply(on: List[Char], off: Option[NonEmptyList[Char]], mInner: Option[Regex]): Regex = {
-            val (onSet, offSet) = flags(on, off)
-            mInner match {
-                case None        => Flags(onSet, offSet)
-                case Some(inner) => NonCapture(onSet, offSet, inner)
-            }
-        }
-        private def flags(on: List[Char], off: Option[NonEmptyList[Char]]): (Set[Char], Set[Char]) = {
-            val onSet = on.toSet
-            val offSet = off.fold(Nil)(_.toList).toSet
-            (onSet -- offSet, offSet)
-        }
-    }
-
     // TODO: POSIX Character Classes
     /*
       \p{Lower}	A lower-case alphabetic character: [a-z]
@@ -312,8 +285,4 @@ private object Regex {
     }
 }
 
-private enum QuantifierType {
-    case Greedy
-    case Lazy
-    case Possessive
-}
+*/

@@ -35,12 +35,6 @@ trait AST extends Tidy, BuildFunction, EmptyTypes, CapturingTypes, CatTypes, Alt
     override final val numCaptures: Int = 0
   }
 
-  /* . */
-  case class Dot private ()(using EmptyType) extends EmptyLeaf
-  object Dot {
-    def apply()(using Quotes): Dot = new Dot()
-  }
-
   /* a */
   case class Lit private (c: Int)(using EmptyType) extends EmptyLeaf
   object Lit {

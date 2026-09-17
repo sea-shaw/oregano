@@ -5,11 +5,14 @@
  */
 package oregano.internal
 
+import oregano.internal.ast.AST
+import oregano.internal.parsing.parser
 import parsley.{Success, Failure}
 import scala.quoted.*
 
 private [oregano] def compileMacro(s: String)(using Quotes): Expr[oregano.Regex[?]] = {
     import quotes.reflect.report
+    given AST = Oregano()
     parser.parse(s) match
         case Success(ast) =>
             // report.info(s"$ast")

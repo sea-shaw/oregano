@@ -1,6 +1,6 @@
 package oregano.internal.parsing
 
-import cats.collections.Diet
+import cats.collections.{Diet, Range}
 import cats.data.NonEmptyList
 import oregano.internal.ast.{AST, QuantifierType}
 import parsley.Parsley
@@ -15,7 +15,7 @@ object bridges {
   type ToRegex = (ast: AST, q: Quotes) ?=> ast.Regex[?]
 
   object Dot extends ParserSingletonBridge[ToRegex] {
-    override protected def singleton: Parsley[ToRegex] = pure(ast.Dot())
+    override protected def singleton: Parsley[ToRegex] = pure(ast.Class(allSet -- Diet.one('\n'.toInt)))
   }
 
   object Lit extends PureParserBridge1[Int, ToRegex] {
@@ -113,6 +113,8 @@ object bridges {
       }
     }
   }
+
+  val allSet = Diet.fromRange(Range(0x00000, 0x1ffff))
 
   private inline def ast(using ast: AST): ast.type = ast
 

@@ -8,6 +8,9 @@ package oregano.internal
 //import scala.quoted.*
 //import cats.collections.{Diet, Range}
 import cats.collections.Diet
+import oregano.internal.ast.{AST, Greedy}
+import oregano.internal.parsing.parser
+import scala.quoted.Quotes
 
 enum Pattern {
     case Lit(c: Int)
@@ -58,7 +61,7 @@ object Pattern {
     // def charClass(diet: Diet[Int]): Pattern = Pattern.Class(diet)
     // def rep0(pat: Pattern): Pattern = Pattern.Rep0(pat, 0) // idx is not used here
 
-    def compile(regex: Regex): PatternResult = {
+    def compile(using ast: AST)(regex: ast.Regex[?]): PatternResult = {
         val pat = new PatternBuilder()
         pat.build(regex)
     }
@@ -75,8 +78,8 @@ object Pattern {
     // for now, protect against nested loops
     def checkFlatControlFlow(pat: Pattern): Boolean = !checkForNestedLoop(pat)
 
-    def compile(regex: String): PatternResult = {
-        val re: Regex = parser.parse(regex).getOrElse(throw IllegalArgumentException(s"Invalid regex: $regex"))
+    def compile(regex: String)(using AST, Quotes): PatternResult = {
+        val re = parser.parse(regex).getOrElse(throw IllegalArgumentException(s"Invalid regex: $regex"))
         compile(re)
     }
 }
@@ -87,42 +90,40 @@ class PatternBuilder {
     var nextGroup: Int = 1 // note that 1 is reserved for the whole match, as with other engines
     var numReps = 0 // initially used for caching nested Rep0 loops safely: TODO: doesn't work and isn't neccessary, delete!
 
-    def compile(regex: Regex): Pattern = regex match {
-        case Regex.Lit(c) => Pattern.Lit(c)
-        case Regex.Cat(left, right) => Pattern.Cat(compile(left), compile(right))
-        case Regex.Alt(r1, r2) => Pattern.Alt(compile(r1), compile(r2))
-        case Regex.Class(d) => Pattern.Class(d)
-
-        case Regex.Star(r, QuantifierType.Greedy) =>
+    def compile(using ast: AST)(regex: ast.Regex[?]): Pattern = regex match {
+        case ast.Lit(c) => Pattern.Lit(c)
+        case ast.Cat(left, right) => Pattern.Cat(compile(left), compile(right))
+        case ast.Alt(r1, r2) => Pattern.Alt(compile(r1), compile(r2))
+        case ast.Class(d) => Pattern.Class(d)
+        case ast.Star(r, Greedy) => {
             val p = compile(r)
             val idx = numReps
             numReps += 1
             Pattern.Rep0(p, idx)
-
+        }
         // Given we use a shared `p`, capture indicies are propogated safely so I believe this to be safe
         // That being said, not doing this could yield a more terse Prog, but I don't have time
         // I'd expect the more terse Prog to be more performant
-        case Regex.Plus(r, QuantifierType.Greedy) =>
+        case ast.Plus(r, Greedy) => {
             val p = compile(r)
             val idx = numReps
             numReps += 1
             Pattern.Cat(p, Pattern.Rep0(p, idx))
-
-        case Regex.Capture(r) =>
+        }
+        case ast.Capture(r) => {
             val groupId = nextGroup
             nextGroup += 1
             val p = compile(r)
             Pattern.Capture(groupId, p)
-
-        case Regex.NonCapture(flagsOn, flagsOff, r) => compile(r)
+        }
+        case ast.NonCapture(flagsOn, flagsOff, r) => compile(r)
 
         // Dot matches any character except newline, there is a flag to change this, could be handled
         // Could keep a Pattern.Dot, but for now, we can use a class that matches all characters except newline as is default
-        case Regex.Dot => Pattern.Class(Regex.AllSet -- Diet.one('\n'.toInt))
         case _ => throw IllegalArgumentException(s"Unsupported regex: $regex")
     }
 
-    def build(regex: Regex): PatternResult = {
+    def build(using ast: AST)(regex: ast.Regex[?]): PatternResult = {
         val pattern = compile(regex)
         val groupCount = nextGroup
         val flatControlFlow = Pattern.checkFlatControlFlow(pattern)

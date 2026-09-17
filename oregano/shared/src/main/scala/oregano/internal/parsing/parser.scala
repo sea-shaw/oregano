@@ -19,7 +19,7 @@ import scala.quoted.Quotes
 
 object parser {
 
-  def parse[Err: ErrorBuilder](s: String, ast: AST)(using q: Quotes): Result[Err, ast.Regex[?]] = {
+  def parse[Err: ErrorBuilder](s: String)(using ast: AST, q: Quotes): Result[Err, ast.Regex[?]] = {
     regex.parse(s).map(_(using ast, q))
   }
 
@@ -141,6 +141,4 @@ object parser {
 
   private lazy val numericalQuantifier = NumericalQuantifier('{' ~> int, option(',' ~> option(int)) <~ '}')
   private lazy val int = lexer.lexeme.natural.decimal32[Int]
-
-  private val allSet = Diet.fromRange(Range(0x00000, 0x1ffff))
 }
