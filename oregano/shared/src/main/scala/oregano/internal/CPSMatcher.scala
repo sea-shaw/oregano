@@ -37,7 +37,7 @@ private object CPSMatcher {
             val runeCheck: Expr[Int] => Expr[Boolean] = dietContains(diet)
             val condExpr: Expr[Boolean] = runeCheck('{ $input.charAt($pos).toInt })
             '{if $pos < $input.length && $condExpr then ${ cont('{ $pos + 1 }) } else -1}
-        case Pattern.Cat(ps) => ps.foldRight(cont)((sub, next) => (p: Expr[Int]) => compile(sub, input, noCaps, p, next, groupsExpr))(pos)
+        case Pattern.Cat(l, r) => compile(l, input, noCaps, pos, compile(r, input, noCaps, _, cont, groupsExpr), groupsExpr)
         case Pattern.Alt(p1, p2) =>
             val left  = compile(p1, input, noCaps, pos, cont, groupsExpr)
             val right = compile(p2, input, noCaps, pos, cont, groupsExpr)
@@ -118,7 +118,7 @@ private object CPSMatcher {
         def compile(p: Pattern)(cont: (Int, Array[Int]) => Int): (Int, Array[Int]) => Int = p match {
             case Pattern.Lit(c)      => (pos, groups) => if pos < inputLen && input.charAt(pos) == c.toChar then cont(pos + 1, groups) else -1
             case Pattern.Class(diet) => (pos, groups) => if pos < inputLen && diet.contains(input.charAt(pos).toInt) then cont(pos + 1, groups) else -1
-            case Pattern.Cat(ps)     => ps.foldRight(cont)((sub, acc) => compile(sub)(acc))
+            case Pattern.Cat(left, right)   => compile(left)(compile(right)(cont))
             case Pattern.Alt(l, r) =>
                 val left = compile(l)(cont)
                 val right = compile(r)(cont)

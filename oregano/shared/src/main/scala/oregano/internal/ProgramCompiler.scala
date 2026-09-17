@@ -32,10 +32,11 @@ class ProgramCompiler {
         Frag(pc, 0)
     }
 
-    private def nop(): Frag = {
-        val f = newInst(InstOp.NOP)
-        Frag(f.i, f.i << 1)
-    }
+    // UNUSED
+    // private def nop(): Frag = {
+    //     val f = newInst(InstOp.NOP)
+    //     Frag(f.i, f.i << 1)
+    // }
 
     private def fail(): Frag = Frag(0, 0)
 
@@ -146,8 +147,7 @@ class ProgramCompiler {
                 .toArray
             rune(pairs, 0)
 
-        case Pattern.Cat(Nil) => nop()
-        case Pattern.Cat(patterns) =>  patterns.map(compile).reduce(cat)
+        case Pattern.Cat(left, right) => cat(compile(left), compile(right))
         case Pattern.Alt(left, right) => alt(compile(left), compile(right))
         case Pattern.Rep0(pat, _) =>
             val f = compile(pat)

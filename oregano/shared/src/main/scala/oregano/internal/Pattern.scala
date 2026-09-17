@@ -11,22 +11,23 @@ import cats.collections.Diet
 
 enum Pattern {
     case Lit(c: Int)
-    case Cat(patterns: List[Pattern])
+    case Cat(left: Pattern, right: Pattern)
     case Alt(left: Pattern, right: Pattern)
     case Class(diet: Diet[Int])
     case Rep0(pat: Pattern, idx: Int)
     case Capture(groupIdx: Int, pat: Pattern)
 
-    def optimize: Pattern = this match {
-        case Cat(ps) => Cat {
-            ps.flatMap {
-                case Cat(subs) => subs.map(_.optimize)
-                case p         => List(p.optimize)
-            }
-        }
-        case Alt(p1, p2) => Alt(p1.optimize, p2.optimize)
-        case _ => this
-    }
+    // UNUSED
+    // def optimize: Pattern = this match {
+    //     case Cat(ps) => Cat {
+    //         ps.flatMap {
+    //             case Cat(subs) => subs.map(_.optimize)
+    //             case p         => List(p.optimize)
+    //         }
+    //     }
+    //     case Alt(p1, p2) => Alt(p1.optimize, p2.optimize)
+    //     case _ => this
+    // }
 }
 object Pattern {
     /*
@@ -50,11 +51,12 @@ object Pattern {
     }
     */
 
-    def lit(c: Int): Pattern = Pattern.Lit(c)
-    def concat(ps: Pattern*): Pattern = Pattern.Cat(ps.toList)
-    def alt(p1: Pattern, p2: Pattern): Pattern = Pattern.Alt(p1, p2)
-    def charClass(diet: Diet[Int]): Pattern = Pattern.Class(diet)
-    def rep0(pat: Pattern): Pattern = Pattern.Rep0(pat, 0) // idx is not used here
+    // UNUSED
+    // def lit(c: Int): Pattern = Pattern.Lit(c)
+    // def concat(ps: Pattern*): Pattern = Pattern.Cat(ps.toList)
+    // def alt(p1: Pattern, p2: Pattern): Pattern = Pattern.Alt(p1, p2)
+    // def charClass(diet: Diet[Int]): Pattern = Pattern.Class(diet)
+    // def rep0(pat: Pattern): Pattern = Pattern.Rep0(pat, 0) // idx is not used here
 
     def compile(regex: Regex): PatternResult = {
         val pat = new PatternBuilder()
@@ -65,7 +67,7 @@ object Pattern {
         case Pattern.Rep0(_, _) if seenLoop => true
         case Pattern.Rep0(p, _)             => checkForNestedLoop(p, true)
         case Pattern.Alt(left, right)       => checkForNestedLoop(left, seenLoop) || checkForNestedLoop(right, seenLoop)
-        case Pattern.Cat(ps)                => ps.exists(p => checkForNestedLoop(p, seenLoop))
+        case Pattern.Cat(left, right)       => checkForNestedLoop(left, seenLoop) || checkForNestedLoop(right, seenLoop)
         case Pattern.Capture(_, p)          => checkForNestedLoop(p, seenLoop)
         case _                              => false
     }
@@ -87,7 +89,7 @@ class PatternBuilder {
 
     def compile(regex: Regex): Pattern = regex match {
         case Regex.Lit(c) => Pattern.Lit(c)
-        case Regex.Cat(left, right) => Pattern.Cat(List(compile(left), compile(right)))
+        case Regex.Cat(left, right) => Pattern.Cat(compile(left), compile(right))
         case Regex.Alt(r1, r2) => Pattern.Alt(compile(r1), compile(r2))
         case Regex.Class(d) => Pattern.Class(d)
 
@@ -104,7 +106,7 @@ class PatternBuilder {
             val p = compile(r)
             val idx = numReps
             numReps += 1
-            Pattern.Cat(List(p, Pattern.Rep0(p, idx)))
+            Pattern.Cat(p, Pattern.Rep0(p, idx))
 
         case Regex.Capture(r) =>
             val groupId = nextGroup
