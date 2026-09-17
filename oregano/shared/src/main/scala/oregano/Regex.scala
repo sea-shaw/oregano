@@ -32,7 +32,7 @@ object Regex {
         def findPrefixOf(source: CharSequence): Option[String] = compiled.findPrefixOf(source)
         def findFirstIn(source: CharSequence): Option[String] = compiled.findFirstIn(source)
         def split(toSplit: CharSequence): Array[String] = compiled.split(toSplit)
-        def unapplySeq(input: CharSequence): Option[List[String]] = compiled.unapplySeq(input)
+        def unapplySeq(input: CharSequence): Option[List[String]] = compiled.unapplySeq(input).map(_.collect { case s: String => s })
     }
 }
 
