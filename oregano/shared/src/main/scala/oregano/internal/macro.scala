@@ -12,7 +12,7 @@ import scala.quoted.*
 
 private [oregano] def compileMacro(s: String)(using Quotes): Expr[oregano.Regex[?]] = {
     import quotes.reflect.report
-    given AST = Oregano()
+    given AST = Oregano
     parser.parse(s) match
         case Success(ast) =>
             // report.info(s"$ast")

@@ -5,9 +5,11 @@
  */
 package oregano.internal
 
+import oregano.internal.ast.AST
 import scala.quoted.*
 
 object StagedMatchers:
+  given AST = Oregano
 
   /** Compile-time staged matcher using CPS engine */
   inline def stagedCPS(regex: String): CharSequence => Boolean =

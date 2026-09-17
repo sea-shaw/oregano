@@ -10,7 +10,6 @@ package oregano.internal
 import cats.collections.Diet
 import oregano.internal.ast.{AST, Greedy}
 import oregano.internal.parsing.parser
-import scala.quoted.Quotes
 
 enum Pattern {
     case Lit(c: Int)
@@ -78,7 +77,7 @@ object Pattern {
     // for now, protect against nested loops
     def checkFlatControlFlow(pat: Pattern): Boolean = !checkForNestedLoop(pat)
 
-    def compile(regex: String)(using AST, Quotes): PatternResult = {
+    def compile(regex: String)(using AST): PatternResult = {
         val re = parser.parse(regex).getOrElse(throw IllegalArgumentException(s"Invalid regex: $regex"))
         compile(re)
     }

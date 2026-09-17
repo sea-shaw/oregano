@@ -5,11 +5,14 @@
  */
 package oregano.internal
 
+import oregano.internal.ast.AST
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.prop.TableDrivenPropertyChecks.*
 
 inline def getMachine(inline regEx: String): RE2Machine = {
+  given AST = Oregano
+
   val PatternResult(pattern, groupCount, _, _) =
     Pattern.compile(regEx)
   val prog = ProgramCompiler.compileRegexp(pattern, groupCount)

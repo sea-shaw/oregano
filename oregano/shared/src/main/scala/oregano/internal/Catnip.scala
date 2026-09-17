@@ -4,8 +4,10 @@ import cats.data.Ior
 import oregano.internal.ast.AST
 import scala.quoted.{Expr, Quotes, Type}
 
-private class Catnip(using Type[Ior]) extends AST {
+private object Catnip extends AST {
   type InclusiveOr = Ior
+
+  override protected def inclusiveOrType(using Quotes): Type[InclusiveOr] = Type.of[InclusiveOr]
 
   override protected def fromLeft[A: Type](left: Expr[A])(using Quotes): Expr[InclusiveOr[A, Nothing]] = {
     '{ Ior.Left($left) }

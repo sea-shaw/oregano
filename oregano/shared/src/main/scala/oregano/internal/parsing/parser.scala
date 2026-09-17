@@ -15,12 +15,15 @@ import parsley.syntax.character.{charLift, stringLift}
 import parsley.syntax.all.*
 import parsley.token.Lexer
 import parsley.token.descriptions.{LexicalDesc, NumericDesc}
-import scala.quoted.Quotes
 
 object parser {
 
-  def parse[Err: ErrorBuilder](s: String)(using ast: AST, q: Quotes): Result[Err, ast.Regex[?]] = {
-    regex.parse(s).map(_(using ast, q))
+  def parse[Err: ErrorBuilder](s: String)(using ast: AST): Result[Err, ast.Regex[?]] = {
+    regex.parse(s).map(_(using ast))
+  }
+
+  private [internal] def parseClass[Err: ErrorBuilder](s: String)(using ast: AST): Result[Err, ast.Regex[?]] = {
+    cls.parse(s).map(_(using ast))
   }
 
   private def some[A](p: Parsley[A]): Parsley[NonEmptyList[A]] = (p, many(p)).zipped(NonEmptyList(_, _))

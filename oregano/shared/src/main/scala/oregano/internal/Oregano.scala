@@ -5,18 +5,20 @@ import scala.quoted.{Expr, Quotes, Type}
 
 type EitherIor[+A, +B] = Either[Either[A, B], (A, B)]
 
-private class Oregano(using Type[EitherIor]) extends AST {
+private object Oregano extends AST {
   type InclusiveOr = EitherIor
-  
-  protected def fromLeft[A: Type](left: Expr[A])(using Quotes): Expr[InclusiveOr[A, Nothing]] = {
+
+  override protected def inclusiveOrType(using Quotes): Type[InclusiveOr] = Type.of[InclusiveOr]
+
+  override protected def fromLeft[A: Type](left: Expr[A])(using Quotes): Expr[InclusiveOr[A, Nothing]] = {
     '{ Left(Left($left)) }
   }
 
-  protected def fromRight[B: Type](right: Expr[B])(using Quotes): Expr[InclusiveOr[Nothing, B]] = {
+  override protected def fromRight[B: Type](right: Expr[B])(using Quotes): Expr[InclusiveOr[Nothing, B]] = {
     '{ Left(Right($right)) }
   }
 
-  protected def fromBoth[A: Type, B: Type](left: Expr[A], right: Expr[B])(using Quotes): Expr[InclusiveOr[A, B]] = {
+  override protected def fromBoth[A: Type, B: Type](left: Expr[A], right: Expr[B])(using Quotes): Expr[InclusiveOr[A, B]] = {
     '{ Right(($left, $right)) }
   }
 

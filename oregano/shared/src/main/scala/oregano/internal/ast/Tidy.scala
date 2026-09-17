@@ -20,7 +20,9 @@ type Const[+A] = [_] =>> A
    so it's neater for everything to be path-dependent. */
 trait Tidy {
   /* Type to use to combine A and B in (?:(A)|(B))+ or similar. */
-  type InclusiveOr[+_, +_]: Type
+  type InclusiveOr[+_, +_]
+
+  protected def inclusiveOrType(using Quotes): Type[InclusiveOr]
 
   /* Construct `InclusiveOr` */
   protected def fromLeft[A: Type](left: Expr[A])(using Quotes): Expr[InclusiveOr[A, Nothing]]
@@ -34,6 +36,8 @@ trait Tidy {
      mixin traits. `F` is higher kinded since the type may be different if the
      node is repeated (`F[true]`) or not (`F[false]`). */
   abstract class Tidiable[F[_ <: Rep] <: HChain](final val nodeType: NodeType[F]) {
+    final def tpe(using Quotes): Type[F] = nodeType.tpe
+
     /* Returns a function to tidy `F[R]` into `Unit`, a single value, or a tuple.
        Removes all `HChain` types from `F[R]`. `R` is whether or not the node
        is repeated. */
@@ -57,13 +61,17 @@ trait Tidy {
   /* Type of a node. Must be either empty or non-empty, enforced by the sealed
      trait. Each node should have a trait with self-type `NodeType` that defines
      the options for it's own type. */
-  sealed trait NodeType[F[_ <: Rep] <: HChain](using val tpe: Type[F]) {
+  sealed trait NodeType[F[_ <: Rep] <: HChain] {
+    def tpe(using Quotes): Type[F]
+
     /* Returns a function to flatten `chains: C` onto `leaves: L`. */
     def flattenFunction[C <: Chains, L <: Leaves, R <: Rep: Type](nodes: Nodes[C], types: Types[L])(using RepType[R])(using Quotes): FlattenFunction[CCons[F[R], C], L, ?]
   }
 
   /* Type of a node with no capture groups. */
   trait HEmptyType extends NodeType[Const[HEmpty]] {
+    override final def tpe(using Quotes): Type[Const[HEmpty]] = Type.of[Const[HEmpty]]
+
     override final def flattenFunction[C <: Chains, L <: Leaves, R <: Rep: Type](nodes: Nodes[C], types: Types[L])(using RepType[R])(using Quotes): FlattenFunction[CCons[HEmpty, C], L, ?] = {
       nodes.flattenFunction(types) match {
         case flatten @ FlattenFunction(given Type[a]) => new FlattenFunction[CCons[HEmpty, C], L, a] {
@@ -78,12 +86,21 @@ trait Tidy {
 
   /* Type of a node with a single `Option` containing all its capturing groups. */
   type SingletonOptionType[F[_ <: Rep] <: HNonEmpty] = [R <: Rep] =>> HSingleton[Option[F[R]]]
-  trait SingletonOption[F[_ <: Rep] <: HNonEmpty](using val innerType: Type[F]) extends HNonEmptyType[SingletonOptionType[F]] {
+  trait SingletonOption[F[_ <: Rep] <: HNonEmpty] extends HNonEmptyType[SingletonOptionType[F]] {
+    def innerType(using Quotes): Type[F]
+
+    override final def tpe(using Quotes) = {
+      given Type[F] = innerType
+      Type.of[SingletonOptionType[F]]
+    }
+
     /* Tidy function for the inner, non-optional type. Used to handle nested
        optional nodes to prevent types like `Option[Option[A]]`. */
     def tidyInner[R <: Rep: Type](using RepType[R])(using Quotes): TidyFunction[F[R], ?]
 
     override final def flattenFunction[C <: Chains, L <: Leaves, R <: Rep: Type](nodes: Nodes[C], types: Types[L])(using RepType[R])(using Quotes): FlattenFunction[CCons[HSingleton[Option[F[R]]], C], L, ?] = {
+      given Type[F] = innerType
+
       tidyInner match {
         case tidy @ TidyFunction(given Type[a]) => nodes.flattenFunction(TCons(Type.of[Option[a]], types)) match {
           case flatten @ FlattenFunction(given Type[b]) => new FlattenFunction[CCons[SingletonOptionType[F][R], C], L, b] {

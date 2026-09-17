@@ -20,7 +20,7 @@ trait AST extends Tidy, BuildFunction, EmptyTypes, CapturingTypes, CatTypes, Alt
   }
 
   /* Node with no capturing groups. */
-  sealed abstract class Empty protected (using emptyType: EmptyType) extends Regex[Const[HEmpty]](emptyType) {
+  sealed abstract class Empty extends Regex[Const[HEmpty]](EmptyType) {
     override final def sanitiseCode[R <: Rep: Type](groups: Expr[Groups], i: Int)(using RepType[R])(using Quotes): SanitiseExpr[Const[HEmpty][R]] = {
       sanitiseEmpty
     }
@@ -31,82 +31,41 @@ trait AST extends Tidy, BuildFunction, EmptyTypes, CapturingTypes, CatTypes, Alt
   }
 
   /* Leaf node with no capturing groups and no children. */
-  sealed abstract class EmptyLeaf protected (using EmptyType) extends Empty {
+  sealed abstract class EmptyLeaf extends Empty {
     override final val numCaptures: Int = 0
   }
 
   /* a */
-  case class Lit private (c: Int)(using EmptyType) extends EmptyLeaf
-  object Lit {
-    def apply(c: Int)(using Quotes): Lit = new Lit(c)
-  }
+  case class Lit(c: Int) extends EmptyLeaf
 
   /* [a-z] */
-  case class Class private (cs: Diet[Int])(using EmptyType) extends EmptyLeaf
-  object Class {
-    def apply(cs: Diet[Int])(using Quotes): Class = {
-      new Class(cs)
-    }
-  }
+  case class Class(cs: Diet[Int]) extends EmptyLeaf
 
   /* ^ */
-  case class LineStart private ()(using EmptyType) extends EmptyLeaf
-  object LineStart {
-    def apply()(using Quotes): LineStart = {
-      new LineStart()
-    }
-  }
+  case object LineStart extends EmptyLeaf
 
   /* $ */
-  case class LineEnd private ()(using EmptyType) extends EmptyLeaf
-  object LineEnd {
-    def apply()(using Quotes): LineEnd = {
-      new LineEnd()
-    }
-  }
+  case object LineEnd extends EmptyLeaf
 
   /* \n */
-  case class Backreference private (group: Int)(using EmptyType) extends EmptyLeaf
-  object Backreference {
-    def apply(group: Int)(using Quotes): Backreference = {
-      new Backreference(group)
-    }
-  }
+  case class Backreference(group: Int) extends EmptyLeaf
 
   /* (?idmsuxU-idmsuxU) */
-  case class Flags private (flagsOn: Set[Char], flagsOff: Set[Char])(using EmptyType) extends EmptyLeaf
-  object Flags {
-    def apply(flagsOn: Set[Char], flagsOff: Set[Char])(using Quotes): Flags = new Flags(flagsOn, flagsOff)
-  }
+  case class Flags(flagsOn: Set[Char], flagsOff: Set[Char]) extends EmptyLeaf
 
   /* Wrapper that discards the capturing groups of `inner`. */
-  sealed abstract class EmptyWrapper[F[_ <: Rep] <: HChain] protected (inner: Regex[F])(using EmptyType) extends Empty {
+  sealed abstract class EmptyWrapper[F[_ <: Rep] <: HChain] protected (inner: Regex[F]) extends Empty {
     override final val numCaptures: Int = inner.numCaptures
   }
 
   /* A{0} or A{0,0} */
-  case class Zero[F[_ <: Rep] <: HChain] private (inner: Regex[F])(using EmptyType) extends EmptyWrapper[F](inner)
-  object Zero {
-    def apply[F[_ <: Rep] <: HChain](inner: Regex[F])(using Quotes): Zero[F] = {
-      new Zero(inner)
-    }
-  }
+  case class Zero[F[_ <: Rep] <: HChain](inner: Regex[F]) extends EmptyWrapper[F](inner)
 
   /* (?!A) */
-  case class NegativeLookahead[F[_ <: Rep] <: HChain] private (inner: Regex[F])(using EmptyType) extends EmptyWrapper[F](inner)
-  object NegativeLookahead {
-    def apply[F[_ <: Rep] <: HChain](inner: Regex[F])(using Quotes): NegativeLookahead[F] = {
-      new NegativeLookahead(inner)
-    }
-  }
+  case class NegativeLookahead[F[_ <: Rep] <: HChain](inner: Regex[F]) extends EmptyWrapper[F](inner)
 
   /* (?<!A) */
-  case class NegativeLookbehind[F[_ <: Rep] <: HChain] private (inner: Regex[F])(using EmptyType) extends EmptyWrapper[F](inner)
-  object NegativeLookbehind {
-    def apply[F[_ <: Rep] <: HChain](inner: Regex[F])(using Quotes): NegativeLookbehind[F] = {
-      new NegativeLookbehind(inner)
-    }
-  }
+  case class NegativeLookbehind[F[_ <: Rep] <: HChain](inner: Regex[F]) extends EmptyWrapper[F](inner)
 
   /* Capturing group. */
   sealed abstract class Capturing[F[_ <: Rep] <: HChain, G[_ <: Rep] <: HChain] protected (inner: Regex[F])(capturingType: CapturingType[F, G]) extends Regex[G](capturingType.asNodeType) {
@@ -125,7 +84,7 @@ trait AST extends Tidy, BuildFunction, EmptyTypes, CapturingTypes, CatTypes, Alt
   /* (A) */
   case class Capture[F[_ <: Rep] <: HChain, G[_ <: Rep] <: HChain] private (inner: Regex[F])(capturingType: CapturingType[F, G]) extends Capturing[F, G](inner)(capturingType)
   object Capture {
-    def apply[F[_ <: Rep] <: HChain](inner: Regex[F])(using Quotes): Capture[F, ?] = {
+    def apply[F[_ <: Rep] <: HChain](inner: Regex[F]): Capture[F, ?] = {
       new Capture(inner)(CapturingType(inner))
     }
   }
@@ -133,7 +92,7 @@ trait AST extends Tidy, BuildFunction, EmptyTypes, CapturingTypes, CatTypes, Alt
   /* (?<name>A) */
   case class NamedCapture[F[_ <: Rep] <: HChain, G[_ <: Rep] <: HChain] private (name: String, inner: Regex[F])(capturingType: CapturingType[F, G]) extends Capturing[F, G](inner)(capturingType)
   object NamedCapture {
-    def apply[F[_ <: Rep] <: HChain](name: String, inner: Regex[F])(using Quotes): NamedCapture[F, ?] = {
+    def apply[F[_ <: Rep] <: HChain](name: String, inner: Regex[F]): NamedCapture[F, ?] = {
       new NamedCapture(name, inner)(CapturingType(inner))
     }
   }
@@ -175,7 +134,7 @@ trait AST extends Tidy, BuildFunction, EmptyTypes, CapturingTypes, CatTypes, Alt
   }
 
   object Cat {
-    def apply[F[_ <: Rep] <: HChain, G[_ <: Rep] <: HChain](left: Regex[F], right: Regex[G])(using Quotes): Cat[F, G, ?] = {
+    def apply[F[_ <: Rep] <: HChain, G[_ <: Rep] <: HChain](left: Regex[F], right: Regex[G]): Cat[F, G, ?] = {
       new Cat(left, right)(CatType(left, right))
     }
   }
@@ -198,7 +157,7 @@ trait AST extends Tidy, BuildFunction, EmptyTypes, CapturingTypes, CatTypes, Alt
   }
 
   object Alt {
-    def apply[F[_ <: Rep] <: HChain, G[_ <: Rep] <: HChain](left: Regex[F], right: Regex[G])(using Quotes): Alt[F, G, ?] = {
+    def apply[F[_ <: Rep] <: HChain, G[_ <: Rep] <: HChain](left: Regex[F], right: Regex[G]): Alt[F, G, ?] = {
       new Alt(left, right)(AltType(left, right))
     }
   }
@@ -219,7 +178,7 @@ trait AST extends Tidy, BuildFunction, EmptyTypes, CapturingTypes, CatTypes, Alt
   }
 
   object Opt {
-    def apply[F[_ <: Rep] <: HChain](inner: Regex[F], quantifierType: QuantifierType)(using Quotes): Opt[F, ?] = {
+    def apply[F[_ <: Rep] <: HChain](inner: Regex[F], quantifierType: QuantifierType): Opt[F, ?] = {
       new Opt(inner, quantifierType)(OptType(inner))
     }
   }
@@ -242,7 +201,7 @@ trait AST extends Tidy, BuildFunction, EmptyTypes, CapturingTypes, CatTypes, Alt
   /* A+ */
   case class Plus[F[_ <: Rep] <: HChain, G[_ <: Rep] <: HChain](inner: Regex[F], quantifierType: QuantifierType)(nodeType: Rep1Type[F, G]) extends Rep1(inner)(nodeType)
   object Plus {
-    def apply[F[_ <: Rep] <: HChain](inner: Regex[F], quantifierType: QuantifierType)(using Quotes): Plus[F, ?] = {
+    def apply[F[_ <: Rep] <: HChain](inner: Regex[F], quantifierType: QuantifierType): Plus[F, ?] = {
       new Plus(inner, quantifierType)(Rep1Type(inner))
     }
   }
@@ -250,7 +209,7 @@ trait AST extends Tidy, BuildFunction, EmptyTypes, CapturingTypes, CatTypes, Alt
   /* A{n} for n >= 2. */
   case class Exactly[F[_ <: Rep] <: HChain, G[_ <: Rep] <: HChain] private (inner: Regex[F], n: Int, quantifierType: QuantifierType)(nodeType: Rep1Type[F, G]) extends Rep1[F, G](inner)(nodeType)
   object Exactly {
-    def apply[F[_ <: Rep] <: HChain](inner: Regex[F], n: Int, quantifierType: QuantifierType)(using Quotes): Exactly[F, ?] = {
+    def apply[F[_ <: Rep] <: HChain](inner: Regex[F], n: Int, quantifierType: QuantifierType): Exactly[F, ?] = {
       new Exactly(inner, n, quantifierType)(Rep1Type(inner))
     }
   }
@@ -258,7 +217,7 @@ trait AST extends Tidy, BuildFunction, EmptyTypes, CapturingTypes, CatTypes, Alt
   /* A{n,} for n >= 1. Use `Star` for {0,} */
   case class AtLeast[F[_ <: Rep] <: HChain, G[_ <: Rep] <: HChain] private (inner: Regex[F], n: Int, quantifierType: QuantifierType)(nodeType: Rep1Type[F, G]) extends Rep1[F, G](inner)(nodeType)
   object AtLeast {
-    def apply[F[_ <: Rep] <: HChain](inner: Regex[F], n: Int, quantifierType: QuantifierType)(using Quotes): AtLeast[F, ?] = {
+    def apply[F[_ <: Rep] <: HChain](inner: Regex[F], n: Int, quantifierType: QuantifierType): AtLeast[F, ?] = {
       new AtLeast(inner, n, quantifierType)(Rep1Type(inner))
     }
   }
@@ -266,7 +225,7 @@ trait AST extends Tidy, BuildFunction, EmptyTypes, CapturingTypes, CatTypes, Alt
   /* A{n, m} for n >= 1, m >= 2. */
   case class Between[F[_ <: Rep] <: HChain, G[_ <: Rep] <: HChain] private (inner: Regex[F], n: Int, m: Int, quantifierType: QuantifierType)(nodeType: Rep1Type[F, G]) extends Rep1[F, G](inner)(nodeType)
   object Between {
-    def apply[F[_ <: Rep] <: HChain](inner: Regex[F], n: Int, m: Int, quantifierType: QuantifierType)(using Quotes): Between[F, ?] = {
+    def apply[F[_ <: Rep] <: HChain](inner: Regex[F], n: Int, m: Int, quantifierType: QuantifierType): Between[F, ?] = {
       new Between(inner, n, m, quantifierType)(Rep1Type(inner))
     }
   }
@@ -289,7 +248,7 @@ trait AST extends Tidy, BuildFunction, EmptyTypes, CapturingTypes, CatTypes, Alt
   /* A* */
   case class Star[F[_ <: Rep] <: HChain, G[_ <: Rep] <: HChain] private (inner: Regex[F], quantifierType: QuantifierType)(nodeType: Rep0Type[F, G]) extends Rep0[F, G](inner)(nodeType)
   object Star {
-    def apply[F[_ <: Rep] <: HChain](inner: Regex[F], quantifierType: QuantifierType)(using Quotes) = {
+    def apply[F[_ <: Rep] <: HChain](inner: Regex[F], quantifierType: QuantifierType) = {
       new Star(inner, quantifierType)(Rep0Type(inner))
     }
   }
@@ -297,7 +256,7 @@ trait AST extends Tidy, BuildFunction, EmptyTypes, CapturingTypes, CatTypes, Alt
   /* A{0, m} for m >= 2. Use `Opt` for {0, 1} and `Zero` for {0, 0}. */
   case class AtMost[F[_ <: Rep] <: HChain, G[_ <: Rep] <: HChain] private (inner: Regex[F], n: Int, quantifierType: QuantifierType)(nodeType: Rep0Type[F, G]) extends Rep0[F, G](inner)(nodeType)
   object AtMost {
-    def apply[F[_ <: Rep] <: HChain](inner: Regex[F], n: Int, quantifierType: QuantifierType)(using Quotes) = {
+    def apply[F[_ <: Rep] <: HChain](inner: Regex[F], n: Int, quantifierType: QuantifierType) = {
       new AtMost(inner, n, quantifierType)(Rep0Type(inner))
     }
   }

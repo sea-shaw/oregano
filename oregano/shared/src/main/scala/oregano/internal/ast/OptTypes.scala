@@ -13,23 +13,17 @@ trait OptTypes { this: Tidy =>
   }
 
   protected object OptType {
-    def apply[F[_ <: Rep] <: HChain](inner: Tidiable[F])(using Quotes): OptType[F, ?] = {
+    def apply[F[_ <: Rep] <: HChain](inner: Tidiable[F]): OptType[F, ?] = {
       inner.nodeType match {
-        case _: HEmptyType => OptEmpty()
-        case singletonOption: SingletonOption[f] => {
-          given Type[f] = singletonOption.innerType
-          OptNested(singletonOption)
-        }
-        case nonEmpty: HNonEmptyType[f] => {
-          given Type[f] = nonEmpty.tpe
-          OptSingleton(inner)
-        }
+        case _: HEmptyType                       => OptEmpty
+        case singletonOption: SingletonOption[f] => OptNested(singletonOption)
+        case _: HNonEmptyType[f]                 => OptSingleton(inner)
       }
     }
   }
 
   /* A? */
-  private class OptEmpty(using Type[Const[HEmpty]]) extends OptType[Const[HEmpty], Const[HEmpty]] with HEmptyType {
+  private object OptEmpty extends OptType[Const[HEmpty], Const[HEmpty]] with HEmptyType {
     override def sanitiseCode[R <: Rep: Type](sanitisedInner: => SanitiseExpr[Const[HEmpty][R]])(using Quotes): SanitiseExpr[Const[HEmpty][R]] = {
       sanitiseEmpty
     }
@@ -41,12 +35,18 @@ trait OptTypes { this: Tidy =>
 
   /* (A)? */
   private type OptSingletonType = SingletonOptionType
-  private class OptSingleton[F[_ <: Rep] <: HNonEmpty](inner: Tidiable[F])(using Type[F], Type[OptSingletonType[F]]) extends OptType[F, OptSingletonType[F]] with SingletonOption[F] {
+  private class OptSingleton[F[_ <: Rep] <: HNonEmpty](inner: Tidiable[F]) extends OptType[F, OptSingletonType[F]] with SingletonOption[F] {
+    override def innerType(using Quotes): Type[F] = inner.tpe
+
     override def sanitiseCode[R <: Rep: Type](sanitisedInner: => SanitiseExpr[F[R]])(using Quotes): SanitiseExpr[OptSingletonType[F][R]] = {
+      given Type[F] = innerType
+
       sanitiseOpt(sanitisedInner)
     }
 
     override def getCode[R <: Rep: Type](sanitisedInner: => SanitiseExpr[F[R]])(using Quotes): Expr[HSingleton[Option[F[R]]]] = {
+      given Type[F] = innerType
+
       getOpt(sanitisedInner)
     }
 
@@ -55,15 +55,19 @@ trait OptTypes { this: Tidy =>
 
   /* (A?)? */
   private type OptNestedType = SingletonOptionType
-  private class OptNested[F[_ <: Rep] <: HNonEmpty](innerType: SingletonOption[F])(using Type[F], Type[OptNestedType[F]]) extends OptType[OptNestedType[F], OptNestedType[F]] with SingletonOption[F] {
+  private class OptNested[F[_ <: Rep] <: HNonEmpty](inner: SingletonOption[F]) extends OptType[OptNestedType[F], OptNestedType[F]] with SingletonOption[F] {
+    override def innerType(using Quotes): Type[F] = inner.innerType
+
     override def sanitiseCode[R <: Rep: Type](sanitisedInner: => SanitiseExpr[OptNestedType[F][R]])(using Quotes): SanitiseExpr[OptNestedType[F][R]] = {
       sanitisedInner
     }
 
     override def getCode[R <: Rep: Type](sanitisedInner: => SanitiseExpr[OptNestedType[F][R]])(using Quotes): Expr[HSingleton[Option[F[R]]]] = {
+      given Type[F] = innerType
+
       '{ $sanitisedInner.get.captures }
     }
 
-    override def tidyInner[R <: Rep: Type](using RepType[R])(using Quotes): TidyFunction[F[R], ?] = innerType.tidyInner
+    override def tidyInner[R <: Rep: Type](using RepType[R])(using Quotes): TidyFunction[F[R], ?] = inner.tidyInner
   }
 }

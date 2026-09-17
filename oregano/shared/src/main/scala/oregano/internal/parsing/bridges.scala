@@ -8,11 +8,10 @@ import parsley.Parsley.pure
 import parsley.bridges.ParserSingletonBridge
 import parsley.errors.combinator.*
 import parsley.templates.{PureParserBridge1, PureParserBridge2, PureParserBridge3}
-import scala.quoted.Quotes
 
 object bridges {
 
-  type ToRegex = (ast: AST, q: Quotes) ?=> ast.Regex[?]
+  type ToRegex = (ast: AST) ?=> ast.Regex[?]
 
   object Dot extends ParserSingletonBridge[ToRegex] {
     override protected def singleton: Parsley[ToRegex] = pure(ast.Class(allSet -- Diet.one('\n'.toInt)))
@@ -27,11 +26,11 @@ object bridges {
   }
 
   object LineStart extends ParserSingletonBridge[ToRegex] {
-    override protected def singleton: Parsley[ToRegex] = pure(ast.LineStart())
+    override protected def singleton: Parsley[ToRegex] = pure(ast.LineStart)
   }
 
   object LineEnd extends ParserSingletonBridge[ToRegex] {
-    override protected def singleton: Parsley[ToRegex] = pure(ast.LineEnd())
+    override protected def singleton: Parsley[ToRegex] = pure(ast.LineEnd)
   }
 
   object NegativeLookahead extends PureParserBridge1[ToRegex, ToRegex] {
@@ -114,7 +113,7 @@ object bridges {
     }
   }
 
-  val allSet = Diet.fromRange(Range(0x00000, 0x1ffff))
+  private [internal] val allSet = Diet.fromRange(Range(0x00000, 0x1ffff))
 
   private inline def ast(using ast: AST): ast.type = ast
 

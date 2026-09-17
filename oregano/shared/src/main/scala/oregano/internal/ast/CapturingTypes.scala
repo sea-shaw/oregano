@@ -19,10 +19,9 @@ trait CapturingTypes { this: Tidy =>
   protected object CapturingType {
     /* Returns the correct `CapturingType` for the type of `inner`. Only
        possible because of flow typing for GADTs. */
-    def apply[F[_ <: Rep] <: HChain](inner: Tidiable[F])(using Quotes): CapturingType[F, ?] = {
-      given Type[F] = inner.nodeType.tpe
+    def apply[F[_ <: Rep] <: HChain](inner: Tidiable[F]): CapturingType[F, ?] = {
       inner.nodeType match {
-        case _: HEmptyType       => CapturingSingleton()
+        case _: HEmptyType       => CapturingSingleton
         case _: HNonEmptyType[_] => CapturingAppend(inner)
       }
     }
@@ -30,7 +29,9 @@ trait CapturingTypes { this: Tidy =>
 
   /* (A) */
   private type CapturingSingletonType = Const[HSingleton[String]]
-  private class CapturingSingleton(using Type[CapturingSingletonType]) extends CapturingType[Const[HEmpty], CapturingSingletonType] with HNonEmptyType[CapturingSingletonType] {
+  private object CapturingSingleton extends CapturingType[Const[HEmpty], CapturingSingletonType] with HNonEmptyType[CapturingSingletonType] {
+    override def tpe(using Quotes): Type[CapturingSingletonType] = Type.of[CapturingSingletonType]
+
     override def sanitiseCode[R <: Rep: Type](capture: Expr[Option[String]], sanitisedInner: => Expr[Const[HEmpty][R]])(using Quotes): SanitiseExpr[CapturingSingletonType[R]] = {
       '{
         if ($capture.isDefined) {
@@ -59,8 +60,16 @@ trait CapturingTypes { this: Tidy =>
 
   /* Type when the inner node contains more capturing groups, e.g. ((A)). */
   private type CapturingAppendType[F[_ <: Rep] <: HNonEmpty] = [R <: Rep] =>> HAppend[HSingleton[String], F[R]]
-  private class CapturingAppend[F[_ <: Rep] <: HNonEmpty: Type](inner: Tidiable[F])(using Type[CapturingAppendType[F]]) extends CapturingType[F, CapturingAppendType[F]] with HNonEmptyType[CapturingAppendType[F]] {
+  private class CapturingAppend[F[_ <: Rep] <: HNonEmpty](inner: Tidiable[F]) extends CapturingType[F, CapturingAppendType[F]] with HNonEmptyType[CapturingAppendType[F]] {
+    override def tpe(using Quotes): Type[CapturingAppendType[F]] = {
+      given Type[F] = inner.tpe
+
+      Type.of[CapturingAppendType[F]]
+    }    
+
     override def sanitiseCode[R <: Rep: Type](capture: Expr[Option[String]], sanitisedInner: => Expr[F[R]])(using Quotes): SanitiseExpr[CapturingAppendType[F][R]] = {
+      given Type[F] = inner.tpe
+
       '{
         if ($capture.isDefined) {
           Some(Sanitised(HAppend(HSingleton($capture.get), $sanitisedInner), true))
@@ -70,11 +79,15 @@ trait CapturingTypes { this: Tidy =>
       }
     }
 
-    override def getCode[R <: Rep: Type](capture: Expr[HSingleton[String]], inner: => Expr[F[R]])(using Quotes): Expr[HAppend[HSingleton[String], F[R]]] = {
-      '{ HAppend($capture, $inner) }
+    override def getCode[R <: Rep: Type](capture: Expr[HSingleton[String]], getInner: => Expr[F[R]])(using Quotes): Expr[HAppend[HSingleton[String], F[R]]] = {
+      given Type[F] = inner.tpe
+
+      '{ HAppend($capture, $getInner) }
     }
 
     override def flattenFunction[C <: Chains, L <: Leaves, R <: Rep: Type](nodes: Nodes[C], types: Types[L])(using RepType[R])(using Quotes): FlattenFunction[CCons[CapturingAppendType[F][R], C], L, ?] = {
+      given Type[F] = inner.tpe
+
       inner.flattenFunction(nodes, TCons(Type.of[String], types)) match {
         case flatten @ FlattenFunction(given Type[a]) => new FlattenFunction[CCons[CapturingAppendType[F][R], C], L, a] {
           override def apply(chains: CCons[CapturingAppendType[F][R], C], leaves: L)(using Quotes): Expr[a] = {

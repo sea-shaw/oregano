@@ -5,11 +5,13 @@
  */
 package oregano.internal
 
+import oregano.internal.ast.AST
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.*
 import org.scalatest.prop.TableDrivenPropertyChecks.*
 
 class RuntimeCPSMatcherTests_NestedLoops extends AnyFlatSpec {
+  given AST = Oregano
 
   val PatternResult(pattern, groupCount, _, numReps) =
     Pattern.compile("((a*)b*)*bc|(def)")
@@ -65,6 +67,7 @@ class RuntimeCPSMatcherTests_NestedLoops extends AnyFlatSpec {
 }
 
 class RuntimeCPSMatcherTests_Grouping extends AnyFlatSpec {
+  given AST = Oregano
 
   val PatternResult(pattern, groupCount, _, numReps) =
     Pattern.compile("(a|b)*c[0-9]")
@@ -106,6 +109,7 @@ class RuntimeCPSMatcherTests_Grouping extends AnyFlatSpec {
 }
 
 class RuntimeCPSMatcherTests_ComplexExpression extends AnyFlatSpec {
+  given AST = Oregano
 
   val PatternResult(pattern, groupCount, _, numReps) =
     Pattern.compile("((ab)*|[cd]*)e(f|g)[0-9]")
@@ -153,6 +157,7 @@ class RuntimeCPSMatcherTests_ComplexExpression extends AnyFlatSpec {
 }
 
 class RuntimeCPSMatcherTests_BacktrackingHeavy extends AnyFlatSpec {
+  given AST = Oregano
 
   val PatternResult(pattern, groupCount, _, numReps) =
     Pattern.compile("((a|aa)*)b")
@@ -200,6 +205,7 @@ class RuntimeCPSMatcherTests_BacktrackingHeavy extends AnyFlatSpec {
 }
 
 class RuntimeCPSMatcherTests_WithCapturesNestedLoops extends AnyFlatSpec {
+  given AST = Oregano
 
   val PatternResult(pattern, groupCount, _, numReps) =
     Pattern.compile("((a*)b*)*bc|(def)")
@@ -245,6 +251,7 @@ class RuntimeCPSMatcherTests_WithCapturesNestedLoops extends AnyFlatSpec {
 }
 
 class RuntimeCPSMatcherTests_NestedAltRep extends AnyFlatSpec {
+  given AST = Oregano
 
   val PatternResult(pattern, groupCount, _, numReps) =
     Pattern.compile("(((a)|b|cd)*)e")

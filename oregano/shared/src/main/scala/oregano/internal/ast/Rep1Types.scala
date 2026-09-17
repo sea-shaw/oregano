@@ -13,17 +13,16 @@ trait Rep1Types { this: Tidy =>
   }
 
   protected object Rep1Type {
-    def apply[F[_ <: Rep] <: HChain](inner: Tidiable[F])(using Quotes): Rep1Type[F, ?] = {
-      given Type[F] = inner.nodeType.tpe
+    def apply[F[_ <: Rep] <: HChain](inner: Tidiable[F]): Rep1Type[F, ?] = {
       inner.nodeType match {
-        case _: HEmptyType       => Rep1Empty()
+        case _: HEmptyType       => Rep1Empty
         case _: HNonEmptyType[_] => Rep1NonEmpty(inner)
       }
     }
   }
 
   /* A+ */
-  private class Rep1Empty(using Type[Const[HEmpty]]) extends Rep1Type[Const[HEmpty], Const[HEmpty]] with HEmptyType {
+  private object Rep1Empty extends Rep1Type[Const[HEmpty], Const[HEmpty]] with HEmptyType {
     override def sanitiseCode[R <: Rep](sanitisedInner: => SanitiseExpr[Const[HEmpty][true]])(using Quotes): SanitiseExpr[Const[HEmpty][R]] = {
       sanitiseEmpty
     }
@@ -35,7 +34,13 @@ trait Rep1Types { this: Tidy =>
 
   /* (A)+ */
   private type Rep1NonEmptyType[F[_ <: Rep] <: HNonEmpty] = Const[F[true]]
-  private class Rep1NonEmpty[F[_ <: Rep] <: HNonEmpty](inner: Tidiable[F])(using Type[Rep1NonEmptyType[F]]) extends Rep1Type[F, Rep1NonEmptyType[F]] with HNonEmptyType[Rep1NonEmptyType[F]] {
+  private class Rep1NonEmpty[F[_ <: Rep] <: HNonEmpty](inner: Tidiable[F]) extends Rep1Type[F, Rep1NonEmptyType[F]] with HNonEmptyType[Rep1NonEmptyType[F]] {
+    override def tpe(using Quotes): Type[Rep1NonEmptyType[F]] = {
+      given Type[F] = inner.tpe
+
+      Type.of[Rep1NonEmptyType[F]]
+    }
+
     override def sanitiseCode[R <: Rep](sanitisedInner: => SanitiseExpr[F[true]])(using Quotes): SanitiseExpr[Rep1NonEmptyType[F][R]] = {
       sanitisedInner
     }

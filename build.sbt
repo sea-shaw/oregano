@@ -47,7 +47,7 @@ lazy val oregano = crossProject(JVMPlatform, JSPlatform, NativePlatform)
         scalacOptions ++= Seq(
             "-Yexplicit-nulls",
             "-Xcheck-macros",
-            "-explain",
+            // "-explain",
             "-Wimplausible-patterns",
             "-Wunused:all",
             "-Wsafe-init",
