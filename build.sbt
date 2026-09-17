@@ -52,7 +52,9 @@ lazy val oregano = crossProject(JVMPlatform, JSPlatform, NativePlatform)
             "-Wunused:all",
             "-Wsafe-init",
             "-explain-cyclic",
-        )
+        ),
+
+        Compile / sourceGenerators += (Compile / sourceManaged).map(BuildFunction.gen).taskValue,
     )
     .jsSettings(
         libraryDependencies += "org.scala-lang" %% "scala3-library" % scalaVersion.value
