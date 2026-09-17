@@ -13,8 +13,10 @@ import cats.collections.{Diet, Range}
 import parsley.{Success, Failure}
 
 class ParserTests extends AnyFlatSpec {
-  import parsers.*
+  import parser.cls
   import Regex.*
+  import QuantifierType.*
+
   "regex classes" should "parse sets of literals" in {
     cls.parse("[abc]") shouldBe Success(
       Class(Diet.fromRange(Range('a'.toInt, 'c'.toInt)))
@@ -106,105 +108,70 @@ class ParserTests extends AnyFlatSpec {
   }
 
   they should "accept Kleene stars" in {
-    regex.parse("[a]*") shouldBe Success(
-      Cat(List(Rep0(Class(Diet.one('a'.toInt)))))
+    parser.parse("[a]*") shouldBe Success(
+      Star(Class(Diet.one('a'.toInt)), Greedy)
     )
-    regex.parse("[a-z]*") shouldBe Success(
-      Cat(List(Rep0(Class(Diet.fromRange(Range('a'.toInt, 'z'.toInt))))))
+    parser.parse("[a-z]*") shouldBe Success(
+      Star(Class(Diet.fromRange(Range('a'.toInt, 'z'.toInt))), Greedy)
     )
   }
 
   they should "handle Groups correctly" in {
-    regex.parse("(a)") shouldBe Success(
-      Cat(List(Capture(Cat(List(Lit('a'.toInt))))))
+    parser.parse("(a)") shouldBe Success(
+      Capture(Lit('a'.toInt))
     )
-    regex.parse("(a|b)") shouldBe Success(
-      Cat(
-        List(Capture(Alt(Cat(List(Lit('a'.toInt))), Cat(List(Lit('b'.toInt))))))
-      )
+    parser.parse("(a|b)") shouldBe Success(
+      Capture(Alt(Lit('a'.toInt), Lit('b'.toInt)))
     )
-    regex.parse("(a|b)*") shouldBe Success(
-      Cat(
-        List(
-          Rep0(
-            Capture(Alt(Cat(List(Lit('a'.toInt))), Cat(List(Lit('b'.toInt)))))
-          )
-        )
-      )
+    parser.parse("(a|b)*") shouldBe Success(
+      Star(Capture(Alt(Lit('a'.toInt), Lit('b'.toInt))), Greedy)
     )
-    regex.parse("((a|b)*)") shouldBe Success(
-      Cat(
-        List(
-          Capture(
-            Cat(
-              List(
-                Rep0(
-                  Capture(
-                    Alt(Cat(List(Lit('a'.toInt))), Cat(List(Lit('b'.toInt))))
-                  )
-                )
-              )
-            )
-          )
-        )
-      )
+    parser.parse("((a|b)*)") shouldBe Success(
+      Capture(Star(Capture(Alt(Lit('a'.toInt), Lit('b'.toInt))), Greedy))
     )
   }
 
   they should "handle predefined classes correctly" in {
-    regex.parse("\\d") shouldBe Success(
-      Cat(List(Class(Diet.fromRange(Range('0'.toInt, '9'.toInt)))))
+    parser.parse("\\d") shouldBe Success(
+      Class(Diet.fromRange(Range('0'.toInt, '9'.toInt)))
     )
-    regex.parse("\\D") shouldBe Success(
-      Cat(
-        List(Class(Regex.AllSet -- Diet.fromRange(Range('0'.toInt, '9'.toInt))))
+    parser.parse("\\D") shouldBe Success(
+      Class(Regex.AllSet -- Diet.fromRange(Range('0'.toInt, '9'.toInt)))
+    )
+    parser.parse("\\w") shouldBe Success(
+      Class(
+        Diet.fromRange(Range('a'.toInt, 'z'.toInt))
+        | Diet.fromRange(Range('A'.toInt, 'Z'.toInt))
+        | Diet.fromRange(Range('0'.toInt, '9'.toInt))
+        | Diet.one('_'.toInt)
       )
     )
-    regex.parse("\\w") shouldBe Success(
-      Cat(
-        List(
-          Class(
-            Diet.fromRange(Range('a'.toInt, 'z'.toInt)) |
-              Diet.fromRange(Range('A'.toInt, 'Z'.toInt)) | Diet.fromRange(
-                Range('0'.toInt, '9'.toInt)
-              ) | Diet.one('_'.toInt)
-          )
-        )
+    parser.parse("\\W") shouldBe Success(
+      Class(
+        Regex.AllSet -- (Diet.fromRange(Range('a'.toInt, 'z'.toInt))
+        | Diet.fromRange(Range('A'.toInt, 'Z'.toInt))
+        | Diet.fromRange(Range('0'.toInt, '9'.toInt))
+        | Diet.one('_'.toInt))
       )
     )
-    regex.parse("\\W") shouldBe Success(
-      Cat(
-        List(
-          Class(
-            Regex.AllSet -- (Diet.fromRange(Range('a'.toInt, 'z'.toInt)) |
-              Diet.fromRange(Range('A'.toInt, 'Z'.toInt)) | Diet.fromRange(
-                Range('0'.toInt, '9'.toInt)
-              ) | Diet.one('_'.toInt))
-          )
-        )
+    parser.parse("\\s") shouldBe Success(
+      Class(
+        Diet.one(' '.toInt)
+        | Diet.one('\t'.toInt)
+        | Diet.one('\n'.toInt)
+        | Diet.one('\u000B'.toInt)
+        | Diet.one('\r'.toInt)
+        | Diet.one('\f'.toInt)
       )
     )
-    regex.parse("\\s") shouldBe Success(
-      Cat(
-        List(
-          Class(
-            Diet.one(' '.toInt) | Diet.one('\t'.toInt) |
-              Diet.one('\n'.toInt) | Diet.one('\u000B'.toInt) | Diet.one(
-                '\r'.toInt
-              ) | Diet.one('\f'.toInt)
-          )
-        )
-      )
-    )
-    regex.parse("\\S") shouldBe Success(
-      Cat(
-        List(
-          Class(
-            Regex.AllSet -- (Diet.one(' '.toInt) |
-              Diet.one('\t'.toInt) | Diet.one('\n'.toInt) | Diet.one(
-                '\u000B'.toInt
-              ) | Diet.one('\r'.toInt) | Diet.one('\f'.toInt))
-          )
+    parser.parse("\\S") shouldBe Success(
+      Class(
+        Regex.AllSet -- ( Diet.one(' '.toInt)
+                        | Diet.one('\t'.toInt)
+                        | Diet.one('\n'.toInt)
+                        | Diet.one('\u000B'.toInt)
+                        | Diet.one('\r'.toInt)
+                        | Diet.one('\f'.toInt)
         )
       )
     )

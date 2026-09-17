@@ -74,7 +74,7 @@ object Pattern {
     def checkFlatControlFlow(pat: Pattern): Boolean = !checkForNestedLoop(pat)
 
     def compile(regex: String): PatternResult = {
-        val re: Regex = parse(regex).getOrElse(throw IllegalArgumentException(s"Invalid regex: $regex"))
+        val re: Regex = parser.parse(regex).getOrElse(throw IllegalArgumentException(s"Invalid regex: $regex"))
         compile(re)
     }
 }
@@ -87,11 +87,11 @@ class PatternBuilder {
 
     def compile(regex: Regex): Pattern = regex match {
         case Regex.Lit(c) => Pattern.Lit(c)
-        case Regex.Cat(rs) => Pattern.Cat(rs.foldRight(List.empty[Pattern])((r, acc) => compile(r) :: acc))
+        case Regex.Cat(left, right) => Pattern.Cat(List(compile(left), compile(right)))
         case Regex.Alt(r1, r2) => Pattern.Alt(compile(r1), compile(r2))
         case Regex.Class(d) => Pattern.Class(d)
 
-        case Regex.Rep0(r) =>
+        case Regex.Star(r, QuantifierType.Greedy) =>
             val p = compile(r)
             val idx = numReps
             numReps += 1
@@ -100,7 +100,7 @@ class PatternBuilder {
         // Given we use a shared `p`, capture indicies are propogated safely so I believe this to be safe
         // That being said, not doing this could yield a more terse Prog, but I don't have time
         // I'd expect the more terse Prog to be more performant
-        case Regex.Rep1(r) =>
+        case Regex.Plus(r, QuantifierType.Greedy) =>
             val p = compile(r)
             val idx = numReps
             numReps += 1
@@ -112,7 +112,7 @@ class PatternBuilder {
             val p = compile(r)
             Pattern.Capture(groupId, p)
 
-        case Regex.NonCapture(r) => compile(r)
+        case Regex.NonCapture(flagsOn, flagsOff, r) => compile(r)
 
         // Dot matches any character except newline, there is a flag to change this, could be handled
         // Could keep a Pattern.Dot, but for now, we can use a class that matches all characters except newline as is default

@@ -5,10 +5,13 @@
  */
 package oregano.internal
 
+import cats.collections.{Diet, Range}
+import cats.data.NonEmptyList
+import parsley.Parsley
 import parsley.Parsley.pure
+import parsley.errors.combinator.*
 import parsley.templates.*
 import parsley.bridges.ParserSingletonBridge
-import cats.collections.{Diet, Range}
 
 // This is matching with Java 8 Regex
 // TODO: not all constructs can appear within other constructs... perhaps this can be
@@ -63,43 +66,31 @@ private enum Regex {
     case InputEnd extends Regex with PureParserBridge0[Regex]
 
     /** `X?`: once or not at all */
-    case Opt(r: Regex)
+    case Opt(r: Regex, q: QuantifierType)
 
     /** `X*`: zero or more times */
-    case Rep0(r: Regex)
+    case Star(r: Regex, q: QuantifierType)
 
     /** `X+`: one or more times */
-    case Rep1(r: Regex)
+    case Plus(r: Regex, q: QuantifierType)
 
-    /** `X{n}: exactly n times */
-    case Exactly(r: Regex, n: Int)
+    /** `X{0}` or `X{0,0}`: exaclty 0 times */
+    case Zero(r: Regex)
 
-    /** `X{n,}: at least n times */
-    case AtLeast(r: Regex, n: Int)
+    /** `X{n}: exactly n times for n >= 2 */
+    case Exactly(r: Regex, n: Int, q: QuantifierType)
 
-    /** `X{n,m}: at least n times, but more than m times */
-    case Between(r: Regex, n: Int, m: Int)
+    /** `X{n,}: at least n times for n >= 2 */
+    case AtLeast(r: Regex, n: Int, q: QuantifierType)
 
-    /** `X??`: once or not at all */
-    case LazyOpt(r: Regex)
+    /** `X{0,m}`: at most m times for m >= 2 */
+    case AtMost(r: Regex, m: Int, q: QuantifierType)
 
-    /** `X*?`: zero or more times */
-    case LazyRep0(r: Regex)
-
-    /** `X+?`: one or more times */
-    case LazyRep1(r: Regex)
-
-    /** `X{n}?: exactly n times */
-    case LazyExactly(r: Regex, n: Int)
-
-    /** `X{n,}?: at least n times */
-    case LazyAtLeast(r: Regex, n: Int)
-
-    /** `X{n,m}?: at least n times, but more than m times */
-    case LazyBetween(r: Regex, n: Int, m: Int)
+    /** `X{n,m}: at least n times, but more than m times for n >= 1, m >= max(n, 2) */
+    case Between(r: Regex, n: Int, m: Int, q: QuantifierType)
 
     /** `XY`: X followed by Y */
-    case Cat(rs: List[Regex])
+    case Cat(left: Regex, right: Regex)
 
     /** `X|Y`: Either X or Y */
     case Alt(r1: Regex, r2: Regex)
@@ -107,8 +98,10 @@ private enum Regex {
     /** `(X)`: X, as a capturing group */
     case Capture(r: Regex)
 
-    /** `(?:X)`: X, as a non-capturing group */
-    case NonCapture(r: Regex)
+    /** `(?idmsux-idmsux:X)`: X, as a non-capturing group with given flags
+      *   turned on or off
+      */
+    case NonCapture(flagsOn: Set[Char], flagsOff: Set[Char], inner: Regex)
 
     /** `\n`: whatever the nth capturing group matched */
     case Back(n: Int)
@@ -136,6 +129,9 @@ private enum Regex {
       */
     case Atomic(r: Regex)
     // NOTE: \Q, \E, and (?:X) are not represented in syntax
+
+    /** `(?idmsuxU-idmsuxU)`: turns flags on or off */
+    case Flags(flagsOn: Set[Char], flagsOff: Set[Char])
 }
 private object Regex {
     private[internal] val AllSet = Diet.fromRange(Range(0x00000, 0x1ffff))
@@ -143,20 +139,13 @@ private object Regex {
         override def labels: List[String] = List("literal")
     }
     object Class extends PureParserBridge1[Diet[Int], Regex]
-    object Opt extends PureParserBridge1[Regex, Regex]
-    object Rep0 extends PureParserBridge1[Regex, Regex]
-    object Rep1 extends PureParserBridge1[Regex, Regex]
-    object Exactly extends PureParserBridge2[Regex, Int, Regex]
-    object AtLeast extends PureParserBridge2[Regex, Int, Regex]
-    object Between extends PureParserBridge3[Regex, Int, Int, Regex]
-    object LazyOpt extends PureParserBridge1[Regex, Regex]
-    object LazyRep0 extends PureParserBridge1[Regex, Regex]
-    object LazyRep1 extends PureParserBridge1[Regex, Regex]
-    object LazyExactly extends PureParserBridge2[Regex, Int, Regex]
-    object LazyAtLeast extends PureParserBridge2[Regex, Int, Regex]
-    object LazyBetween extends PureParserBridge3[Regex, Int, Int, Regex]
-    object Cat extends PureParserBridge1[List[Regex], Regex] {
-        def apply(rs: Regex*): Regex = Cat(rs.toList)
+    object Opt extends PureParserBridge2[Regex, QuantifierType, Regex]
+    object Star extends PureParserBridge2[Regex, QuantifierType, Regex]
+    object Plus extends PureParserBridge2[Regex, QuantifierType, Regex]
+    object Cat extends PureParserBridge1[NonEmptyList[Regex], Regex] {
+        override def apply(rs: NonEmptyList[Regex]): Regex = {
+            rs.tail.foldLeft(rs.head)(new Cat(_, _))
+        }
     }
     object Alt extends PureParserBridge2[Regex, Regex, Regex]
     object Capture extends PureParserBridge1[Regex, Regex]
@@ -247,6 +236,36 @@ private object Regex {
         def singleton = pure(new Class(AllSet -- Word.set))
     }
 
+    object NumericalQuantifier {
+        def apply(start: Parsley[Int], end: Parsley[Option[Option[Int]]]): Parsley[(Regex, QuantifierType) => Regex] =  (start <~> end).mapFilterMsg {
+            case (0, None | Some(Some(0))) => Right((toRegex, _) => Zero(toRegex))
+            case (1, None | Some(Some(1))) => Right((toRegex, _) => toRegex)
+            case (n, None)                 => Right(Exactly(_, n, _))
+            case (0, Some(None))           => Right(Star(_, _))
+            case (n, Some(None))           => Right(AtLeast(_, n, _))
+            case (0, Some(Some(1)))        => Right(Opt(_, _))
+            case (0, Some(Some(m)))        => Right(AtMost(_, m, _))
+            case (n, Some(Some(m)))        => if n == m then Right(Exactly(_, n, _))
+                                              else if n < m then Right(Between(_, n, m, _))
+                                              else Left(Seq("Upper bound cannot be less than lower bound"))
+        }
+    }
+
+    object WithFlags extends PureParserBridge3[List[Char], Option[NonEmptyList[Char]], Option[Regex], Regex] {
+        override def apply(on: List[Char], off: Option[NonEmptyList[Char]], mInner: Option[Regex]): Regex = {
+            val (onSet, offSet) = flags(on, off)
+            mInner match {
+                case None        => Flags(onSet, offSet)
+                case Some(inner) => NonCapture(onSet, offSet, inner)
+            }
+        }
+        private def flags(on: List[Char], off: Option[NonEmptyList[Char]]): (Set[Char], Set[Char]) = {
+            val onSet = on.toSet
+            val offSet = off.fold(Nil)(_.toList).toSet
+            (onSet -- offSet, offSet)
+        }
+    }
+
     // TODO: POSIX Character Classes
     /*
       \p{Lower}	A lower-case alphabetic character: [a-z]
@@ -291,4 +310,10 @@ private object Regex {
                       .add(0x2028)
                       .add(0x2029)
     }
+}
+
+private enum QuantifierType {
+    case Greedy
+    case Lazy
+    case Possessive
 }

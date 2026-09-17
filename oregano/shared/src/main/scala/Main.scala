@@ -18,8 +18,8 @@ object Main {
     // inline val regEx = "abc|def|ghi|jkl|mnop|qrst|uvwx|yzab|cdef|ghij"
     // inline val regEx = "abc|def"
     // inline val regEx = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z]+)+"
-    inline val regEx = "((a*)b*)*bc|(def)"
-    val compileTime = regEx.regex
+    // inline val regEx = "((a*)b*)*bc|(def)"
+    // val compileTime = regEx.regex
     // println("Current inlined regex: " + regEx)
     // println(s"matches \"ababbbbbc\": ${compileTime.matches("ababbbbbc")}")
     // println(s"matches \"ababc\": ${compileTime.matchesWithCaps("ababc")}")
@@ -28,12 +28,12 @@ object Main {
     // println(compileTime.matches("c"))
     // println(compileTime.matches("abc"))
     //println(compileTime.matchesLinear("abc"))
-    println(compileTime.findPrefixOf("defg"))
-    println(compileTime.findPrefixOf("de"))
-    println(compileTime.findPrefixOf("abbbbaaabcd"))
-    println(compileTime.findPrefixOf("abcdlka"))
-    println(compileTime.findFirstIn("alfbabcdlka"))
-    println(compileTime.matches("abbbbbbcdlka"))
+    // println(compileTime.findPrefixOf("defg"))
+    // println(compileTime.findPrefixOf("de"))
+    // println(compileTime.findPrefixOf("abbbbaaabcd"))
+    // println(compileTime.findPrefixOf("abcdlka"))
+    // println(compileTime.findFirstIn("alfbabcdlka"))
+    // println(compileTime.matches("abbbbbbcdlka"))
 
     val splitOn = "(\\s|[,;])+".regex
     val runtimeSplitExp = "(\\s|[,;])+"

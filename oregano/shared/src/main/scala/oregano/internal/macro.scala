@@ -5,12 +5,13 @@
  */
 package oregano.internal
 
+import parsley.{Success, Failure}
 import scala.quoted.*
 
 private [oregano] def compileMacro(s: String)(using Quotes): Expr[oregano.Regex[?]] = {
     import quotes.reflect.report
-    parse(s) match
-        case Right(ast) =>
+    parser.parse(s) match
+        case Success(ast) =>
             // report.info(s"$ast")
             // val patternResult = Pattern.compile(ast)
             val PatternResult(p, groupCount, flatControlFlow, _) = Pattern.compile(ast)
@@ -110,5 +111,5 @@ private [oregano] def compileMacro(s: String)(using Quotes): Expr[oregano.Regex[
                     }
                 }
             }
-        case Left(err) => report.errorAndAbort(err)
+        case Failure(err) => report.errorAndAbort(err)
 }
