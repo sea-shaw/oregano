@@ -178,8 +178,8 @@ trait Tidy {
   }
 
   /* Implementation of `buildFunction` is source-generated. Generator is in
-     macros/project/BuildFunction.scala. Generated code is compiled to
-     target/out/jvm/scala-3.9.0/macros/src_managed/main/scala/ast/BuildFunction.scala */
+     project/BuildFunction.scala. Generated code is compiled to
+     oregano/jvm/target/scala-3.7.4/src_managed/main/scala/oregano/internal/ast/BuildFunction.scala */
   protected def buildFunction[L <: Leaves](types: Types[L])(using Quotes): BuildFunction[L, ?]
 
   /* Result of `sanitiseCode` for an empty node. Equivalent to `pure(HEmpty)`
