@@ -31,7 +31,7 @@ private def dietContains(diet: Diet[Int])(using Quotes): Expr[Int] => Expr[Boole
 }
 
 private object CPSMatcher {
-    private def compile(p: Pattern, input: Expr[CharSequence], noCaps: Int, pos: Expr[Int], cont: Expr[Int] => Expr[Int], groupsExpr: Option[Expr[Array[Int]]])(using Quotes): Expr[Int] = p match {
+    private def compile(p: Pattern, input: Expr[CharSequence], noCaps: Int, pos: Expr[Int], cont: Expr[Int] => Quotes ?=> Expr[Int], groupsExpr: Option[Expr[Array[Int]]])(using Quotes): Expr[Int] = p match {
         case Pattern.Lit(c) => '{if $pos < $input.length && $input.charAt($pos) == ${Expr(c)} then ${cont('{ $pos + 1 })} else -1}
         case Pattern.Class(diet) =>
             val runeCheck: Expr[Int] => Expr[Boolean] = dietContains(diet)
@@ -55,7 +55,7 @@ private object CPSMatcher {
                 val startIdx = Expr(2 * idx)
                 val endIdx   = Expr(2 * idx + 1)
 
-                val newCont: Expr[Int] => Expr[Int] = (endPos: Expr[Int]) => '{
+                val newCont: Expr[Int] => Quotes ?=> Expr[Int] = endPos => '{
                     val savedEnd = $groupsExpr($endIdx)
                     $groupsExpr($endIdx) = $endPos
                     val res = ${ cont(endPos) }
