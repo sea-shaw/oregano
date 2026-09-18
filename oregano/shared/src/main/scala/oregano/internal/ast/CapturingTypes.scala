@@ -34,8 +34,9 @@ trait CapturingTypes { this: Tidy =>
 
         override def sanitiseCode[R <: Rep: Type](capture: Expr[Option[String]], sanitisedInner: => Expr[Const[HEmpty][R]])(using Quotes): SanitiseExpr[CapturingSingletonType[R]] = {
             '{
-                if ($capture.isDefined) {
-                    Some(Sanitised(HSingleton($capture.get), true))
+                val cap = $capture
+                if (cap.isDefined) {
+                    Some(Sanitised(HSingleton(cap.get), true))
                 } else {
                     None
                 }
@@ -71,8 +72,9 @@ trait CapturingTypes { this: Tidy =>
             given Type[F] = inner.tpe
 
             '{
-                if ($capture.isDefined) {
-                    Some(Sanitised(HAppend(HSingleton($capture.get), $sanitisedInner), true))
+                val cap = $capture
+                if (cap.isDefined) {
+                    Some(Sanitised(HAppend(HSingleton(cap.get), $sanitisedInner), true))
                 } else {
                     None
                 }

@@ -5,7 +5,7 @@
  */
 package oregano.internal
 
-import oregano.internal.ast.{AST, Rep, RepFalse}
+import oregano.internal.ast.{AST, Captures, Rep, RepFalse}
 import oregano.internal.hchain.HChain
 import oregano.internal.parsing.parser
 import parsley.{Success, Failure}
@@ -128,7 +128,7 @@ private [internal] def regexCode[F[_ <: Rep] <: HChain](using ast: AST)(regex: a
 
                 override def unapply(input: CharSequence): Option[a] = {
                     matchesWithCaps(input).map { caps =>
-                        val hchain = ${ regex.getCode('input, 'caps, 1)(using RepFalse) }
+                        val hchain = ${ regex.getCode(1)(using RepFalse)(using Captures('input, 'caps)) }
                         ${ tidy('hchain) }
                     }
                 }

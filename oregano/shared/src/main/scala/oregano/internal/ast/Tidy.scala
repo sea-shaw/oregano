@@ -4,8 +4,6 @@ import oregano.internal.hchain.*
 import oregano.internal.sanitised.*
 import scala.quoted.{Expr, Type, Quotes}
 
-type Groups = Array[Int]
-
 /* `Rep` is true if a node is inside a repeated node or false otherwise. */
 type Rep = Boolean
 /* Use GADTs so the compiler can resolve the type of `R`. */

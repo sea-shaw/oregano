@@ -384,35 +384,32 @@
     }
     override def unapply(`input₈`: CharSequence): Option[Option[Tuple2[String, Either[Either[String, String], Tuple2[String, String]]]]] = $anon.this.matchesWithCaps(`input₈`).map[Option[Tuple2[String, Either[Either[String, String], Tuple2[String, String]]]]](((caps: Array[Int]) => {
       val hchain: HSingleton[Option[HAppend[HSingleton[String], HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], true, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]]]] = {
-        val opt: Option[Sanitised[HAppend[HSingleton[String], HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], true, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]]]] = if ({
-          val l: Int = caps.apply(2)
-          val u: Int = caps.apply(3)
-          if (l.>=(0).&&(u.>=(0))) Some.apply[String](`input₈`.subSequence(l, u).toString()) else None
-        }.isDefined) Some.apply[Sanitised[HAppend[HSingleton[String], HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], true, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]]]](Sanitised.apply[HAppend[HSingleton[String], HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], true, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]]](HAppend.apply[HSingleton[String], HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], true, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]](HSingleton.apply[String]({
-          val `l₂`: Int = caps.apply(2)
-          val `u₂`: Int = caps.apply(3)
-          if (`l₂`.>=(0).&&(`u₂`.>=(0))) Some.apply[String](`input₈`.subSequence(`l₂`, `u₂`).toString()) else None
-        }.get), {
-          val left: Option[Sanitised[HSingleton[String]]] = if ({
-            val `l₃`: Int = caps.apply(4)
-            val `u₃`: Int = caps.apply(5)
-            if (`l₃`.>=(0).&&(`u₃`.>=(0))) Some.apply[String](`input₈`.subSequence(`l₃`, `u₃`).toString()) else None
-          }.isDefined) Some.apply[Sanitised[HSingleton[String]]](Sanitised.apply[HSingleton[String]](HSingleton.apply[String]({
-            val `l₄`: Int = caps.apply(4)
-            val `u₄`: Int = caps.apply(5)
-            if (`l₄`.>=(0).&&(`u₄`.>=(0))) Some.apply[String](`input₈`.subSequence(`l₄`, `u₄`).toString()) else None
-          }.get), true)) else None
-          val right: Option[Sanitised[HSingleton[String]]] = if ({
-            val `l₅`: Int = caps.apply(6)
-            val `u₅`: Int = caps.apply(7)
-            if (`l₅`.>=(0).&&(`u₅`.>=(0))) Some.apply[String](`input₈`.subSequence(`l₅`, `u₅`).toString()) else None
-          }.isDefined) Some.apply[Sanitised[HSingleton[String]]](Sanitised.apply[HSingleton[String]](HSingleton.apply[String]({
-            val `l₆`: Int = caps.apply(6)
-            val `u₆`: Int = caps.apply(7)
-            if (`l₆`.>=(0).&&(`u₆`.>=(0))) Some.apply[String](`input₈`.subSequence(`l₆`, `u₆`).toString()) else None
-          }.get), true)) else None
-          if (left.isDefined.&&(right.isDefined)) Some.apply[Sanitised[HSingleton[Either[Either[HSingleton[String], HSingleton[String]], Tuple2[HSingleton[String], HSingleton[String]]]]]](Sanitised.apply[HSingleton[Either[Either[HSingleton[String], HSingleton[String]], Tuple2[HSingleton[String], HSingleton[String]]]]](HSingleton.apply[Either[Either[HSingleton[String], HSingleton[String]], Tuple2[HSingleton[String], HSingleton[String]]]](Right.apply[Nothing, Tuple2[HSingleton[String], HSingleton[String]]](Tuple2.apply[HSingleton[String], HSingleton[String]](left.get.captures, right.get.captures))), left.get.any.||(right.get.any))) else if (left.isDefined) Some.apply[Sanitised[HSingleton[Either[Either[HSingleton[String], Nothing], Tuple2[HSingleton[String], Nothing]]]]](Sanitised.apply[HSingleton[Either[Either[HSingleton[String], Nothing], Tuple2[HSingleton[String], Nothing]]]](HSingleton.apply[Either[Either[HSingleton[String], Nothing], Tuple2[HSingleton[String], Nothing]]](Left.apply[Left[HSingleton[String], Nothing], Nothing](Left.apply[HSingleton[String], Nothing](left.get.captures))), left.get.any)) else if (right.isDefined) Some.apply[Sanitised[HSingleton[Either[Either[Nothing, HSingleton[String]], Tuple2[Nothing, HSingleton[String]]]]]](Sanitised.apply[HSingleton[Either[Either[Nothing, HSingleton[String]], Tuple2[Nothing, HSingleton[String]]]]](HSingleton.apply[Either[Either[Nothing, HSingleton[String]], Tuple2[Nothing, HSingleton[String]]]](Left.apply[Right[Nothing, HSingleton[String]], Nothing](Right.apply[Nothing, HSingleton[String]](right.get.captures))), right.get.any)) else None
-        }.get.captures), true)) else None
+        val opt: Option[Sanitised[HAppend[HSingleton[String], HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], true, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]]]] = {
+          val cap: Option[String] = {
+            val l: Int = caps.apply(2)
+            val u: Int = caps.apply(3)
+            if (l.>=(0).&&(u.>=(0))) Some.apply[String](`input₈`.subSequence(l, u).toString()) else None
+          }
+          if (cap.isDefined) Some.apply[Sanitised[HAppend[HSingleton[String], HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], true, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]]]](Sanitised.apply[HAppend[HSingleton[String], HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], true, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]]](HAppend.apply[HSingleton[String], HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], true, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]](HSingleton.apply[String](cap.get), {
+            val left: Option[Sanitised[HSingleton[String]]] = {
+              val `cap₂`: Option[String] = {
+                val `l₂`: Int = caps.apply(4)
+                val `u₂`: Int = caps.apply(5)
+                if (`l₂`.>=(0).&&(`u₂`.>=(0))) Some.apply[String](`input₈`.subSequence(`l₂`, `u₂`).toString()) else None
+              }
+              if (`cap₂`.isDefined) Some.apply[Sanitised[HSingleton[String]]](Sanitised.apply[HSingleton[String]](HSingleton.apply[String](`cap₂`.get), true)) else None
+            }
+            val right: Option[Sanitised[HSingleton[String]]] = {
+              val `cap₃`: Option[String] = {
+                val `l₃`: Int = caps.apply(6)
+                val `u₃`: Int = caps.apply(7)
+                if (`l₃`.>=(0).&&(`u₃`.>=(0))) Some.apply[String](`input₈`.subSequence(`l₃`, `u₃`).toString()) else None
+              }
+              if (`cap₃`.isDefined) Some.apply[Sanitised[HSingleton[String]]](Sanitised.apply[HSingleton[String]](HSingleton.apply[String](`cap₃`.get), true)) else None
+            }
+            if (left.isDefined.&&(right.isDefined)) Some.apply[Sanitised[HSingleton[Either[Either[HSingleton[String], HSingleton[String]], Tuple2[HSingleton[String], HSingleton[String]]]]]](Sanitised.apply[HSingleton[Either[Either[HSingleton[String], HSingleton[String]], Tuple2[HSingleton[String], HSingleton[String]]]]](HSingleton.apply[Either[Either[HSingleton[String], HSingleton[String]], Tuple2[HSingleton[String], HSingleton[String]]]](Right.apply[Nothing, Tuple2[HSingleton[String], HSingleton[String]]](Tuple2.apply[HSingleton[String], HSingleton[String]](left.get.captures, right.get.captures))), left.get.any.||(right.get.any))) else if (left.isDefined) Some.apply[Sanitised[HSingleton[Either[Either[HSingleton[String], Nothing], Tuple2[HSingleton[String], Nothing]]]]](Sanitised.apply[HSingleton[Either[Either[HSingleton[String], Nothing], Tuple2[HSingleton[String], Nothing]]]](HSingleton.apply[Either[Either[HSingleton[String], Nothing], Tuple2[HSingleton[String], Nothing]]](Left.apply[Left[HSingleton[String], Nothing], Nothing](Left.apply[HSingleton[String], Nothing](left.get.captures))), left.get.any)) else if (right.isDefined) Some.apply[Sanitised[HSingleton[Either[Either[Nothing, HSingleton[String]], Tuple2[Nothing, HSingleton[String]]]]]](Sanitised.apply[HSingleton[Either[Either[Nothing, HSingleton[String]], Tuple2[Nothing, HSingleton[String]]]]](HSingleton.apply[Either[Either[Nothing, HSingleton[String]], Tuple2[Nothing, HSingleton[String]]]](Left.apply[Right[Nothing, HSingleton[String]], Nothing](Right.apply[Nothing, HSingleton[String]](right.get.captures))), right.get.any)) else None
+          }.get.captures), true)) else None
+        }
         HSingleton.apply[Option[HAppend[HSingleton[String], HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], true, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]]]](if (opt.isDefined) Some.apply[HAppend[HSingleton[String], HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], true, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]]](opt.get.captures) else None)
       }
       val `opt₂`: Option[HAppend[HSingleton[String], HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], true, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]]] = hchain.value

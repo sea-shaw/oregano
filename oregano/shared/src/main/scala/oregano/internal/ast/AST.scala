@@ -5,6 +5,12 @@ import oregano.internal.hchain.*
 import oregano.internal.sanitised.*
 import scala.quoted.{Expr, Type, Quotes}
 
+class Captures(str: Expr[CharSequence], indices: Expr[Array[Int]]) {
+    def startIndex(i: Int)(using Quotes): Expr[Int] = '{ $indices(${ Expr(2 * i) }) }
+    def endIndex(i: Int)(using Quotes): Expr[Int] = '{ $indices(${ Expr(2 * i + 1) }) }
+    def capture(i: Expr[Int], j: Expr[Int])(using Quotes): Expr[String] = '{ $str.subSequence($i, $j).toString }
+}
+
 /* Trait containig the definition of the `AST` nodes. Implemented by `Oregano`
    and `Catnip`. Path-dependent types prevent mixing nodes between the two. */
 trait AST extends Tidy, BuildFunction, EmptyTypes, CapturingTypes, CatTypes, AltTypes, OptTypes, Rep1Types, Rep0Types {
@@ -14,18 +20,18 @@ trait AST extends Tidy, BuildFunction, EmptyTypes, CapturingTypes, CatTypes, Alt
 
         /* Returns the code to construct an `HChain` from `groups` starting with
        group `i`. `R` is true if this node is repeated and false otherwise. */
-        def sanitiseCode[R <: Rep: Type](str: Expr[CharSequence], groups: Expr[Groups], i: Int)(using RepType[R])(using Quotes): SanitiseExpr[F[R]]
+        def sanitiseCode[R <: Rep: Type](i: Int)(using RepType[R])(using Captures)(using Quotes): SanitiseExpr[F[R]]
 
-        def getCode[R <: Rep: Type](str: Expr[CharSequence], groups: Expr[Groups], i: Int)(using RepType[R])(using Quotes): Expr[F[R]]
+        def getCode[R <: Rep: Type](i: Int)(using RepType[R])(using Captures)(using Quotes): Expr[F[R]]
     }
 
     /* Node with no capturing groups. */
     sealed abstract class Empty extends Regex[Const[HEmpty]](EmptyType) {
-        override final def sanitiseCode[R <: Rep: Type](str: Expr[CharSequence], groups: Expr[Groups], i: Int)(using RepType[R])(using Quotes): SanitiseExpr[Const[HEmpty][R]] = {
+        override final def sanitiseCode[R <: Rep: Type](i: Int)(using RepType[R])(using Captures)(using Quotes): SanitiseExpr[Const[HEmpty][R]] = {
             sanitiseEmpty
         }
 
-        override final def getCode[R <: Rep: Type](str: Expr[CharSequence], groups: Expr[Groups], i: Int)(using RepType[R])(using Quotes): Expr[HEmpty] = {
+        override final def getCode[R <: Rep: Type](i: Int)(using RepType[R])(using Captures)(using Quotes): Expr[HEmpty] = {
             '{ HEmpty }
         }
     }
@@ -71,18 +77,18 @@ trait AST extends Tidy, BuildFunction, EmptyTypes, CapturingTypes, CatTypes, Alt
     sealed abstract class Capturing[F[_ <: Rep] <: HChain, G[_ <: Rep] <: HChain] protected (inner: Regex[F])(capturingType: CapturingType[F, G]) extends Regex[G](capturingType.asNodeType) {
         override final val numCaptures: Int = inner.numCaptures + 1
 
-        override final def sanitiseCode[R <: Rep: Type](str: Expr[CharSequence], groups: Expr[Groups], i: Int)(using RepType[R])(using Quotes): SanitiseExpr[G[R]] = {
+        override final def sanitiseCode[R <: Rep: Type](i: Int)(using RepType[R])(using caps: Captures)(using Quotes): SanitiseExpr[G[R]] = {
             val sanitisedCapture = '{
-                val l = $groups(${ Expr(2 * i) })
-                val u = $groups(${ Expr(2 * i + 1) })
-                if l >= 0 && u >= 0 then Some($str.subSequence(l, u).toString) else None
+                val l = ${ caps.startIndex(i) }
+                val u = ${ caps.endIndex(i) }
+                if l >= 0 && u >= 0 then Some(${ caps.capture('l, 'u) }) else None
             }
-            capturingType.sanitiseCode(sanitisedCapture, inner.getCode(str, groups, i + 1))
+            capturingType.sanitiseCode(sanitisedCapture, inner.getCode(i + 1))
         }
 
-        override final def getCode[R <: Rep: Type](str: Expr[CharSequence], groups: Expr[Groups], i: Int)(using RepType[R])(using Quotes): Expr[G[R]] = {
-            val capture = '{ HSingleton($str.subSequence($groups(${ Expr(2 * i) }), $groups(${ Expr(2 * i + 1) })).toString) }
-            capturingType.getCode(capture, inner.getCode(str, groups, i + 1))
+        override final def getCode[R <: Rep: Type](i: Int)(using RepType[R])(using caps: Captures)(using Quotes): Expr[G[R]] = {
+            val capture = '{ HSingleton(${ caps.capture(caps.startIndex(i), caps.endIndex(i)) }) }
+            capturingType.getCode(capture, inner.getCode(i + 1))
         }
     }
 
@@ -106,12 +112,12 @@ trait AST extends Tidy, BuildFunction, EmptyTypes, CapturingTypes, CatTypes, Alt
     sealed abstract class Wrapper[F[_ <: Rep] <: HChain] protected (inner: Regex[F]) extends Regex[F](inner.nodeType) {
         override final val numCaptures: Int = inner.numCaptures
 
-        override final def sanitiseCode[R <: Rep: Type](str: Expr[CharSequence], groups: Expr[Groups], i: Int)(using RepType[R])(using Quotes): SanitiseExpr[F[R]] = {
-            inner.sanitiseCode(str, groups, i)
+        override final def sanitiseCode[R <: Rep: Type](i: Int)(using RepType[R])(using Captures)(using Quotes): SanitiseExpr[F[R]] = {
+            inner.sanitiseCode(i)
         }
 
-        override final def getCode[R <: Rep: Type](str: Expr[CharSequence], groups: Expr[Groups], i: Int)(using RepType[R])(using Quotes): Expr[F[R]] = {
-            inner.getCode(str, groups, i)
+        override final def getCode[R <: Rep: Type](i: Int)(using RepType[R])(using Captures)(using Quotes): Expr[F[R]] = {
+            inner.getCode(i)
         }
     }
 
@@ -125,15 +131,15 @@ trait AST extends Tidy, BuildFunction, EmptyTypes, CapturingTypes, CatTypes, Alt
     case class Cat[F[_ <: Rep] <: HChain, G[_ <: Rep] <: HChain, H[_ <: Rep] <: HChain] private (left: Regex[F], right: Regex[G])(catType: CatType[F, G, H]) extends Regex[H](catType.asNodeType) {
         override val numCaptures: Int = left.numCaptures + right.numCaptures
 
-        override def sanitiseCode[R <: Rep: Type](str: Expr[CharSequence], groups: Expr[Groups], i: Int)(using RepType[R])(using Quotes): SanitiseExpr[H[R]] = {
-            lazy val sanitisedLeft = left.sanitiseCode(str, groups, i)
-            lazy val sanitisedRight = right.sanitiseCode(str, groups, i + left.numCaptures)
+        override def sanitiseCode[R <: Rep: Type](i: Int)(using RepType[R])(using Captures)(using Quotes): SanitiseExpr[H[R]] = {
+            lazy val sanitisedLeft = left.sanitiseCode(i)
+            lazy val sanitisedRight = right.sanitiseCode(i + left.numCaptures)
             catType.sanitiseCode(sanitisedLeft, sanitisedRight)
         }
 
-        override def getCode[R <: Rep: Type](str: Expr[CharSequence], groups: Expr[Groups], i: Int)(using RepType[R])(using Quotes): Expr[H[R]] = {
-            lazy val getLeft = left.getCode(str, groups, i)
-            lazy val getRight = right.getCode(str, groups, i + left.numCaptures)
+        override def getCode[R <: Rep: Type](i: Int)(using RepType[R])(using Captures)(using Quotes): Expr[H[R]] = {
+            lazy val getLeft = left.getCode(i)
+            lazy val getRight = right.getCode(i + left.numCaptures)
             catType.getCode(getLeft, getRight)
         }
     }
@@ -148,16 +154,16 @@ trait AST extends Tidy, BuildFunction, EmptyTypes, CapturingTypes, CatTypes, Alt
     case class Alt[F[_ <: Rep] <: HChain, G[_ <: Rep] <: HChain, H[_ <: Rep] <: HChain] private (left: Regex[F], right: Regex[G])(altType: AltType[F, G, H]) extends Regex[H](altType.asNodeType) {
         override val numCaptures: Int = left.numCaptures + right.numCaptures
 
-        override def sanitiseCode[R <: Rep: Type](str: Expr[CharSequence], groups: Expr[Groups], i: Int)(using rep: RepType[R])(using Quotes): SanitiseExpr[H[R]] = {
-            lazy val sanitisedLeft = left.sanitiseCode(str, groups, i)
-            lazy val sanitisedRight = right.sanitiseCode(str, groups, i + left.numCaptures)
+        override def sanitiseCode[R <: Rep: Type](i: Int)(using rep: RepType[R])(using Captures)(using Quotes): SanitiseExpr[H[R]] = {
+            lazy val sanitisedLeft = left.sanitiseCode(i)
+            lazy val sanitisedRight = right.sanitiseCode(i + left.numCaptures)
 
             altType.sanitiseCode(sanitisedLeft, sanitisedRight)
         }
 
-        override def getCode[R <: Rep: Type](str: Expr[CharSequence], groups: Expr[Groups], i: Int)(using RepType[R])(using Quotes): Expr[H[R]] = {
+        override def getCode[R <: Rep: Type](i: Int)(using RepType[R])(using Captures)(using Quotes): Expr[H[R]] = {
             given Type[H] = nodeType.tpe
-            '{ ${ sanitiseCode(str, groups, i) }.get.captures }
+            '{ ${ sanitiseCode(i) }.get.captures }
         }
     }
 
@@ -171,13 +177,13 @@ trait AST extends Tidy, BuildFunction, EmptyTypes, CapturingTypes, CatTypes, Alt
     case class Opt[F[_ <: Rep] <: HChain, G[_ <: Rep] <: HChain] private (inner: Regex[F], quantifierType: QuantifierType)(optType: OptType[F, G]) extends Regex[G](optType.asNodeType) {
         override val numCaptures: Int = inner.numCaptures
 
-        override def sanitiseCode[R <: Rep: Type](str: Expr[CharSequence], groups: Expr[Groups], i: Int)(using RepType[R])(using Quotes): SanitiseExpr[G[R]] = {
-            lazy val sanitisedInner = inner.sanitiseCode(str, groups, i)
+        override def sanitiseCode[R <: Rep: Type](i: Int)(using RepType[R])(using Captures)(using Quotes): SanitiseExpr[G[R]] = {
+            lazy val sanitisedInner = inner.sanitiseCode(i)
             optType.sanitiseCode(sanitisedInner)
         }
 
-        override def getCode[R <: Rep: Type](str: Expr[CharSequence], groups: Expr[Groups], i: Int)(using RepType[R])(using Quotes): Expr[G[R]] = {
-            lazy val sanitisedInner = inner.sanitiseCode(str, groups, i)
+        override def getCode[R <: Rep: Type](i: Int)(using RepType[R])(using Captures)(using Quotes): Expr[G[R]] = {
+            lazy val sanitisedInner = inner.sanitiseCode(i)
             optType.getCode(sanitisedInner)
         }
     }
@@ -192,13 +198,13 @@ trait AST extends Tidy, BuildFunction, EmptyTypes, CapturingTypes, CatTypes, Alt
     sealed abstract class Rep1[F[_ <: Rep] <: HChain, G[_ <: Rep] <: HChain](inner: Regex[F])(rep1Type: Rep1Type[F, G]) extends Regex[G](rep1Type.asNodeType) {
         override final val numCaptures: Int = inner.numCaptures
 
-        override final def sanitiseCode[R <: Rep: Type](str: Expr[CharSequence], groups: Expr[Groups], i: Int)(using RepType[R])(using Quotes): SanitiseExpr[G[R]] = {
-            lazy val sanitisedInner = inner.sanitiseCode(str, groups, i)(using RepTrue)
+        override final def sanitiseCode[R <: Rep: Type](i: Int)(using RepType[R])(using Captures)(using Quotes): SanitiseExpr[G[R]] = {
+            lazy val sanitisedInner = inner.sanitiseCode(i)(using RepTrue)
             rep1Type.sanitiseCode(sanitisedInner)
         }
 
-        override final def getCode[R <: Rep: Type](str: Expr[CharSequence], groups: Expr[Groups], i: Int)(using RepType[R])(using Quotes): Expr[G[R]] = {
-            lazy val getInner = inner.getCode(str, groups, i)(using RepTrue)
+        override final def getCode[R <: Rep: Type](i: Int)(using RepType[R])(using Captures)(using Quotes): Expr[G[R]] = {
+            lazy val getInner = inner.getCode(i)(using RepTrue)
             rep1Type.getCode(getInner)
         }
     }
@@ -239,13 +245,13 @@ trait AST extends Tidy, BuildFunction, EmptyTypes, CapturingTypes, CatTypes, Alt
     sealed abstract class Rep0[F[_ <: Rep] <: HChain, G[_ <: Rep] <: HChain](inner: Regex[F])(rep0Type: Rep0Type[F, G]) extends Regex[G](rep0Type.asNodeType) {
         override final val numCaptures: Int = inner.numCaptures
 
-        override final def sanitiseCode[R <: Rep: Type](str: Expr[CharSequence], groups: Expr[Groups], i: Int)(using RepType[R])(using Quotes): SanitiseExpr[G[R]] = {
-            lazy val sanitisedInner = inner.sanitiseCode(str, groups, i)(using RepTrue)
+        override final def sanitiseCode[R <: Rep: Type](i: Int)(using RepType[R])(using Captures)(using Quotes): SanitiseExpr[G[R]] = {
+            lazy val sanitisedInner = inner.sanitiseCode(i)(using RepTrue)
             rep0Type.sanitiseCode(sanitisedInner)
         }
 
-        override final def getCode[R <: Rep: Type](str: Expr[CharSequence], groups: Expr[Groups], i: Int)(using RepType[R])(using Quotes): Expr[G[R]] = {
-            lazy val sanitisedInner = inner.sanitiseCode(str, groups, i)(using RepTrue)
+        override final def getCode[R <: Rep: Type](i: Int)(using RepType[R])(using Captures)(using Quotes): Expr[G[R]] = {
+            lazy val sanitisedInner = inner.sanitiseCode(i)(using RepTrue)
             rep0Type.getCode(sanitisedInner)
         }
     }
