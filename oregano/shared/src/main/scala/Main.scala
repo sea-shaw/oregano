@@ -72,17 +72,17 @@ object Main {
     //val time = timeEx.regex
     val dateOrTime = r"(\d\d\d\d)-(\d\d)-(\d\d)|(\d\d):(\d\d)"
     "2020-10-12" match {
-      case dateOrTime(hour, minute) =>
+      case dateOrTime(Right(hour, minute)) =>
         println(s"Hour: $hour, Minute: $minute")
-      case dateOrTime(year, month, day) =>
+      case dateOrTime(Left(year, month, day)) =>
         println(s"Year: $year, Month: $month, Day: $day")
       case _ =>
         println("No match")
     }
     "08:15" match {
-      case dateOrTime(hour, minute) =>
+      case dateOrTime(Right(hour, minute)) =>
         println(s"Hour: $hour, Minute: $minute")
-      case dateOrTime(year, month, day) =>
+      case dateOrTime(Left(year, month, day)) =>
         println(s"Year: $year, Month: $month, Day: $day")
       case _ =>
         println("No match")

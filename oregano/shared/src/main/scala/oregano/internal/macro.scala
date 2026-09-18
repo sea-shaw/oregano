@@ -5,7 +5,8 @@
  */
 package oregano.internal
 
-import oregano.internal.ast.AST
+import oregano.internal.ast.{AST, Rep, RepFalse}
+import oregano.internal.hchain.HChain
 import oregano.internal.parsing.parser
 import parsley.{Success, Failure}
 import scala.quoted.*
@@ -14,105 +15,115 @@ private [oregano] def compileMacro(s: String)(using Quotes): Expr[oregano.Regex[
     import quotes.reflect.report
     given AST = Oregano
     parser.parse(s) match
-        case Success(ast) =>
+        case Success(ast) => {
             // report.info(s"$ast")
             // val patternResult = Pattern.compile(ast)
-            val PatternResult(p, groupCount, flatControlFlow, _) = Pattern.compile(ast)
-            // report.info(s"expr: $s\nParsley AST: ${ast.toString}\nPattern: ${patternResult.pattern}, groupCount: ${patternResult.groupCount}")
-            val prog = ProgramCompiler.compileRegexp(p, groupCount)
-            // report.info(s"Prog:\n$prog")
-            //val liftedProgExpr = Expr(prog)
-            // println(s"Prog:\n$prog")
+            regexCode(ast)
+        }
+        case Failure(err) => report.errorAndAbort(err)
+}
 
-            // backtracking matcher stuff
-            val backtrackingMatcherWithCapsExpr: Expr[CharSequence => Option[Array[Int]]] =
-                if flatControlFlow then BacktrackingProgMatcher.genMatcherWithCaps(prog) else CPSMatcher.genMatcherPatternWithCaps(p, groupCount)
+private def regexCode[F[_ <: Rep] <: HChain](using ast: AST)(regex: ast.Regex[F])(using Quotes): Expr[oregano.Regex[?]] = {
+    val PatternResult(p, groupCount, flatControlFlow, _) = Pattern.compile(regex)
+    // report.info(s"expr: $s\nParsley AST: ${ast.toString}\nPattern: ${patternResult.pattern}, groupCount: ${patternResult.groupCount}")
+    val prog = ProgramCompiler.compileRegexp(p, groupCount)
+    // report.info(s"Prog:\n$prog")
+    //val liftedProgExpr = Expr(prog)
+    // println(s"Prog:\n$prog")
 
-            val backtrackingMatcherExpr: Expr[CharSequence => Boolean] =
-                if flatControlFlow then BacktrackingProgMatcher.genMatcher(prog) else CPSMatcher.genMatcherPattern(p)
+    // backtracking matcher stuff
+    val backtrackingMatcherWithCapsExpr: Expr[CharSequence => Option[Array[Int]]] =
+        if flatControlFlow then BacktrackingProgMatcher.genMatcherWithCaps(prog) else CPSMatcher.genMatcherPatternWithCaps(p, groupCount)
 
-            val backtrackingPrefixFinderExpr: Expr[(Int, CharSequence) => Int] =
-                if flatControlFlow then BacktrackingProgMatcher.genPrefixFind(prog) else CPSMatcher.genPrefixFinderPattern(p, groupCount)
-            // useful for debugging:
-            // val backtrackCPSMatcherExpr = CPSMatcher.genMatcherPattern(p)
-            // val backtrackingCPSMatcherWithCaps = CPSMatcher.genMatcherPatternWithCaps(p, groupCount)
-            // val backtrackProgMatcherExpr = BacktrackingProgMatcher.genMatcher(prog)
-            // val backtrackProgMatcherWithCaps = BacktrackingProgMatcher.genMatcherWithCaps(prog)
+    val backtrackingMatcherExpr: Expr[CharSequence => Boolean] =
+        if flatControlFlow then BacktrackingProgMatcher.genMatcher(prog) else CPSMatcher.genMatcherPattern(p)
 
-            // Linear matching stuff (TODO: how do we want to do this in practice?)
-            /*
-            var linearMatcherExpr = StagedMachine.generateStepLoop(prog)
-            val willBeLinearStaged = Utils.countNodes(linearMatcherExpr) < 4500 // heuristic
-            if (!willBeLinearStaged) report.warning(s"Matcher for $s is too large, will not be linear staged")
-                // set linearMatcherExpr to just use runtime
-                linearMatcherExpr = '{ (m: RE2Machine, input: CharSequence) =>
-                m.matches(input)
-            }
-            */
+    val backtrackingPrefixFinderExpr: Expr[(Int, CharSequence) => Int] =
+        if flatControlFlow then BacktrackingProgMatcher.genPrefixFind(prog) else CPSMatcher.genPrefixFinderPattern(p, groupCount)
+    // useful for debugging:
+    // val backtrackCPSMatcherExpr = CPSMatcher.genMatcherPattern(p)
+    // val backtrackingCPSMatcherWithCaps = CPSMatcher.genMatcherPatternWithCaps(p, groupCount)
+    // val backtrackProgMatcherExpr = BacktrackingProgMatcher.genMatcher(prog)
+    // val backtrackProgMatcherWithCaps = BacktrackingProgMatcher.genMatcherWithCaps(prog)
 
-            // for testing:
-            // val nodeCount = Utils.countNodes(backtrackingMatcherExpr)
-            // println(s"regex: $s counted nodes: $nodeCount, numInst: ${prog.numInst}")
-            // val nodeCountWithCaps = Utils.countNodes(backtrackProgMatcherWithCaps)
-            // println(s"regex: $s counted nodes: $nodeCountWithCaps, numInst: ${prog.numInst}")
-            '{
-                new oregano.Regex[List[String]] {
-                    //val prog = $liftedProgExpr
-                    //val re2Machine = RE2Machine(prog)
+    // Linear matching stuff (TODO: how do we want to do this in practice?)
+    /*
+    var linearMatcherExpr = StagedMachine.generateStepLoop(prog)
+    val willBeLinearStaged = Utils.countNodes(linearMatcherExpr) < 4500 // heuristic
+    if (!willBeLinearStaged) report.warning(s"Matcher for $s is too large, will not be linear staged")
+        // set linearMatcherExpr to just use runtime
+        linearMatcherExpr = '{ (m: RE2Machine, input: CharSequence) =>
+        m.matches(input)
+    }
+    */
 
-                    def matches(input: CharSequence): Boolean = $backtrackingMatcherExpr(input)
-                    // def matches(input: CharSequence): Boolean = regex.matches(input)
-                    def matchesWithCaps(input: CharSequence): Option[Array[Int]] = $backtrackingMatcherWithCapsExpr(input)
-                    /*def matchesLinear(input: CharSequence): Boolean = $linearMatcherExpr(re2Machine, input)*/
-                    def findPrefixOf(source: CharSequence): Option[String] = {
-                        val matchPos = $backtrackingPrefixFinderExpr(0, source)
-                        Option.when(matchPos != -1) {
-                            (source.subSequence(0, matchPos).toString)
-                        }
+    // for testing:
+    // val nodeCount = Utils.countNodes(backtrackingMatcherExpr)
+    // println(s"regex: $s counted nodes: $nodeCount, numInst: ${prog.numInst}")
+    // val nodeCountWithCaps = Utils.countNodes(backtrackProgMatcherWithCaps)
+    // println(s"regex: $s counted nodes: $nodeCountWithCaps, numInst: ${prog.numInst}")
+    given Type[F] = regex.nodeType.tpe
+    regex.tidyFunction(using RepFalse) match {
+        case tidy @ ast.TidyFunction(given Type[a]) => '{
+            new oregano.Regex[a] {
+                //val prog = $liftedProgExpr
+                //val re2Machine = RE2Machine(prog)
+
+                override def matches(input: CharSequence): Boolean = $backtrackingMatcherExpr(input)
+                // def matches(input: CharSequence): Boolean = regex.matches(input)
+                override def matchesWithCaps(input: CharSequence): Option[Array[Int]] = $backtrackingMatcherWithCapsExpr(input)
+                /*def matchesLinear(input: CharSequence): Boolean = $linearMatcherExpr(re2Machine, input)*/
+                override def findPrefixOf(source: CharSequence): Option[String] = {
+                    val matchPos = $backtrackingPrefixFinderExpr(0, source)
+                    Option.when(matchPos != -1) {
+                        (source.subSequence(0, matchPos).toString)
                     }
-                    // TODO: tailrec
-                    def findFirstIn(source: CharSequence): Option[String] = {
-                        val len = source.length
-                        var pos = 0
-                        while (pos < len) {
-                            val matchPos = $backtrackingPrefixFinderExpr(pos, source)
-                            if (matchPos != -1) return Some(source.subSequence(pos, matchPos).toString)
-                            pos += 1
+                }
+                // TODO: tailrec
+                override def findFirstIn(source: CharSequence): Option[String] = {
+                    val len = source.length
+                    var pos = 0
+                    while (pos < len) {
+                        val matchPos = $backtrackingPrefixFinderExpr(pos, source)
+                        if (matchPos != -1) return Some(source.subSequence(pos, matchPos).toString)
+                        pos += 1
+                    }
+                    None
+                }
+
+                override def split(toSplit: CharSequence): Array[String] = {
+                    val result = scala.collection.mutable.ArrayBuffer.empty[String]
+                    val len = toSplit.length
+                    var pos = 0
+                    var lastEnd = 0
+
+                    while (pos < len) {
+                        val matchEnd = $backtrackingPrefixFinderExpr(pos, toSplit)
+                        if (matchEnd != -1) {
+                            result += toSplit.subSequence(lastEnd, pos).toString
+                            lastEnd = matchEnd
+                            pos = if matchEnd == pos then pos + 1 else matchEnd
                         }
-                        None
+                        else pos += 1
                     }
 
-                    def split(toSplit: CharSequence): Array[String] = {
-                        val result = scala.collection.mutable.ArrayBuffer.empty[String]
-                        val len = toSplit.length
-                        var pos = 0
-                        var lastEnd = 0
+                    if (lastEnd != len) result += toSplit.subSequence(lastEnd, len).toString
+                    result.toArray
+                }
 
-                        while (pos < len) {
-                            val matchEnd = $backtrackingPrefixFinderExpr(pos, toSplit)
-                            if (matchEnd != -1) {
-                                result += toSplit.subSequence(lastEnd, pos).toString
-                                lastEnd = matchEnd
-                                pos = if matchEnd == pos then pos + 1 else matchEnd
-                            }
-                            else pos += 1
-                        }
-
-                        if (lastEnd != len) result += toSplit.subSequence(lastEnd, len).toString
-                        result.toArray
-                    }
-
-                    def unapplySeq(input: CharSequence): Option[List[String]] = {
-                        matchesWithCaps(input).map { caps =>
-                        caps.grouped(2)
+                override def unapply(input: CharSequence): Option[a] = {
+                    matchesWithCaps(input).map { caps =>
+                        val groups = caps.grouped(2)
                             .drop(1)
-                            .collect {
-                                case Array(start, end) if start != -1 && end != -1 => input.subSequence(start, end).toString
+                            .map {
+                                case Array(start, end) => if start != -1 && end != -1 then Some(input.subSequence(start, end).toString) else None
                             }
-                            .toList
-                        }
+                            .toArray
+                        val hchain = ${ regex.getCode('groups, 0)(using RepFalse) }
+                        ${ tidy('hchain) }
                     }
                 }
             }
-        case Failure(err) => report.errorAndAbort(err)
+        }
+    }
 }
