@@ -1,0 +1,970 @@
+{
+  final class $anon() extends Regex[Tuple2[String, Either[Either[String, String], Tuple2[String, String]]]] {
+    override def matches(input: CharSequence): Boolean = ((`input₂`: CharSequence) => {
+      val result: Int = {
+        val res: Int = {
+          val lp: Int = {
+            val `res₂`: Int = if (0.<(`input₂`.length()).&&(`input₂`.charAt(0).toInt.==(97))) {
+              val `res₃`: Int = {
+                val `res₄`: Int = {
+                  def exit(pos: Int): Int = if (pos.==(`input₂`.length())) pos else -1
+                  @tailrec def forward(`pos₂`: Int, b: [X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null]): Tuple2[[X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null], Int] = {
+                    val next: Int = {
+                      val `res₅`: Int = {
+                        val `lp₂`: Int = {
+                          val `res₆`: Int = if (`pos₂`.<(`input₂`.length()).&&(`input₂`.charAt(`pos₂`).toInt.==(97))) {
+                            val `res₇`: Int = {
+                              val `res₈`: Int = `pos₂`.+(1)
+
+                              (if (`res₈`.>=(0)) `res₈` else -1: Int)
+                            }
+
+                            (if (`res₇`.>=(0)) `res₇` else -1: Int)
+                          } else -1
+
+                          (if (`res₆`.>=(0)) `res₆` else -1: Int)
+                        }
+                        if (`lp₂`.>=(0)) `lp₂` else {
+                          val `res₉`: Int = if (`pos₂`.<(`input₂`.length()).&&(`input₂`.charAt(`pos₂`).toInt.==(98))) {
+                            val `res₁₀`: Int = {
+                              val `res₁₁`: Int = `pos₂`.+(1)
+
+                              (if (`res₁₁`.>=(0)) `res₁₁` else -1: Int)
+                            }
+
+                            (if (`res₁₀`.>=(0)) `res₁₀` else -1: Int)
+                          } else -1
+
+                          (if (`res₉`.>=(0)) `res₉` else -1: Int)
+                        }
+                      }
+
+                      (if (`res₅`.>=(0)) `res₅` else -1: Int)
+                    }
+                    if (next.==(-1).||(next.==(`pos₂`))) Tuple2.apply[Backoffs | Null, Int](b, `pos₂`) else {
+                      val w: Int = next.-(`pos₂`)
+                      if (b.!=(null).&&(b.$asInstanceOf$[b & Backoffs].width.==(w))) {
+                        val $3$: b & Backoffs = b.$asInstanceOf$[b & Backoffs]
+                        $3$.count = $3$.count.+(1)
+                        forward(next, b.$asInstanceOf$[b & Backoffs])
+                      } else forward(next, new Backoffs(w, 1, b))
+                    }
+                  }
+                  @tailrec def backtrack(cur: [X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null], base: Int, i: Int): Int = if (cur.==(null)) exit(0.+(1)) else if (i.<(cur.$asInstanceOf$[cur & Backoffs].count)) {
+                    val attemptPos: Int = base.-(i.*(cur.$asInstanceOf$[cur & Backoffs].width))
+                    val r: Int = exit(attemptPos)
+                    if (r.>=(0)) r else backtrack(cur.$asInstanceOf$[cur & Backoffs], base, i.+(1))
+                  } else backtrack(cur.$asInstanceOf$[cur & Backoffs].parent, base, 0)
+                  val $2$: Tuple2[Backoffs | Null, Int] = (forward(0.+(1), null): @RuntimeChecked) match {
+                    case $1$ @ Tuple2(backoffs, finalPos) =>
+                      ($1$: Tuple2[Backoffs | Null, Int])
+                  }
+                  val backoffs: Backoffs | Null = $2$._1
+                  val finalPos: Int = $2$._2
+                  backtrack(backoffs, finalPos, 0)
+                }
+
+                (if (`res₄`.>=(0)) `res₄` else -1: Int)
+              }
+
+              (if (`res₃`.>=(0)) `res₃` else -1: Int)
+            } else -1
+
+            (if (`res₂`.>=(0)) `res₂` else -1: Int)
+          }
+          if (lp.>=(0)) lp else {
+            val `res₁₂`: Int = if (0.<(`input₂`.length()).&&(`input₂`.charAt(0).toInt.==(98))) {
+              val `res₁₃`: Int = {
+                val `res₁₄`: Int = {
+                  def `exit₂`(`pos₃`: Int): Int = if (`pos₃`.==(`input₂`.length())) `pos₃` else -1
+                  @tailrec def `forward₂`(`pos₄`: Int, `b₂`: [X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null]): Tuple2[[X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null], Int] = {
+                    val `next₂`: Int = {
+                      val `res₁₅`: Int = {
+                        val `lp₃`: Int = {
+                          val `res₁₆`: Int = if (`pos₄`.<(`input₂`.length()).&&(`input₂`.charAt(`pos₄`).toInt.==(97))) {
+                            val `res₁₇`: Int = {
+                              val `res₁₈`: Int = `pos₄`.+(1)
+
+                              (if (`res₁₈`.>=(0)) `res₁₈` else -1: Int)
+                            }
+
+                            (if (`res₁₇`.>=(0)) `res₁₇` else -1: Int)
+                          } else -1
+
+                          (if (`res₁₆`.>=(0)) `res₁₆` else -1: Int)
+                        }
+                        if (`lp₃`.>=(0)) `lp₃` else {
+                          val `res₁₉`: Int = if (`pos₄`.<(`input₂`.length()).&&(`input₂`.charAt(`pos₄`).toInt.==(98))) {
+                            val `res₂₀`: Int = {
+                              val `res₂₁`: Int = `pos₄`.+(1)
+
+                              (if (`res₂₁`.>=(0)) `res₂₁` else -1: Int)
+                            }
+
+                            (if (`res₂₀`.>=(0)) `res₂₀` else -1: Int)
+                          } else -1
+
+                          (if (`res₁₉`.>=(0)) `res₁₉` else -1: Int)
+                        }
+                      }
+
+                      (if (`res₁₅`.>=(0)) `res₁₅` else -1: Int)
+                    }
+                    if (`next₂`.==(-1).||(`next₂`.==(`pos₄`))) Tuple2.apply[Backoffs | Null, Int](`b₂`, `pos₄`) else {
+                      val `w₂`: Int = `next₂`.-(`pos₄`)
+                      if (`b₂`.!=(null).&&(`b₂`.$asInstanceOf$[b & Backoffs].width.==(`w₂`))) {
+                        val `$3$₂`: b & Backoffs = `b₂`.$asInstanceOf$[b & Backoffs]
+                        `$3$₂`.count = `$3$₂`.count.+(1)
+                        `forward₂`(`next₂`, `b₂`.$asInstanceOf$[b & Backoffs])
+                      } else `forward₂`(`next₂`, new Backoffs(`w₂`, 1, `b₂`))
+                    }
+                  }
+                  @tailrec def `backtrack₂`(`cur₂`: [X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null], `base₂`: Int, `i₂`: Int): Int = if (`cur₂`.==(null)) `exit₂`(0.+(1)) else if (`i₂`.<(`cur₂`.$asInstanceOf$[cur & Backoffs].count)) {
+                    val `attemptPos₂`: Int = `base₂`.-(`i₂`.*(`cur₂`.$asInstanceOf$[cur & Backoffs].width))
+                    val `r₂`: Int = `exit₂`(`attemptPos₂`)
+                    if (`r₂`.>=(0)) `r₂` else `backtrack₂`(`cur₂`.$asInstanceOf$[cur & Backoffs], `base₂`, `i₂`.+(1))
+                  } else `backtrack₂`(`cur₂`.$asInstanceOf$[cur & Backoffs].parent, `base₂`, 0)
+                  val `$2$₂`: Tuple2[Backoffs | Null, Int] = (`forward₂`(0.+(1), null): @RuntimeChecked) match {
+                    case $1$ @ Tuple2(backoffs, finalPos) =>
+                      (`$1$₂`: Tuple2[Backoffs | Null, Int])
+                  }
+                  val `backoffs₂`: Backoffs | Null = `$2$₂`._1
+                  val `finalPos₂`: Int = `$2$₂`._2
+                  `backtrack₂`(`backoffs₂`, `finalPos₂`, 0)
+                }
+
+                (if (`res₁₄`.>=(0)) `res₁₄` else -1: Int)
+              }
+
+              (if (`res₁₃`.>=(0)) `res₁₃` else -1: Int)
+            } else -1
+
+            (if (`res₁₂`.>=(0)) `res₁₂` else -1: Int)
+          }
+        }
+
+        (if (res.>=(0)) res else -1: Int)
+      }
+      result.==(`input₂`.length())
+    }).apply(input)
+    override def matchesWithCaps(`input₃`: CharSequence): Option[Array[Int]] = ((`input₄`: CharSequence) => {
+      val groups: Array[Int] = Array.fill[Int](8)(-1)(ClassTag.apply[Int](classOf[Int]))
+      groups.update(0, 0)
+      val `result₂`: Int = {
+        val oldVal: Int = groups.apply(2)
+        val curPos: Int = 0
+        val `res₂₂`: Int = {
+          val `lp₄`: Int = {
+            val `oldVal₂`: Int = groups.apply(4)
+            val `curPos₂`: Int = 0
+            val `res₂₃`: Int = if (0.<(`input₄`.length()).&&(`input₄`.charAt(0).toInt.==(97))) {
+              val `oldVal₃`: Int = groups.apply(5)
+              val `curPos₃`: Int = 0.+(1)
+              val `res₂₄`: Int = {
+                val `oldVal₄`: Int = groups.apply(3)
+                val `curPos₄`: Int = 0.+(1)
+                val `res₂₅`: Int = {
+                  def `exit₃`(`pos₅`: Int): Int = if (`pos₅`.==(`input₄`.length())) {
+                    groups.update(1, `pos₅`)
+                    `pos₅`
+                  } else -1
+                  @tailrec def `forward₃`(`pos₆`: Int, `b₃`: [X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null]): Tuple2[[X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null], Int] = {
+                    val `next₃`: Int = {
+                      val `oldVal₅`: Int = groups.apply(2)
+                      val `curPos₅`: Int = `pos₆`
+                      val `res₂₆`: Int = {
+                        val `lp₅`: Int = {
+                          val `oldVal₆`: Int = groups.apply(4)
+                          val `curPos₆`: Int = `pos₆`
+                          val `res₂₇`: Int = if (`pos₆`.<(`input₄`.length()).&&(`input₄`.charAt(`pos₆`).toInt.==(97))) {
+                            val `oldVal₇`: Int = groups.apply(5)
+                            val `curPos₇`: Int = `pos₆`.+(1)
+                            val `res₂₈`: Int = {
+                              val `oldVal₈`: Int = groups.apply(3)
+                              val `curPos₈`: Int = `pos₆`.+(1)
+                              val `res₂₉`: Int = `pos₆`.+(1)
+
+                              (if (`res₂₉`.>=(0)) {
+                                groups.update(3, `curPos₈`)
+                                `res₂₉`
+                              } else {
+                                groups.update(3, `oldVal₈`)
+                                -1
+                              }: Int)
+                            }
+
+                            (if (`res₂₈`.>=(0)) {
+                              groups.update(5, `curPos₇`)
+                              `res₂₈`
+                            } else {
+                              groups.update(5, `oldVal₇`)
+                              -1
+                            }: Int)
+                          } else -1
+
+                          (if (`res₂₇`.>=(0)) {
+                            groups.update(4, `curPos₆`)
+                            `res₂₇`
+                          } else {
+                            groups.update(4, `oldVal₆`)
+                            -1
+                          }: Int)
+                        }
+                        if (`lp₅`.>=(0)) `lp₅` else {
+                          val `oldVal₉`: Int = groups.apply(6)
+                          val `curPos₉`: Int = `pos₆`
+                          val `res₃₀`: Int = if (`pos₆`.<(`input₄`.length()).&&(`input₄`.charAt(`pos₆`).toInt.==(98))) {
+                            val `oldVal₁₀`: Int = groups.apply(7)
+                            val `curPos₁₀`: Int = `pos₆`.+(1)
+                            val `res₃₁`: Int = {
+                              val `oldVal₁₁`: Int = groups.apply(3)
+                              val `curPos₁₁`: Int = `pos₆`.+(1)
+                              val `res₃₂`: Int = `pos₆`.+(1)
+
+                              (if (`res₃₂`.>=(0)) {
+                                groups.update(3, `curPos₁₁`)
+                                `res₃₂`
+                              } else {
+                                groups.update(3, `oldVal₁₁`)
+                                -1
+                              }: Int)
+                            }
+
+                            (if (`res₃₁`.>=(0)) {
+                              groups.update(7, `curPos₁₀`)
+                              `res₃₁`
+                            } else {
+                              groups.update(7, `oldVal₁₀`)
+                              -1
+                            }: Int)
+                          } else -1
+
+                          (if (`res₃₀`.>=(0)) {
+                            groups.update(6, `curPos₉`)
+                            `res₃₀`
+                          } else {
+                            groups.update(6, `oldVal₉`)
+                            -1
+                          }: Int)
+                        }
+                      }
+
+                      (if (`res₂₆`.>=(0)) {
+                        groups.update(2, `curPos₅`)
+                        `res₂₆`
+                      } else {
+                        groups.update(2, `oldVal₅`)
+                        -1
+                      }: Int)
+                    }
+                    if (`next₃`.==(-1).||(`next₃`.==(`pos₆`))) Tuple2.apply[Backoffs | Null, Int](`b₃`, `pos₆`) else {
+                      val `w₃`: Int = `next₃`.-(`pos₆`)
+                      if (`b₃`.!=(null).&&(`b₃`.$asInstanceOf$[b & Backoffs].width.==(`w₃`))) {
+                        val `$3$₃`: b & Backoffs = `b₃`.$asInstanceOf$[b & Backoffs]
+                        `$3$₃`.count = `$3$₃`.count.+(1)
+                        `forward₃`(`next₃`, `b₃`.$asInstanceOf$[b & Backoffs])
+                      } else `forward₃`(`next₃`, new Backoffs(`w₃`, 1, `b₃`))
+                    }
+                  }
+                  @tailrec def `backtrack₃`(`cur₃`: [X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null], `base₃`: Int, `i₃`: Int): Int = if (`cur₃`.==(null)) `exit₃`(0.+(1)) else if (`i₃`.<(`cur₃`.$asInstanceOf$[cur & Backoffs].count)) {
+                    val `attemptPos₃`: Int = `base₃`.-(`i₃`.*(`cur₃`.$asInstanceOf$[cur & Backoffs].width))
+                    val `r₃`: Int = `exit₃`(`attemptPos₃`)
+                    if (`r₃`.>=(0)) `r₃` else `backtrack₃`(`cur₃`.$asInstanceOf$[cur & Backoffs], `base₃`, `i₃`.+(1))
+                  } else `backtrack₃`(`cur₃`.$asInstanceOf$[cur & Backoffs].parent, `base₃`, 0)
+                  val `$2$₃`: Tuple2[Backoffs | Null, Int] = (`forward₃`(0.+(1), null): @RuntimeChecked) match {
+                    case $1$ @ Tuple2(backoffs, finalPos) =>
+                      (`$1$₃`: Tuple2[Backoffs | Null, Int])
+                  }
+                  val `backoffs₃`: Backoffs | Null = `$2$₃`._1
+                  val `finalPos₃`: Int = `$2$₃`._2
+                  `backtrack₃`(`backoffs₃`, `finalPos₃`, 0)
+                }
+
+                (if (`res₂₅`.>=(0)) {
+                  groups.update(3, `curPos₄`)
+                  `res₂₅`
+                } else {
+                  groups.update(3, `oldVal₄`)
+                  -1
+                }: Int)
+              }
+
+              (if (`res₂₄`.>=(0)) {
+                groups.update(5, `curPos₃`)
+                `res₂₄`
+              } else {
+                groups.update(5, `oldVal₃`)
+                -1
+              }: Int)
+            } else -1
+
+            (if (`res₂₃`.>=(0)) {
+              groups.update(4, `curPos₂`)
+              `res₂₃`
+            } else {
+              groups.update(4, `oldVal₂`)
+              -1
+            }: Int)
+          }
+          if (`lp₄`.>=(0)) `lp₄` else {
+            val `oldVal₁₂`: Int = groups.apply(6)
+            val `curPos₁₂`: Int = 0
+            val `res₃₃`: Int = if (0.<(`input₄`.length()).&&(`input₄`.charAt(0).toInt.==(98))) {
+              val `oldVal₁₃`: Int = groups.apply(7)
+              val `curPos₁₃`: Int = 0.+(1)
+              val `res₃₄`: Int = {
+                val `oldVal₁₄`: Int = groups.apply(3)
+                val `curPos₁₄`: Int = 0.+(1)
+                val `res₃₅`: Int = {
+                  def `exit₄`(`pos₇`: Int): Int = if (`pos₇`.==(`input₄`.length())) {
+                    groups.update(1, `pos₇`)
+                    `pos₇`
+                  } else -1
+                  @tailrec def `forward₄`(`pos₈`: Int, `b₄`: [X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null]): Tuple2[[X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null], Int] = {
+                    val `next₄`: Int = {
+                      val `oldVal₁₅`: Int = groups.apply(2)
+                      val `curPos₁₅`: Int = `pos₈`
+                      val `res₃₆`: Int = {
+                        val `lp₆`: Int = {
+                          val `oldVal₁₆`: Int = groups.apply(4)
+                          val `curPos₁₆`: Int = `pos₈`
+                          val `res₃₇`: Int = if (`pos₈`.<(`input₄`.length()).&&(`input₄`.charAt(`pos₈`).toInt.==(97))) {
+                            val `oldVal₁₇`: Int = groups.apply(5)
+                            val `curPos₁₇`: Int = `pos₈`.+(1)
+                            val `res₃₈`: Int = {
+                              val `oldVal₁₈`: Int = groups.apply(3)
+                              val `curPos₁₈`: Int = `pos₈`.+(1)
+                              val `res₃₉`: Int = `pos₈`.+(1)
+
+                              (if (`res₃₉`.>=(0)) {
+                                groups.update(3, `curPos₁₈`)
+                                `res₃₉`
+                              } else {
+                                groups.update(3, `oldVal₁₈`)
+                                -1
+                              }: Int)
+                            }
+
+                            (if (`res₃₈`.>=(0)) {
+                              groups.update(5, `curPos₁₇`)
+                              `res₃₈`
+                            } else {
+                              groups.update(5, `oldVal₁₇`)
+                              -1
+                            }: Int)
+                          } else -1
+
+                          (if (`res₃₇`.>=(0)) {
+                            groups.update(4, `curPos₁₆`)
+                            `res₃₇`
+                          } else {
+                            groups.update(4, `oldVal₁₆`)
+                            -1
+                          }: Int)
+                        }
+                        if (`lp₆`.>=(0)) `lp₆` else {
+                          val `oldVal₁₉`: Int = groups.apply(6)
+                          val `curPos₁₉`: Int = `pos₈`
+                          val `res₄₀`: Int = if (`pos₈`.<(`input₄`.length()).&&(`input₄`.charAt(`pos₈`).toInt.==(98))) {
+                            val `oldVal₂₀`: Int = groups.apply(7)
+                            val `curPos₂₀`: Int = `pos₈`.+(1)
+                            val `res₄₁`: Int = {
+                              val `oldVal₂₁`: Int = groups.apply(3)
+                              val `curPos₂₁`: Int = `pos₈`.+(1)
+                              val `res₄₂`: Int = `pos₈`.+(1)
+
+                              (if (`res₄₂`.>=(0)) {
+                                groups.update(3, `curPos₂₁`)
+                                `res₄₂`
+                              } else {
+                                groups.update(3, `oldVal₂₁`)
+                                -1
+                              }: Int)
+                            }
+
+                            (if (`res₄₁`.>=(0)) {
+                              groups.update(7, `curPos₂₀`)
+                              `res₄₁`
+                            } else {
+                              groups.update(7, `oldVal₂₀`)
+                              -1
+                            }: Int)
+                          } else -1
+
+                          (if (`res₄₀`.>=(0)) {
+                            groups.update(6, `curPos₁₉`)
+                            `res₄₀`
+                          } else {
+                            groups.update(6, `oldVal₁₉`)
+                            -1
+                          }: Int)
+                        }
+                      }
+
+                      (if (`res₃₆`.>=(0)) {
+                        groups.update(2, `curPos₁₅`)
+                        `res₃₆`
+                      } else {
+                        groups.update(2, `oldVal₁₅`)
+                        -1
+                      }: Int)
+                    }
+                    if (`next₄`.==(-1).||(`next₄`.==(`pos₈`))) Tuple2.apply[Backoffs | Null, Int](`b₄`, `pos₈`) else {
+                      val `w₄`: Int = `next₄`.-(`pos₈`)
+                      if (`b₄`.!=(null).&&(`b₄`.$asInstanceOf$[b & Backoffs].width.==(`w₄`))) {
+                        val `$3$₄`: b & Backoffs = `b₄`.$asInstanceOf$[b & Backoffs]
+                        `$3$₄`.count = `$3$₄`.count.+(1)
+                        `forward₄`(`next₄`, `b₄`.$asInstanceOf$[b & Backoffs])
+                      } else `forward₄`(`next₄`, new Backoffs(`w₄`, 1, `b₄`))
+                    }
+                  }
+                  @tailrec def `backtrack₄`(`cur₄`: [X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null], `base₄`: Int, `i₄`: Int): Int = if (`cur₄`.==(null)) `exit₄`(0.+(1)) else if (`i₄`.<(`cur₄`.$asInstanceOf$[cur & Backoffs].count)) {
+                    val `attemptPos₄`: Int = `base₄`.-(`i₄`.*(`cur₄`.$asInstanceOf$[cur & Backoffs].width))
+                    val `r₄`: Int = `exit₄`(`attemptPos₄`)
+                    if (`r₄`.>=(0)) `r₄` else `backtrack₄`(`cur₄`.$asInstanceOf$[cur & Backoffs], `base₄`, `i₄`.+(1))
+                  } else `backtrack₄`(`cur₄`.$asInstanceOf$[cur & Backoffs].parent, `base₄`, 0)
+                  val `$2$₄`: Tuple2[Backoffs | Null, Int] = (`forward₄`(0.+(1), null): @RuntimeChecked) match {
+                    case $1$ @ Tuple2(backoffs, finalPos) =>
+                      (`$1$₄`: Tuple2[Backoffs | Null, Int])
+                  }
+                  val `backoffs₄`: Backoffs | Null = `$2$₄`._1
+                  val `finalPos₄`: Int = `$2$₄`._2
+                  `backtrack₄`(`backoffs₄`, `finalPos₄`, 0)
+                }
+
+                (if (`res₃₅`.>=(0)) {
+                  groups.update(3, `curPos₁₄`)
+                  `res₃₅`
+                } else {
+                  groups.update(3, `oldVal₁₄`)
+                  -1
+                }: Int)
+              }
+
+              (if (`res₃₄`.>=(0)) {
+                groups.update(7, `curPos₁₃`)
+                `res₃₄`
+              } else {
+                groups.update(7, `oldVal₁₃`)
+                -1
+              }: Int)
+            } else -1
+
+            (if (`res₃₃`.>=(0)) {
+              groups.update(6, `curPos₁₂`)
+              `res₃₃`
+            } else {
+              groups.update(6, `oldVal₁₂`)
+              -1
+            }: Int)
+          }
+        }
+
+        (if (`res₂₂`.>=(0)) {
+          groups.update(2, curPos)
+          `res₂₂`
+        } else {
+          groups.update(2, oldVal)
+          -1
+        }: Int)
+      }
+      if (`result₂`.==(`input₄`.length())) Some.apply[Array[Int]](groups) else None
+    }).apply(`input₃`)
+    override def findPrefixOf(source: CharSequence): Option[String] = {
+      val matchPos: Int = ((startPos: Int, `input₅`: CharSequence) => {
+        val `res₄₃`: Int = {
+          val `lp₇`: Int = {
+            val `res₄₄`: Int = if (startPos.<(`input₅`.length()).&&(`input₅`.charAt(startPos).toInt.==(97))) {
+              val `res₄₅`: Int = {
+                val `res₄₆`: Int = {
+                  def `exit₅`(`pos₉`: Int): Int = `pos₉`
+                  @tailrec def `forward₅`(`pos₁₀`: Int, `b₅`: [X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null]): Tuple2[[X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null], Int] = {
+                    val `next₅`: Int = {
+                      val `res₄₇`: Int = {
+                        val `lp₈`: Int = {
+                          val `res₄₈`: Int = if (`pos₁₀`.<(`input₅`.length()).&&(`input₅`.charAt(`pos₁₀`).toInt.==(97))) {
+                            val `res₄₉`: Int = {
+                              val `res₅₀`: Int = `pos₁₀`.+(1)
+
+                              (if (`res₅₀`.>=(0)) `res₅₀` else -1: Int)
+                            }
+
+                            (if (`res₄₉`.>=(0)) `res₄₉` else -1: Int)
+                          } else -1
+
+                          (if (`res₄₈`.>=(0)) `res₄₈` else -1: Int)
+                        }
+                        if (`lp₈`.>=(0)) `lp₈` else {
+                          val `res₅₁`: Int = if (`pos₁₀`.<(`input₅`.length()).&&(`input₅`.charAt(`pos₁₀`).toInt.==(98))) {
+                            val `res₅₂`: Int = {
+                              val `res₅₃`: Int = `pos₁₀`.+(1)
+
+                              (if (`res₅₃`.>=(0)) `res₅₃` else -1: Int)
+                            }
+
+                            (if (`res₅₂`.>=(0)) `res₅₂` else -1: Int)
+                          } else -1
+
+                          (if (`res₅₁`.>=(0)) `res₅₁` else -1: Int)
+                        }
+                      }
+
+                      (if (`res₄₇`.>=(0)) `res₄₇` else -1: Int)
+                    }
+                    if (`next₅`.==(-1).||(`next₅`.==(`pos₁₀`))) Tuple2.apply[Backoffs | Null, Int](`b₅`, `pos₁₀`) else {
+                      val `w₅`: Int = `next₅`.-(`pos₁₀`)
+                      if (`b₅`.!=(null).&&(`b₅`.$asInstanceOf$[b & Backoffs].width.==(`w₅`))) {
+                        val `$3$₅`: b & Backoffs = `b₅`.$asInstanceOf$[b & Backoffs]
+                        `$3$₅`.count = `$3$₅`.count.+(1)
+                        `forward₅`(`next₅`, `b₅`.$asInstanceOf$[b & Backoffs])
+                      } else `forward₅`(`next₅`, new Backoffs(`w₅`, 1, `b₅`))
+                    }
+                  }
+                  @tailrec def `backtrack₅`(`cur₅`: [X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null], `base₅`: Int, `i₅`: Int): Int = if (`cur₅`.==(null)) `exit₅`(startPos.+(1)) else if (`i₅`.<(`cur₅`.$asInstanceOf$[cur & Backoffs].count)) {
+                    val `attemptPos₅`: Int = `base₅`.-(`i₅`.*(`cur₅`.$asInstanceOf$[cur & Backoffs].width))
+                    val `r₅`: Int = `exit₅`(`attemptPos₅`)
+                    if (`r₅`.>=(0)) `r₅` else `backtrack₅`(`cur₅`.$asInstanceOf$[cur & Backoffs], `base₅`, `i₅`.+(1))
+                  } else `backtrack₅`(`cur₅`.$asInstanceOf$[cur & Backoffs].parent, `base₅`, 0)
+                  val `$2$₅`: Tuple2[Backoffs | Null, Int] = (`forward₅`(startPos.+(1), null): @RuntimeChecked) match {
+                    case $1$ @ Tuple2(backoffs, finalPos) =>
+                      (`$1$₅`: Tuple2[Backoffs | Null, Int])
+                  }
+                  val `backoffs₅`: Backoffs | Null = `$2$₅`._1
+                  val `finalPos₅`: Int = `$2$₅`._2
+                  `backtrack₅`(`backoffs₅`, `finalPos₅`, 0)
+                }
+
+                (if (`res₄₆`.>=(0)) `res₄₆` else -1: Int)
+              }
+
+              (if (`res₄₅`.>=(0)) `res₄₅` else -1: Int)
+            } else -1
+
+            (if (`res₄₄`.>=(0)) `res₄₄` else -1: Int)
+          }
+          if (`lp₇`.>=(0)) `lp₇` else {
+            val `res₅₄`: Int = if (startPos.<(`input₅`.length()).&&(`input₅`.charAt(startPos).toInt.==(98))) {
+              val `res₅₅`: Int = {
+                val `res₅₆`: Int = {
+                  def `exit₆`(`pos₁₁`: Int): Int = `pos₁₁`
+                  @tailrec def `forward₆`(`pos₁₂`: Int, `b₆`: [X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null]): Tuple2[[X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null], Int] = {
+                    val `next₆`: Int = {
+                      val `res₅₇`: Int = {
+                        val `lp₉`: Int = {
+                          val `res₅₈`: Int = if (`pos₁₂`.<(`input₅`.length()).&&(`input₅`.charAt(`pos₁₂`).toInt.==(97))) {
+                            val `res₅₉`: Int = {
+                              val `res₆₀`: Int = `pos₁₂`.+(1)
+
+                              (if (`res₆₀`.>=(0)) `res₆₀` else -1: Int)
+                            }
+
+                            (if (`res₅₉`.>=(0)) `res₅₉` else -1: Int)
+                          } else -1
+
+                          (if (`res₅₈`.>=(0)) `res₅₈` else -1: Int)
+                        }
+                        if (`lp₉`.>=(0)) `lp₉` else {
+                          val `res₆₁`: Int = if (`pos₁₂`.<(`input₅`.length()).&&(`input₅`.charAt(`pos₁₂`).toInt.==(98))) {
+                            val `res₆₂`: Int = {
+                              val `res₆₃`: Int = `pos₁₂`.+(1)
+
+                              (if (`res₆₃`.>=(0)) `res₆₃` else -1: Int)
+                            }
+
+                            (if (`res₆₂`.>=(0)) `res₆₂` else -1: Int)
+                          } else -1
+
+                          (if (`res₆₁`.>=(0)) `res₆₁` else -1: Int)
+                        }
+                      }
+
+                      (if (`res₅₇`.>=(0)) `res₅₇` else -1: Int)
+                    }
+                    if (`next₆`.==(-1).||(`next₆`.==(`pos₁₂`))) Tuple2.apply[Backoffs | Null, Int](`b₆`, `pos₁₂`) else {
+                      val `w₆`: Int = `next₆`.-(`pos₁₂`)
+                      if (`b₆`.!=(null).&&(`b₆`.$asInstanceOf$[b & Backoffs].width.==(`w₆`))) {
+                        val `$3$₆`: b & Backoffs = `b₆`.$asInstanceOf$[b & Backoffs]
+                        `$3$₆`.count = `$3$₆`.count.+(1)
+                        `forward₆`(`next₆`, `b₆`.$asInstanceOf$[b & Backoffs])
+                      } else `forward₆`(`next₆`, new Backoffs(`w₆`, 1, `b₆`))
+                    }
+                  }
+                  @tailrec def `backtrack₆`(`cur₆`: [X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null], `base₆`: Int, `i₆`: Int): Int = if (`cur₆`.==(null)) `exit₆`(startPos.+(1)) else if (`i₆`.<(`cur₆`.$asInstanceOf$[cur & Backoffs].count)) {
+                    val `attemptPos₆`: Int = `base₆`.-(`i₆`.*(`cur₆`.$asInstanceOf$[cur & Backoffs].width))
+                    val `r₆`: Int = `exit₆`(`attemptPos₆`)
+                    if (`r₆`.>=(0)) `r₆` else `backtrack₆`(`cur₆`.$asInstanceOf$[cur & Backoffs], `base₆`, `i₆`.+(1))
+                  } else `backtrack₆`(`cur₆`.$asInstanceOf$[cur & Backoffs].parent, `base₆`, 0)
+                  val `$2$₆`: Tuple2[Backoffs | Null, Int] = (`forward₆`(startPos.+(1), null): @RuntimeChecked) match {
+                    case $1$ @ Tuple2(backoffs, finalPos) =>
+                      (`$1$₆`: Tuple2[Backoffs | Null, Int])
+                  }
+                  val `backoffs₆`: Backoffs | Null = `$2$₆`._1
+                  val `finalPos₆`: Int = `$2$₆`._2
+                  `backtrack₆`(`backoffs₆`, `finalPos₆`, 0)
+                }
+
+                (if (`res₅₆`.>=(0)) `res₅₆` else -1: Int)
+              }
+
+              (if (`res₅₅`.>=(0)) `res₅₅` else -1: Int)
+            } else -1
+
+            (if (`res₅₄`.>=(0)) `res₅₄` else -1: Int)
+          }
+        }
+
+        (if (`res₄₃`.>=(0)) `res₄₃` else -1: Int)
+      }).apply(0, source)
+      Option.when[String](matchPos.!=(-1))(source.subSequence(0, matchPos).toString())
+    }
+    override def findFirstIn(`source₂`: CharSequence): Option[String] = {
+      val len: Int = `source₂`.length()
+      var `pos₁₃`: Int = 0
+      while (`pos₁₃`.<(len)) {
+        val `matchPos₂`: Int = ((`startPos₂`: Int, `input₆`: CharSequence) => {
+          val `res₆₄`: Int = {
+            val `lp₁₀`: Int = {
+              val `res₆₅`: Int = if (`startPos₂`.<(`input₆`.length()).&&(`input₆`.charAt(`startPos₂`).toInt.==(97))) {
+                val `res₆₆`: Int = {
+                  val `res₆₇`: Int = {
+                    def `exit₇`(`pos₁₄`: Int): Int = `pos₁₄`
+                    @tailrec def `forward₇`(`pos₁₅`: Int, `b₇`: [X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null]): Tuple2[[X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null], Int] = {
+                      val `next₇`: Int = {
+                        val `res₆₈`: Int = {
+                          val `lp₁₁`: Int = {
+                            val `res₆₉`: Int = if (`pos₁₅`.<(`input₆`.length()).&&(`input₆`.charAt(`pos₁₅`).toInt.==(97))) {
+                              val `res₇₀`: Int = {
+                                val `res₇₁`: Int = `pos₁₅`.+(1)
+
+                                (if (`res₇₁`.>=(0)) `res₇₁` else -1: Int)
+                              }
+
+                              (if (`res₇₀`.>=(0)) `res₇₀` else -1: Int)
+                            } else -1
+
+                            (if (`res₆₉`.>=(0)) `res₆₉` else -1: Int)
+                          }
+                          if (`lp₁₁`.>=(0)) `lp₁₁` else {
+                            val `res₇₂`: Int = if (`pos₁₅`.<(`input₆`.length()).&&(`input₆`.charAt(`pos₁₅`).toInt.==(98))) {
+                              val `res₇₃`: Int = {
+                                val `res₇₄`: Int = `pos₁₅`.+(1)
+
+                                (if (`res₇₄`.>=(0)) `res₇₄` else -1: Int)
+                              }
+
+                              (if (`res₇₃`.>=(0)) `res₇₃` else -1: Int)
+                            } else -1
+
+                            (if (`res₇₂`.>=(0)) `res₇₂` else -1: Int)
+                          }
+                        }
+
+                        (if (`res₆₈`.>=(0)) `res₆₈` else -1: Int)
+                      }
+                      if (`next₇`.==(-1).||(`next₇`.==(`pos₁₅`))) Tuple2.apply[Backoffs | Null, Int](`b₇`, `pos₁₅`) else {
+                        val `w₇`: Int = `next₇`.-(`pos₁₅`)
+                        if (`b₇`.!=(null).&&(`b₇`.$asInstanceOf$[b & Backoffs].width.==(`w₇`))) {
+                          val `$3$₇`: b & Backoffs = `b₇`.$asInstanceOf$[b & Backoffs]
+                          `$3$₇`.count = `$3$₇`.count.+(1)
+                          `forward₇`(`next₇`, `b₇`.$asInstanceOf$[b & Backoffs])
+                        } else `forward₇`(`next₇`, new Backoffs(`w₇`, 1, `b₇`))
+                      }
+                    }
+                    @tailrec def `backtrack₇`(`cur₇`: [X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null], `base₇`: Int, `i₇`: Int): Int = if (`cur₇`.==(null)) `exit₇`(`startPos₂`.+(1)) else if (`i₇`.<(`cur₇`.$asInstanceOf$[cur & Backoffs].count)) {
+                      val `attemptPos₇`: Int = `base₇`.-(`i₇`.*(`cur₇`.$asInstanceOf$[cur & Backoffs].width))
+                      val `r₇`: Int = `exit₇`(`attemptPos₇`)
+                      if (`r₇`.>=(0)) `r₇` else `backtrack₇`(`cur₇`.$asInstanceOf$[cur & Backoffs], `base₇`, `i₇`.+(1))
+                    } else `backtrack₇`(`cur₇`.$asInstanceOf$[cur & Backoffs].parent, `base₇`, 0)
+                    val `$2$₇`: Tuple2[Backoffs | Null, Int] = (`forward₇`(`startPos₂`.+(1), null): @RuntimeChecked) match {
+                      case $1$ @ Tuple2(backoffs, finalPos) =>
+                        (`$1$₇`: Tuple2[Backoffs | Null, Int])
+                    }
+                    val `backoffs₇`: Backoffs | Null = `$2$₇`._1
+                    val `finalPos₇`: Int = `$2$₇`._2
+                    `backtrack₇`(`backoffs₇`, `finalPos₇`, 0)
+                  }
+
+                  (if (`res₆₇`.>=(0)) `res₆₇` else -1: Int)
+                }
+
+                (if (`res₆₆`.>=(0)) `res₆₆` else -1: Int)
+              } else -1
+
+              (if (`res₆₅`.>=(0)) `res₆₅` else -1: Int)
+            }
+            if (`lp₁₀`.>=(0)) `lp₁₀` else {
+              val `res₇₅`: Int = if (`startPos₂`.<(`input₆`.length()).&&(`input₆`.charAt(`startPos₂`).toInt.==(98))) {
+                val `res₇₆`: Int = {
+                  val `res₇₇`: Int = {
+                    def `exit₈`(`pos₁₆`: Int): Int = `pos₁₆`
+                    @tailrec def `forward₈`(`pos₁₇`: Int, `b₈`: [X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null]): Tuple2[[X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null], Int] = {
+                      val `next₈`: Int = {
+                        val `res₇₈`: Int = {
+                          val `lp₁₂`: Int = {
+                            val `res₇₉`: Int = if (`pos₁₇`.<(`input₆`.length()).&&(`input₆`.charAt(`pos₁₇`).toInt.==(97))) {
+                              val `res₈₀`: Int = {
+                                val `res₈₁`: Int = `pos₁₇`.+(1)
+
+                                (if (`res₈₁`.>=(0)) `res₈₁` else -1: Int)
+                              }
+
+                              (if (`res₈₀`.>=(0)) `res₈₀` else -1: Int)
+                            } else -1
+
+                            (if (`res₇₉`.>=(0)) `res₇₉` else -1: Int)
+                          }
+                          if (`lp₁₂`.>=(0)) `lp₁₂` else {
+                            val `res₈₂`: Int = if (`pos₁₇`.<(`input₆`.length()).&&(`input₆`.charAt(`pos₁₇`).toInt.==(98))) {
+                              val `res₈₃`: Int = {
+                                val `res₈₄`: Int = `pos₁₇`.+(1)
+
+                                (if (`res₈₄`.>=(0)) `res₈₄` else -1: Int)
+                              }
+
+                              (if (`res₈₃`.>=(0)) `res₈₃` else -1: Int)
+                            } else -1
+
+                            (if (`res₈₂`.>=(0)) `res₈₂` else -1: Int)
+                          }
+                        }
+
+                        (if (`res₇₈`.>=(0)) `res₇₈` else -1: Int)
+                      }
+                      if (`next₈`.==(-1).||(`next₈`.==(`pos₁₇`))) Tuple2.apply[Backoffs | Null, Int](`b₈`, `pos₁₇`) else {
+                        val `w₈`: Int = `next₈`.-(`pos₁₇`)
+                        if (`b₈`.!=(null).&&(`b₈`.$asInstanceOf$[b & Backoffs].width.==(`w₈`))) {
+                          val `$3$₈`: b & Backoffs = `b₈`.$asInstanceOf$[b & Backoffs]
+                          `$3$₈`.count = `$3$₈`.count.+(1)
+                          `forward₈`(`next₈`, `b₈`.$asInstanceOf$[b & Backoffs])
+                        } else `forward₈`(`next₈`, new Backoffs(`w₈`, 1, `b₈`))
+                      }
+                    }
+                    @tailrec def `backtrack₈`(`cur₈`: [X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null], `base₈`: Int, `i₈`: Int): Int = if (`cur₈`.==(null)) `exit₈`(`startPos₂`.+(1)) else if (`i₈`.<(`cur₈`.$asInstanceOf$[cur & Backoffs].count)) {
+                      val `attemptPos₈`: Int = `base₈`.-(`i₈`.*(`cur₈`.$asInstanceOf$[cur & Backoffs].width))
+                      val `r₈`: Int = `exit₈`(`attemptPos₈`)
+                      if (`r₈`.>=(0)) `r₈` else `backtrack₈`(`cur₈`.$asInstanceOf$[cur & Backoffs], `base₈`, `i₈`.+(1))
+                    } else `backtrack₈`(`cur₈`.$asInstanceOf$[cur & Backoffs].parent, `base₈`, 0)
+                    val `$2$₈`: Tuple2[Backoffs | Null, Int] = (`forward₈`(`startPos₂`.+(1), null): @RuntimeChecked) match {
+                      case $1$ @ Tuple2(backoffs, finalPos) =>
+                        (`$1$₈`: Tuple2[Backoffs | Null, Int])
+                    }
+                    val `backoffs₈`: Backoffs | Null = `$2$₈`._1
+                    val `finalPos₈`: Int = `$2$₈`._2
+                    `backtrack₈`(`backoffs₈`, `finalPos₈`, 0)
+                  }
+
+                  (if (`res₇₇`.>=(0)) `res₇₇` else -1: Int)
+                }
+
+                (if (`res₇₆`.>=(0)) `res₇₆` else -1: Int)
+              } else -1
+
+              (if (`res₇₅`.>=(0)) `res₇₅` else -1: Int)
+            }
+          }
+
+          (if (`res₆₄`.>=(0)) `res₆₄` else -1: Int)
+        }).apply(`pos₁₃`, `source₂`)
+        if (`matchPos₂`.!=(-1)) return Some.apply[String](`source₂`.subSequence(`pos₁₃`, `matchPos₂`).toString()) else ()
+        `pos₁₃` = `pos₁₃`.+(1)
+      }
+      None
+    }
+    override def split(toSplit: CharSequence): Array[String] = {
+      val `result₃`: ArrayBuffer[String] = scala.collection.mutable.ArrayBuffer.empty[String]
+      val `len₂`: Int = toSplit.length()
+      var `pos₁₈`: Int = 0
+      var lastEnd: Int = 0
+      while (`pos₁₈`.<(`len₂`)) {
+        val matchEnd: Int = ((`startPos₃`: Int, `input₇`: CharSequence) => {
+          val `res₈₅`: Int = {
+            val `lp₁₃`: Int = {
+              val `res₈₆`: Int = if (`startPos₃`.<(`input₇`.length()).&&(`input₇`.charAt(`startPos₃`).toInt.==(97))) {
+                val `res₈₇`: Int = {
+                  val `res₈₈`: Int = {
+                    def `exit₉`(`pos₁₉`: Int): Int = `pos₁₉`
+                    @tailrec def `forward₉`(`pos₂₀`: Int, `b₉`: [X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null]): Tuple2[[X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null], Int] = {
+                      val `next₉`: Int = {
+                        val `res₈₉`: Int = {
+                          val `lp₁₄`: Int = {
+                            val `res₉₀`: Int = if (`pos₂₀`.<(`input₇`.length()).&&(`input₇`.charAt(`pos₂₀`).toInt.==(97))) {
+                              val `res₉₁`: Int = {
+                                val `res₉₂`: Int = `pos₂₀`.+(1)
+
+                                (if (`res₉₂`.>=(0)) `res₉₂` else -1: Int)
+                              }
+
+                              (if (`res₉₁`.>=(0)) `res₉₁` else -1: Int)
+                            } else -1
+
+                            (if (`res₉₀`.>=(0)) `res₉₀` else -1: Int)
+                          }
+                          if (`lp₁₄`.>=(0)) `lp₁₄` else {
+                            val `res₉₃`: Int = if (`pos₂₀`.<(`input₇`.length()).&&(`input₇`.charAt(`pos₂₀`).toInt.==(98))) {
+                              val `res₉₄`: Int = {
+                                val `res₉₅`: Int = `pos₂₀`.+(1)
+
+                                (if (`res₉₅`.>=(0)) `res₉₅` else -1: Int)
+                              }
+
+                              (if (`res₉₄`.>=(0)) `res₉₄` else -1: Int)
+                            } else -1
+
+                            (if (`res₉₃`.>=(0)) `res₉₃` else -1: Int)
+                          }
+                        }
+
+                        (if (`res₈₉`.>=(0)) `res₈₉` else -1: Int)
+                      }
+                      if (`next₉`.==(-1).||(`next₉`.==(`pos₂₀`))) Tuple2.apply[Backoffs | Null, Int](`b₉`, `pos₂₀`) else {
+                        val `w₉`: Int = `next₉`.-(`pos₂₀`)
+                        if (`b₉`.!=(null).&&(`b₉`.$asInstanceOf$[b & Backoffs].width.==(`w₉`))) {
+                          val `$3$₉`: b & Backoffs = `b₉`.$asInstanceOf$[b & Backoffs]
+                          `$3$₉`.count = `$3$₉`.count.+(1)
+                          `forward₉`(`next₉`, `b₉`.$asInstanceOf$[b & Backoffs])
+                        } else `forward₉`(`next₉`, new Backoffs(`w₉`, 1, `b₉`))
+                      }
+                    }
+                    @tailrec def `backtrack₉`(`cur₉`: [X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null], `base₉`: Int, `i₉`: Int): Int = if (`cur₉`.==(null)) `exit₉`(`startPos₃`.+(1)) else if (`i₉`.<(`cur₉`.$asInstanceOf$[cur & Backoffs].count)) {
+                      val `attemptPos₉`: Int = `base₉`.-(`i₉`.*(`cur₉`.$asInstanceOf$[cur & Backoffs].width))
+                      val `r₉`: Int = `exit₉`(`attemptPos₉`)
+                      if (`r₉`.>=(0)) `r₉` else `backtrack₉`(`cur₉`.$asInstanceOf$[cur & Backoffs], `base₉`, `i₉`.+(1))
+                    } else `backtrack₉`(`cur₉`.$asInstanceOf$[cur & Backoffs].parent, `base₉`, 0)
+                    val `$2$₉`: Tuple2[Backoffs | Null, Int] = (`forward₉`(`startPos₃`.+(1), null): @RuntimeChecked) match {
+                      case $1$ @ Tuple2(backoffs, finalPos) =>
+                        (`$1$₉`: Tuple2[Backoffs | Null, Int])
+                    }
+                    val `backoffs₉`: Backoffs | Null = `$2$₉`._1
+                    val `finalPos₉`: Int = `$2$₉`._2
+                    `backtrack₉`(`backoffs₉`, `finalPos₉`, 0)
+                  }
+
+                  (if (`res₈₈`.>=(0)) `res₈₈` else -1: Int)
+                }
+
+                (if (`res₈₇`.>=(0)) `res₈₇` else -1: Int)
+              } else -1
+
+              (if (`res₈₆`.>=(0)) `res₈₆` else -1: Int)
+            }
+            if (`lp₁₃`.>=(0)) `lp₁₃` else {
+              val `res₉₆`: Int = if (`startPos₃`.<(`input₇`.length()).&&(`input₇`.charAt(`startPos₃`).toInt.==(98))) {
+                val `res₉₇`: Int = {
+                  val `res₉₈`: Int = {
+                    def `exit₁₀`(`pos₂₁`: Int): Int = `pos₂₁`
+                    @tailrec def `forward₁₀`(`pos₂₂`: Int, `b₁₀`: [X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null]): Tuple2[[X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null], Int] = {
+                      val `next₁₀`: Int = {
+                        val `res₉₉`: Int = {
+                          val `lp₁₅`: Int = {
+                            val `res₁₀₀`: Int = if (`pos₂₂`.<(`input₇`.length()).&&(`input₇`.charAt(`pos₂₂`).toInt.==(97))) {
+                              val `res₁₀₁`: Int = {
+                                val `res₁₀₂`: Int = `pos₂₂`.+(1)
+
+                                (if (`res₁₀₂`.>=(0)) `res₁₀₂` else -1: Int)
+                              }
+
+                              (if (`res₁₀₁`.>=(0)) `res₁₀₁` else -1: Int)
+                            } else -1
+
+                            (if (`res₁₀₀`.>=(0)) `res₁₀₀` else -1: Int)
+                          }
+                          if (`lp₁₅`.>=(0)) `lp₁₅` else {
+                            val `res₁₀₃`: Int = if (`pos₂₂`.<(`input₇`.length()).&&(`input₇`.charAt(`pos₂₂`).toInt.==(98))) {
+                              val `res₁₀₄`: Int = {
+                                val `res₁₀₅`: Int = `pos₂₂`.+(1)
+
+                                (if (`res₁₀₅`.>=(0)) `res₁₀₅` else -1: Int)
+                              }
+
+                              (if (`res₁₀₄`.>=(0)) `res₁₀₄` else -1: Int)
+                            } else -1
+
+                            (if (`res₁₀₃`.>=(0)) `res₁₀₃` else -1: Int)
+                          }
+                        }
+
+                        (if (`res₉₉`.>=(0)) `res₉₉` else -1: Int)
+                      }
+                      if (`next₁₀`.==(-1).||(`next₁₀`.==(`pos₂₂`))) Tuple2.apply[Backoffs | Null, Int](`b₁₀`, `pos₂₂`) else {
+                        val `w₁₀`: Int = `next₁₀`.-(`pos₂₂`)
+                        if (`b₁₀`.!=(null).&&(`b₁₀`.$asInstanceOf$[b & Backoffs].width.==(`w₁₀`))) {
+                          val `$3$₁₀`: b & Backoffs = `b₁₀`.$asInstanceOf$[b & Backoffs]
+                          `$3$₁₀`.count = `$3$₁₀`.count.+(1)
+                          `forward₁₀`(`next₁₀`, `b₁₀`.$asInstanceOf$[b & Backoffs])
+                        } else `forward₁₀`(`next₁₀`, new Backoffs(`w₁₀`, 1, `b₁₀`))
+                      }
+                    }
+                    @tailrec def `backtrack₁₀`(`cur₁₀`: [X0 >: Nothing <: Any, X1 >: Nothing <: Any] =>> X0 | X1[Backoffs, Null], `base₁₀`: Int, `i₁₀`: Int): Int = if (`cur₁₀`.==(null)) `exit₁₀`(`startPos₃`.+(1)) else if (`i₁₀`.<(`cur₁₀`.$asInstanceOf$[cur & Backoffs].count)) {
+                      val `attemptPos₁₀`: Int = `base₁₀`.-(`i₁₀`.*(`cur₁₀`.$asInstanceOf$[cur & Backoffs].width))
+                      val `r₁₀`: Int = `exit₁₀`(`attemptPos₁₀`)
+                      if (`r₁₀`.>=(0)) `r₁₀` else `backtrack₁₀`(`cur₁₀`.$asInstanceOf$[cur & Backoffs], `base₁₀`, `i₁₀`.+(1))
+                    } else `backtrack₁₀`(`cur₁₀`.$asInstanceOf$[cur & Backoffs].parent, `base₁₀`, 0)
+                    val `$2$₁₀`: Tuple2[Backoffs | Null, Int] = (`forward₁₀`(`startPos₃`.+(1), null): @RuntimeChecked) match {
+                      case $1$ @ Tuple2(backoffs, finalPos) =>
+                        (`$1$₁₀`: Tuple2[Backoffs | Null, Int])
+                    }
+                    val `backoffs₁₀`: Backoffs | Null = `$2$₁₀`._1
+                    val `finalPos₁₀`: Int = `$2$₁₀`._2
+                    `backtrack₁₀`(`backoffs₁₀`, `finalPos₁₀`, 0)
+                  }
+
+                  (if (`res₉₈`.>=(0)) `res₉₈` else -1: Int)
+                }
+
+                (if (`res₉₇`.>=(0)) `res₉₇` else -1: Int)
+              } else -1
+
+              (if (`res₉₆`.>=(0)) `res₉₆` else -1: Int)
+            }
+          }
+
+          (if (`res₈₅`.>=(0)) `res₈₅` else -1: Int)
+        }).apply(`pos₁₈`, toSplit)
+        if (matchEnd.!=(-1)) {
+          `result₃`.+=(toSplit.subSequence(lastEnd, `pos₁₈`).toString())
+          lastEnd = matchEnd
+          `pos₁₈` = if (matchEnd.==(`pos₁₈`)) `pos₁₈`.+(1) else matchEnd
+        } else `pos₁₈` = `pos₁₈`.+(1)
+      }
+      if (lastEnd.!=(`len₂`)) {
+        `result₃`.+=(toSplit.subSequence(lastEnd, `len₂`).toString())
+        ()
+      } else ()
+      `result₃`.toArray[String](ClassTag.apply[String](classOf[String]))
+    }
+    override def unapply(`input₈`: CharSequence): Option[Tuple2[String, Either[Either[String, String], Tuple2[String, String]]]] = $anon.this.matchesWithCaps(`input₈`).map[Tuple2[String, Either[Either[String, String], Tuple2[String, String]]]](((caps: Array[Int]) => {
+      val hchain: HAppend[HSingleton[String], HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], true, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]] = HAppend.apply[HSingleton[String], HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], true, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]](HSingleton.apply[String](`input₈`.subSequence(caps.apply(2), caps.apply(3)).toString()), {
+        val left: Option[Sanitised[HSingleton[String]]] = if ({
+          val l: Int = caps.apply(4)
+          val u: Int = caps.apply(5)
+          if (l.>=(0).&&(u.>=(0))) Some.apply[String](`input₈`.subSequence(l, u).toString()) else None
+        }.isDefined) Some.apply[Sanitised[HSingleton[String]]](Sanitised.apply[HSingleton[String]](HSingleton.apply[String]({
+          val `l₂`: Int = caps.apply(4)
+          val `u₂`: Int = caps.apply(5)
+          if (`l₂`.>=(0).&&(`u₂`.>=(0))) Some.apply[String](`input₈`.subSequence(`l₂`, `u₂`).toString()) else None
+        }.get), true)) else None
+        val right: Option[Sanitised[HSingleton[String]]] = if ({
+          val `l₃`: Int = caps.apply(6)
+          val `u₃`: Int = caps.apply(7)
+          if (`l₃`.>=(0).&&(`u₃`.>=(0))) Some.apply[String](`input₈`.subSequence(`l₃`, `u₃`).toString()) else None
+        }.isDefined) Some.apply[Sanitised[HSingleton[String]]](Sanitised.apply[HSingleton[String]](HSingleton.apply[String]({
+          val `l₄`: Int = caps.apply(6)
+          val `u₄`: Int = caps.apply(7)
+          if (`l₄`.>=(0).&&(`u₄`.>=(0))) Some.apply[String](`input₈`.subSequence(`l₄`, `u₄`).toString()) else None
+        }.get), true)) else None
+        if (left.isDefined.&&(right.isDefined)) Some.apply[Sanitised[HSingleton[Either[Either[HSingleton[String], HSingleton[String]], Tuple2[HSingleton[String], HSingleton[String]]]]]](Sanitised.apply[HSingleton[Either[Either[HSingleton[String], HSingleton[String]], Tuple2[HSingleton[String], HSingleton[String]]]]](HSingleton.apply[Either[Either[HSingleton[String], HSingleton[String]], Tuple2[HSingleton[String], HSingleton[String]]]](Right.apply[Nothing, Tuple2[HSingleton[String], HSingleton[String]]](Tuple2.apply[HSingleton[String], HSingleton[String]](left.get.captures, right.get.captures))), left.get.any.||(right.get.any))) else if (left.isDefined) Some.apply[Sanitised[HSingleton[Either[Either[HSingleton[String], Nothing], Tuple2[HSingleton[String], Nothing]]]]](Sanitised.apply[HSingleton[Either[Either[HSingleton[String], Nothing], Tuple2[HSingleton[String], Nothing]]]](HSingleton.apply[Either[Either[HSingleton[String], Nothing], Tuple2[HSingleton[String], Nothing]]](Left.apply[Left[HSingleton[String], Nothing], Nothing](Left.apply[HSingleton[String], Nothing](left.get.captures))), left.get.any)) else if (right.isDefined) Some.apply[Sanitised[HSingleton[Either[Either[Nothing, HSingleton[String]], Tuple2[Nothing, HSingleton[String]]]]]](Sanitised.apply[HSingleton[Either[Either[Nothing, HSingleton[String]], Tuple2[Nothing, HSingleton[String]]]]](HSingleton.apply[Either[Either[Nothing, HSingleton[String]], Tuple2[Nothing, HSingleton[String]]]](Left.apply[Right[Nothing, HSingleton[String]], Nothing](Right.apply[Nothing, HSingleton[String]](right.get.captures))), right.get.any)) else None
+      }.get.captures)
+      val node: HAppend[HSingleton[String], HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], true, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]] = hchain
+      Tuple2.apply[String, Either[Either[String, String], Tuple2[String, String]]](node.left.value, node.right.value match {
+        case Left(Left(left)) =>
+          Left.apply[Left[String, Nothing], Nothing](Left.apply[String, Nothing](`left₂`.value))
+        case Left(Right(right)) =>
+          Left.apply[Right[Nothing, String], Nothing](Right.apply[Nothing, String](`right₂`.value))
+        case Right(Tuple2(left, right)) =>
+          Right.apply[Nothing, Tuple2[String, String]](Tuple2.apply[String, String](`left₃`.value, `right₃`.value))
+      })
+    }))
+  }
+
+  (new $anon(): Regex[Tuple2[String, Either[Either[String, String], Tuple2[String, String]]]])
+}

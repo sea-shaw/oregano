@@ -23,7 +23,22 @@ private [oregano] def compileMacro(s: String)(using Quotes): Expr[oregano.Regex[
         case Failure(err) => report.errorAndAbort(err)
 }
 
-private def regexCode[F[_ <: Rep] <: HChain](using ast: AST)(regex: ast.Regex[F])(using Quotes): Expr[oregano.Regex[?]] = {
+private [internal] inline def code(inline regex: String): String = ${ codeCode('regex) }
+private [internal] def codeCode(strExpr: Expr[String])(using Quotes): Expr[String] = {
+    import quotes.reflect.{Position, Printer, asTerm, report}
+    strExpr match {
+        case Expr(s) => {
+            given AST = Oregano
+            parser.parse(s) match {
+                case Success(ast) => Expr(regexCode(ast).asTerm.show(using Printer.TreeShortCode))
+                case Failure(err) => Expr(err)
+            }
+        }
+        case _ => report.errorAndAbort("Regex string must be a compile-time constant", Position.ofMacroExpansion)
+    }
+}
+
+private [internal] def regexCode[F[_ <: Rep] <: HChain](using ast: AST)(regex: ast.Regex[F])(using Quotes): Expr[oregano.Regex[?]] = {
     val PatternResult(p, groupCount, flatControlFlow, _) = Pattern.compile(regex)
     // report.info(s"expr: $s\nParsley AST: ${ast.toString}\nPattern: ${patternResult.pattern}, groupCount: ${patternResult.groupCount}")
     val prog = ProgramCompiler.compileRegexp(p, groupCount)

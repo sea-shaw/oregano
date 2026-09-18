@@ -1,0 +1,56 @@
+{
+  final class $anon() extends Regex[Unit] {
+    override def matches(input: CharSequence): Boolean = ((`input₂`: CharSequence) => {
+      val result: Int = if (0.<(`input₂`.length()).&&(`input₂`.charAt(0).toInt.==(97))) if (0.+(1).==(`input₂`.length())) 0.+(1) else -1 else -1
+      result.==(`input₂`.length())
+    }).apply(input)
+    override def matchesWithCaps(`input₃`: CharSequence): Option[Array[Int]] = ((`input₄`: CharSequence) => {
+      val groups: Array[Int] = Array.fill[Int](2)(-1)(ClassTag.apply[Int](classOf[Int]))
+      groups.update(0, 0)
+      val `result₂`: Int = if (0.<(`input₄`.length()).&&(`input₄`.charAt(0).toInt.==(97))) if (0.+(1).==(`input₄`.length())) {
+        groups.update(1, 0.+(1))
+        0.+(1)
+      } else -1 else -1
+      if (`result₂`.==(`input₄`.length())) Some.apply[Array[Int]](groups) else None
+    }).apply(`input₃`)
+    override def findPrefixOf(source: CharSequence): Option[String] = {
+      val matchPos: Int = ((startPos: Int, `input₅`: CharSequence) => if (startPos.<(`input₅`.length()).&&(`input₅`.charAt(startPos).toInt.==(97))) startPos.+(1) else -1).apply(0, source)
+      Option.when[String](matchPos.!=(-1))(source.subSequence(0, matchPos).toString())
+    }
+    override def findFirstIn(`source₂`: CharSequence): Option[String] = {
+      val len: Int = `source₂`.length()
+      var pos: Int = 0
+      while (pos.<(len)) {
+        val `matchPos₂`: Int = ((`startPos₂`: Int, `input₆`: CharSequence) => if (`startPos₂`.<(`input₆`.length()).&&(`input₆`.charAt(`startPos₂`).toInt.==(97))) `startPos₂`.+(1) else -1).apply(pos, `source₂`)
+        if (`matchPos₂`.!=(-1)) return Some.apply[String](`source₂`.subSequence(pos, `matchPos₂`).toString()) else ()
+        pos = pos.+(1)
+      }
+      None
+    }
+    override def split(toSplit: CharSequence): Array[String] = {
+      val `result₃`: ArrayBuffer[String] = scala.collection.mutable.ArrayBuffer.empty[String]
+      val `len₂`: Int = toSplit.length()
+      var `pos₂`: Int = 0
+      var lastEnd: Int = 0
+      while (`pos₂`.<(`len₂`)) {
+        val matchEnd: Int = ((`startPos₃`: Int, `input₇`: CharSequence) => if (`startPos₃`.<(`input₇`.length()).&&(`input₇`.charAt(`startPos₃`).toInt.==(97))) `startPos₃`.+(1) else -1).apply(`pos₂`, toSplit)
+        if (matchEnd.!=(-1)) {
+          `result₃`.+=(toSplit.subSequence(lastEnd, `pos₂`).toString())
+          lastEnd = matchEnd
+          `pos₂` = if (matchEnd.==(`pos₂`)) `pos₂`.+(1) else matchEnd
+        } else `pos₂` = `pos₂`.+(1)
+      }
+      if (lastEnd.!=(`len₂`)) {
+        `result₃`.+=(toSplit.subSequence(lastEnd, `len₂`).toString())
+        ()
+      } else ()
+      `result₃`.toArray[String](ClassTag.apply[String](classOf[String]))
+    }
+    override def unapply(`input₈`: CharSequence): Option[Unit] = $anon.this.matchesWithCaps(`input₈`).map[Unit](((caps: Array[Int]) => {
+      val hchain: HEmpty.type = HEmpty
+      ()
+    }))
+  }
+
+  (new $anon(): Regex[Unit])
+}

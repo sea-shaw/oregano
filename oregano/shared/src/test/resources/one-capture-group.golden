@@ -1,0 +1,112 @@
+{
+  final class $anon() extends Regex[String] {
+    override def matches(input: CharSequence): Boolean = ((`input₂`: CharSequence) => {
+      val result: Int = {
+        val res: Int = if (0.<(`input₂`.length()).&&(`input₂`.charAt(0).toInt.==(97))) {
+          val `res₂`: Int = if (0.+(1).==(`input₂`.length())) 0.+(1) else -1
+
+          (if (`res₂`.>=(0)) `res₂` else -1: Int)
+        } else -1
+
+        (if (res.>=(0)) res else -1: Int)
+      }
+      result.==(`input₂`.length())
+    }).apply(input)
+    override def matchesWithCaps(`input₃`: CharSequence): Option[Array[Int]] = ((`input₄`: CharSequence) => {
+      val groups: Array[Int] = Array.fill[Int](4)(-1)(ClassTag.apply[Int](classOf[Int]))
+      groups.update(0, 0)
+      val `result₂`: Int = {
+        val oldVal: Int = groups.apply(2)
+        val curPos: Int = 0
+        val `res₃`: Int = if (0.<(`input₄`.length()).&&(`input₄`.charAt(0).toInt.==(97))) {
+          val `oldVal₂`: Int = groups.apply(3)
+          val `curPos₂`: Int = 0.+(1)
+          val `res₄`: Int = if (0.+(1).==(`input₄`.length())) {
+            groups.update(1, 0.+(1))
+            0.+(1)
+          } else -1
+
+          (if (`res₄`.>=(0)) {
+            groups.update(3, `curPos₂`)
+            `res₄`
+          } else {
+            groups.update(3, `oldVal₂`)
+            -1
+          }: Int)
+        } else -1
+
+        (if (`res₃`.>=(0)) {
+          groups.update(2, curPos)
+          `res₃`
+        } else {
+          groups.update(2, oldVal)
+          -1
+        }: Int)
+      }
+      if (`result₂`.==(`input₄`.length())) Some.apply[Array[Int]](groups) else None
+    }).apply(`input₃`)
+    override def findPrefixOf(source: CharSequence): Option[String] = {
+      val matchPos: Int = ((startPos: Int, `input₅`: CharSequence) => {
+        val `res₅`: Int = if (startPos.<(`input₅`.length()).&&(`input₅`.charAt(startPos).toInt.==(97))) {
+          val `res₆`: Int = startPos.+(1)
+
+          (if (`res₆`.>=(0)) `res₆` else -1: Int)
+        } else -1
+
+        (if (`res₅`.>=(0)) `res₅` else -1: Int)
+      }).apply(0, source)
+      Option.when[String](matchPos.!=(-1))(source.subSequence(0, matchPos).toString())
+    }
+    override def findFirstIn(`source₂`: CharSequence): Option[String] = {
+      val len: Int = `source₂`.length()
+      var pos: Int = 0
+      while (pos.<(len)) {
+        val `matchPos₂`: Int = ((`startPos₂`: Int, `input₆`: CharSequence) => {
+          val `res₇`: Int = if (`startPos₂`.<(`input₆`.length()).&&(`input₆`.charAt(`startPos₂`).toInt.==(97))) {
+            val `res₈`: Int = `startPos₂`.+(1)
+
+            (if (`res₈`.>=(0)) `res₈` else -1: Int)
+          } else -1
+
+          (if (`res₇`.>=(0)) `res₇` else -1: Int)
+        }).apply(pos, `source₂`)
+        if (`matchPos₂`.!=(-1)) return Some.apply[String](`source₂`.subSequence(pos, `matchPos₂`).toString()) else ()
+        pos = pos.+(1)
+      }
+      None
+    }
+    override def split(toSplit: CharSequence): Array[String] = {
+      val `result₃`: ArrayBuffer[String] = scala.collection.mutable.ArrayBuffer.empty[String]
+      val `len₂`: Int = toSplit.length()
+      var `pos₂`: Int = 0
+      var lastEnd: Int = 0
+      while (`pos₂`.<(`len₂`)) {
+        val matchEnd: Int = ((`startPos₃`: Int, `input₇`: CharSequence) => {
+          val `res₉`: Int = if (`startPos₃`.<(`input₇`.length()).&&(`input₇`.charAt(`startPos₃`).toInt.==(97))) {
+            val `res₁₀`: Int = `startPos₃`.+(1)
+
+            (if (`res₁₀`.>=(0)) `res₁₀` else -1: Int)
+          } else -1
+
+          (if (`res₉`.>=(0)) `res₉` else -1: Int)
+        }).apply(`pos₂`, toSplit)
+        if (matchEnd.!=(-1)) {
+          `result₃`.+=(toSplit.subSequence(lastEnd, `pos₂`).toString())
+          lastEnd = matchEnd
+          `pos₂` = if (matchEnd.==(`pos₂`)) `pos₂`.+(1) else matchEnd
+        } else `pos₂` = `pos₂`.+(1)
+      }
+      if (lastEnd.!=(`len₂`)) {
+        `result₃`.+=(toSplit.subSequence(lastEnd, `len₂`).toString())
+        ()
+      } else ()
+      `result₃`.toArray[String](ClassTag.apply[String](classOf[String]))
+    }
+    override def unapply(`input₈`: CharSequence): Option[String] = $anon.this.matchesWithCaps(`input₈`).map[String](((caps: Array[Int]) => {
+      val hchain: HSingleton[String] = HSingleton.apply[String](`input₈`.subSequence(caps.apply(2), caps.apply(3)).toString())
+      hchain.value
+    }))
+  }
+
+  (new $anon(): Regex[String])
+}

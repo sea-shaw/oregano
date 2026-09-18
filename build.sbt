@@ -36,6 +36,7 @@ lazy val oregano = crossProject(JVMPlatform, JSPlatform, NativePlatform)
         headerEmptyLine := false,
 
         libraryDependencies ++= Seq(
+            "com.github.j-mie6" %% "golden-scalatest" % "0.1.0-M2",
             "com.github.j-mie6" %%% "parsley" % "5.0.0-M19",
             //"com.github.j-mie6" %%% "parsley-debug" % "5.0.0-M19",
             "org.typelevel" %%% "cats-collections-core" % "0.9.10",

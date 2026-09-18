@@ -1,0 +1,393 @@
+{
+  final class $anon() extends Regex[Either[String, Either[String, Either[String, String]]]] {
+    override def matches(input: CharSequence): Boolean = ((`input₂`: CharSequence) => {
+      val result: Int = {
+        val lp: Int = {
+          val res: Int = if (0.<(`input₂`.length()).&&(`input₂`.charAt(0).toInt.==(97))) {
+            val `res₂`: Int = if (0.+(1).==(`input₂`.length())) 0.+(1) else -1
+
+            (if (`res₂`.>=(0)) `res₂` else -1: Int)
+          } else -1
+
+          (if (res.>=(0)) res else -1: Int)
+        }
+        if (lp.>=(0)) lp else {
+          val `lp₂`: Int = {
+            val `res₃`: Int = if (0.<(`input₂`.length()).&&(`input₂`.charAt(0).toInt.==(98))) {
+              val `res₄`: Int = if (0.+(1).==(`input₂`.length())) 0.+(1) else -1
+
+              (if (`res₄`.>=(0)) `res₄` else -1: Int)
+            } else -1
+
+            (if (`res₃`.>=(0)) `res₃` else -1: Int)
+          }
+          if (`lp₂`.>=(0)) `lp₂` else {
+            val `lp₃`: Int = {
+              val `res₅`: Int = if (0.<(`input₂`.length()).&&(`input₂`.charAt(0).toInt.==(99))) {
+                val `res₆`: Int = if (0.+(1).==(`input₂`.length())) 0.+(1) else -1
+
+                (if (`res₆`.>=(0)) `res₆` else -1: Int)
+              } else -1
+
+              (if (`res₅`.>=(0)) `res₅` else -1: Int)
+            }
+            if (`lp₃`.>=(0)) `lp₃` else {
+              val `res₇`: Int = if (0.<(`input₂`.length()).&&(`input₂`.charAt(0).toInt.==(100))) {
+                val `res₈`: Int = if (0.+(1).==(`input₂`.length())) 0.+(1) else -1
+
+                (if (`res₈`.>=(0)) `res₈` else -1: Int)
+              } else -1
+
+              (if (`res₇`.>=(0)) `res₇` else -1: Int)
+            }
+          }
+        }
+      }
+      result.==(`input₂`.length())
+    }).apply(input)
+    override def matchesWithCaps(`input₃`: CharSequence): Option[Array[Int]] = ((`input₄`: CharSequence) => {
+      val groups: Array[Int] = Array.fill[Int](10)(-1)(ClassTag.apply[Int](classOf[Int]))
+      groups.update(0, 0)
+      val `result₂`: Int = {
+        val `lp₄`: Int = {
+          val oldVal: Int = groups.apply(2)
+          val curPos: Int = 0
+          val `res₉`: Int = if (0.<(`input₄`.length()).&&(`input₄`.charAt(0).toInt.==(97))) {
+            val `oldVal₂`: Int = groups.apply(3)
+            val `curPos₂`: Int = 0.+(1)
+            val `res₁₀`: Int = if (0.+(1).==(`input₄`.length())) {
+              groups.update(1, 0.+(1))
+              0.+(1)
+            } else -1
+
+            (if (`res₁₀`.>=(0)) {
+              groups.update(3, `curPos₂`)
+              `res₁₀`
+            } else {
+              groups.update(3, `oldVal₂`)
+              -1
+            }: Int)
+          } else -1
+
+          (if (`res₉`.>=(0)) {
+            groups.update(2, curPos)
+            `res₉`
+          } else {
+            groups.update(2, oldVal)
+            -1
+          }: Int)
+        }
+        if (`lp₄`.>=(0)) `lp₄` else {
+          val `lp₅`: Int = {
+            val `oldVal₃`: Int = groups.apply(4)
+            val `curPos₃`: Int = 0
+            val `res₁₁`: Int = if (0.<(`input₄`.length()).&&(`input₄`.charAt(0).toInt.==(98))) {
+              val `oldVal₄`: Int = groups.apply(5)
+              val `curPos₄`: Int = 0.+(1)
+              val `res₁₂`: Int = if (0.+(1).==(`input₄`.length())) {
+                groups.update(1, 0.+(1))
+                0.+(1)
+              } else -1
+
+              (if (`res₁₂`.>=(0)) {
+                groups.update(5, `curPos₄`)
+                `res₁₂`
+              } else {
+                groups.update(5, `oldVal₄`)
+                -1
+              }: Int)
+            } else -1
+
+            (if (`res₁₁`.>=(0)) {
+              groups.update(4, `curPos₃`)
+              `res₁₁`
+            } else {
+              groups.update(4, `oldVal₃`)
+              -1
+            }: Int)
+          }
+          if (`lp₅`.>=(0)) `lp₅` else {
+            val `lp₆`: Int = {
+              val `oldVal₅`: Int = groups.apply(6)
+              val `curPos₅`: Int = 0
+              val `res₁₃`: Int = if (0.<(`input₄`.length()).&&(`input₄`.charAt(0).toInt.==(99))) {
+                val `oldVal₆`: Int = groups.apply(7)
+                val `curPos₆`: Int = 0.+(1)
+                val `res₁₄`: Int = if (0.+(1).==(`input₄`.length())) {
+                  groups.update(1, 0.+(1))
+                  0.+(1)
+                } else -1
+
+                (if (`res₁₄`.>=(0)) {
+                  groups.update(7, `curPos₆`)
+                  `res₁₄`
+                } else {
+                  groups.update(7, `oldVal₆`)
+                  -1
+                }: Int)
+              } else -1
+
+              (if (`res₁₃`.>=(0)) {
+                groups.update(6, `curPos₅`)
+                `res₁₃`
+              } else {
+                groups.update(6, `oldVal₅`)
+                -1
+              }: Int)
+            }
+            if (`lp₆`.>=(0)) `lp₆` else {
+              val `oldVal₇`: Int = groups.apply(8)
+              val `curPos₇`: Int = 0
+              val `res₁₅`: Int = if (0.<(`input₄`.length()).&&(`input₄`.charAt(0).toInt.==(100))) {
+                val `oldVal₈`: Int = groups.apply(9)
+                val `curPos₈`: Int = 0.+(1)
+                val `res₁₆`: Int = if (0.+(1).==(`input₄`.length())) {
+                  groups.update(1, 0.+(1))
+                  0.+(1)
+                } else -1
+
+                (if (`res₁₆`.>=(0)) {
+                  groups.update(9, `curPos₈`)
+                  `res₁₆`
+                } else {
+                  groups.update(9, `oldVal₈`)
+                  -1
+                }: Int)
+              } else -1
+
+              (if (`res₁₅`.>=(0)) {
+                groups.update(8, `curPos₇`)
+                `res₁₅`
+              } else {
+                groups.update(8, `oldVal₇`)
+                -1
+              }: Int)
+            }
+          }
+        }
+      }
+      if (`result₂`.==(`input₄`.length())) Some.apply[Array[Int]](groups) else None
+    }).apply(`input₃`)
+    override def findPrefixOf(source: CharSequence): Option[String] = {
+      val matchPos: Int = ((startPos: Int, `input₅`: CharSequence) => {
+        val `lp₇`: Int = {
+          val `res₁₇`: Int = if (startPos.<(`input₅`.length()).&&(`input₅`.charAt(startPos).toInt.==(97))) {
+            val `res₁₈`: Int = startPos.+(1)
+
+            (if (`res₁₈`.>=(0)) `res₁₈` else -1: Int)
+          } else -1
+
+          (if (`res₁₇`.>=(0)) `res₁₇` else -1: Int)
+        }
+        if (`lp₇`.>=(0)) `lp₇` else {
+          val `lp₈`: Int = {
+            val `res₁₉`: Int = if (startPos.<(`input₅`.length()).&&(`input₅`.charAt(startPos).toInt.==(98))) {
+              val `res₂₀`: Int = startPos.+(1)
+
+              (if (`res₂₀`.>=(0)) `res₂₀` else -1: Int)
+            } else -1
+
+            (if (`res₁₉`.>=(0)) `res₁₉` else -1: Int)
+          }
+          if (`lp₈`.>=(0)) `lp₈` else {
+            val `lp₉`: Int = {
+              val `res₂₁`: Int = if (startPos.<(`input₅`.length()).&&(`input₅`.charAt(startPos).toInt.==(99))) {
+                val `res₂₂`: Int = startPos.+(1)
+
+                (if (`res₂₂`.>=(0)) `res₂₂` else -1: Int)
+              } else -1
+
+              (if (`res₂₁`.>=(0)) `res₂₁` else -1: Int)
+            }
+            if (`lp₉`.>=(0)) `lp₉` else {
+              val `res₂₃`: Int = if (startPos.<(`input₅`.length()).&&(`input₅`.charAt(startPos).toInt.==(100))) {
+                val `res₂₄`: Int = startPos.+(1)
+
+                (if (`res₂₄`.>=(0)) `res₂₄` else -1: Int)
+              } else -1
+
+              (if (`res₂₃`.>=(0)) `res₂₃` else -1: Int)
+            }
+          }
+        }
+      }).apply(0, source)
+      Option.when[String](matchPos.!=(-1))(source.subSequence(0, matchPos).toString())
+    }
+    override def findFirstIn(`source₂`: CharSequence): Option[String] = {
+      val len: Int = `source₂`.length()
+      var pos: Int = 0
+      while (pos.<(len)) {
+        val `matchPos₂`: Int = ((`startPos₂`: Int, `input₆`: CharSequence) => {
+          val `lp₁₀`: Int = {
+            val `res₂₅`: Int = if (`startPos₂`.<(`input₆`.length()).&&(`input₆`.charAt(`startPos₂`).toInt.==(97))) {
+              val `res₂₆`: Int = `startPos₂`.+(1)
+
+              (if (`res₂₆`.>=(0)) `res₂₆` else -1: Int)
+            } else -1
+
+            (if (`res₂₅`.>=(0)) `res₂₅` else -1: Int)
+          }
+          if (`lp₁₀`.>=(0)) `lp₁₀` else {
+            val `lp₁₁`: Int = {
+              val `res₂₇`: Int = if (`startPos₂`.<(`input₆`.length()).&&(`input₆`.charAt(`startPos₂`).toInt.==(98))) {
+                val `res₂₈`: Int = `startPos₂`.+(1)
+
+                (if (`res₂₈`.>=(0)) `res₂₈` else -1: Int)
+              } else -1
+
+              (if (`res₂₇`.>=(0)) `res₂₇` else -1: Int)
+            }
+            if (`lp₁₁`.>=(0)) `lp₁₁` else {
+              val `lp₁₂`: Int = {
+                val `res₂₉`: Int = if (`startPos₂`.<(`input₆`.length()).&&(`input₆`.charAt(`startPos₂`).toInt.==(99))) {
+                  val `res₃₀`: Int = `startPos₂`.+(1)
+
+                  (if (`res₃₀`.>=(0)) `res₃₀` else -1: Int)
+                } else -1
+
+                (if (`res₂₉`.>=(0)) `res₂₉` else -1: Int)
+              }
+              if (`lp₁₂`.>=(0)) `lp₁₂` else {
+                val `res₃₁`: Int = if (`startPos₂`.<(`input₆`.length()).&&(`input₆`.charAt(`startPos₂`).toInt.==(100))) {
+                  val `res₃₂`: Int = `startPos₂`.+(1)
+
+                  (if (`res₃₂`.>=(0)) `res₃₂` else -1: Int)
+                } else -1
+
+                (if (`res₃₁`.>=(0)) `res₃₁` else -1: Int)
+              }
+            }
+          }
+        }).apply(pos, `source₂`)
+        if (`matchPos₂`.!=(-1)) return Some.apply[String](`source₂`.subSequence(pos, `matchPos₂`).toString()) else ()
+        pos = pos.+(1)
+      }
+      None
+    }
+    override def split(toSplit: CharSequence): Array[String] = {
+      val `result₃`: ArrayBuffer[String] = scala.collection.mutable.ArrayBuffer.empty[String]
+      val `len₂`: Int = toSplit.length()
+      var `pos₂`: Int = 0
+      var lastEnd: Int = 0
+      while (`pos₂`.<(`len₂`)) {
+        val matchEnd: Int = ((`startPos₃`: Int, `input₇`: CharSequence) => {
+          val `lp₁₃`: Int = {
+            val `res₃₃`: Int = if (`startPos₃`.<(`input₇`.length()).&&(`input₇`.charAt(`startPos₃`).toInt.==(97))) {
+              val `res₃₄`: Int = `startPos₃`.+(1)
+
+              (if (`res₃₄`.>=(0)) `res₃₄` else -1: Int)
+            } else -1
+
+            (if (`res₃₃`.>=(0)) `res₃₃` else -1: Int)
+          }
+          if (`lp₁₃`.>=(0)) `lp₁₃` else {
+            val `lp₁₄`: Int = {
+              val `res₃₅`: Int = if (`startPos₃`.<(`input₇`.length()).&&(`input₇`.charAt(`startPos₃`).toInt.==(98))) {
+                val `res₃₆`: Int = `startPos₃`.+(1)
+
+                (if (`res₃₆`.>=(0)) `res₃₆` else -1: Int)
+              } else -1
+
+              (if (`res₃₅`.>=(0)) `res₃₅` else -1: Int)
+            }
+            if (`lp₁₄`.>=(0)) `lp₁₄` else {
+              val `lp₁₅`: Int = {
+                val `res₃₇`: Int = if (`startPos₃`.<(`input₇`.length()).&&(`input₇`.charAt(`startPos₃`).toInt.==(99))) {
+                  val `res₃₈`: Int = `startPos₃`.+(1)
+
+                  (if (`res₃₈`.>=(0)) `res₃₈` else -1: Int)
+                } else -1
+
+                (if (`res₃₇`.>=(0)) `res₃₇` else -1: Int)
+              }
+              if (`lp₁₅`.>=(0)) `lp₁₅` else {
+                val `res₃₉`: Int = if (`startPos₃`.<(`input₇`.length()).&&(`input₇`.charAt(`startPos₃`).toInt.==(100))) {
+                  val `res₄₀`: Int = `startPos₃`.+(1)
+
+                  (if (`res₄₀`.>=(0)) `res₄₀` else -1: Int)
+                } else -1
+
+                (if (`res₃₉`.>=(0)) `res₃₉` else -1: Int)
+              }
+            }
+          }
+        }).apply(`pos₂`, toSplit)
+        if (matchEnd.!=(-1)) {
+          `result₃`.+=(toSplit.subSequence(lastEnd, `pos₂`).toString())
+          lastEnd = matchEnd
+          `pos₂` = if (matchEnd.==(`pos₂`)) `pos₂`.+(1) else matchEnd
+        } else `pos₂` = `pos₂`.+(1)
+      }
+      if (lastEnd.!=(`len₂`)) {
+        `result₃`.+=(toSplit.subSequence(lastEnd, `len₂`).toString())
+        ()
+      } else ()
+      `result₃`.toArray[String](ClassTag.apply[String](classOf[String]))
+    }
+    override def unapply(`input₈`: CharSequence): Option[Either[String, Either[String, Either[String, String]]]] = $anon.this.matchesWithCaps(`input₈`).map[Either[String, Either[String, Either[String, String]]]](((caps: Array[Int]) => {
+      val hchain: HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [R >: Nothing <: Boolean] =>> HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [R >: Nothing <: Boolean] =>> HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], R, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]], R, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]], false, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]] = {
+        val left: Option[Sanitised[HSingleton[String]]] = if ({
+          val l: Int = caps.apply(2)
+          val u: Int = caps.apply(3)
+          if (l.>=(0).&&(u.>=(0))) Some.apply[String](`input₈`.subSequence(l, u).toString()) else None
+        }.isDefined) Some.apply[Sanitised[HSingleton[String]]](Sanitised.apply[HSingleton[String]](HSingleton.apply[String]({
+          val `l₂`: Int = caps.apply(2)
+          val `u₂`: Int = caps.apply(3)
+          if (`l₂`.>=(0).&&(`u₂`.>=(0))) Some.apply[String](`input₈`.subSequence(`l₂`, `u₂`).toString()) else None
+        }.get), true)) else None
+        val right: Option[Sanitised[HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [R >: Nothing <: Boolean] =>> HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], R, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]], false, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]]] = {
+          val `left₂`: Option[Sanitised[HSingleton[String]]] = if ({
+            val `l₃`: Int = caps.apply(4)
+            val `u₃`: Int = caps.apply(5)
+            if (`l₃`.>=(0).&&(`u₃`.>=(0))) Some.apply[String](`input₈`.subSequence(`l₃`, `u₃`).toString()) else None
+          }.isDefined) Some.apply[Sanitised[HSingleton[String]]](Sanitised.apply[HSingleton[String]](HSingleton.apply[String]({
+            val `l₄`: Int = caps.apply(4)
+            val `u₄`: Int = caps.apply(5)
+            if (`l₄`.>=(0).&&(`u₄`.>=(0))) Some.apply[String](`input₈`.subSequence(`l₄`, `u₄`).toString()) else None
+          }.get), true)) else None
+          val `right₂`: Option[Sanitised[HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], false, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]]] = {
+            val `left₃`: Option[Sanitised[HSingleton[String]]] = if ({
+              val `l₅`: Int = caps.apply(6)
+              val `u₅`: Int = caps.apply(7)
+              if (`l₅`.>=(0).&&(`u₅`.>=(0))) Some.apply[String](`input₈`.subSequence(`l₅`, `u₅`).toString()) else None
+            }.isDefined) Some.apply[Sanitised[HSingleton[String]]](Sanitised.apply[HSingleton[String]](HSingleton.apply[String]({
+              val `l₆`: Int = caps.apply(6)
+              val `u₆`: Int = caps.apply(7)
+              if (`l₆`.>=(0).&&(`u₆`.>=(0))) Some.apply[String](`input₈`.subSequence(`l₆`, `u₆`).toString()) else None
+            }.get), true)) else None
+            val `right₃`: Option[Sanitised[HSingleton[String]]] = if ({
+              val `l₇`: Int = caps.apply(8)
+              val `u₇`: Int = caps.apply(9)
+              if (`l₇`.>=(0).&&(`u₇`.>=(0))) Some.apply[String](`input₈`.subSequence(`l₇`, `u₇`).toString()) else None
+            }.isDefined) Some.apply[Sanitised[HSingleton[String]]](Sanitised.apply[HSingleton[String]](HSingleton.apply[String]({
+              val `l₈`: Int = caps.apply(8)
+              val `u₈`: Int = caps.apply(9)
+              if (`l₈`.>=(0).&&(`u₈`.>=(0))) Some.apply[String](`input₈`.subSequence(`l₈`, `u₈`).toString()) else None
+            }.get), true)) else None
+            if (`left₃`.isDefined.&&(`left₃`.get.any)) Some.apply[Sanitised[HSingleton[Left[HSingleton[String], Nothing]]]](Sanitised.apply[HSingleton[Left[HSingleton[String], Nothing]]](HSingleton.apply[Left[HSingleton[String], Nothing]](Left.apply[HSingleton[String], Nothing](`left₃`.get.captures)), true)) else if (`right₃`.isDefined) Some.apply[Sanitised[HSingleton[Right[Nothing, HSingleton[String]]]]](Sanitised.apply[HSingleton[Right[Nothing, HSingleton[String]]]](HSingleton.apply[Right[Nothing, HSingleton[String]]](Right.apply[Nothing, HSingleton[String]](`right₃`.get.captures)), `right₃`.get.any)) else None
+          }
+          if (`left₂`.isDefined.&&(`left₂`.get.any)) Some.apply[Sanitised[HSingleton[Left[HSingleton[String], Nothing]]]](Sanitised.apply[HSingleton[Left[HSingleton[String], Nothing]]](HSingleton.apply[Left[HSingleton[String], Nothing]](Left.apply[HSingleton[String], Nothing](`left₂`.get.captures)), true)) else if (`right₂`.isDefined) Some.apply[Sanitised[HSingleton[Right[Nothing, HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], false, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]]]]](Sanitised.apply[HSingleton[Right[Nothing, HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], false, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]]]](HSingleton.apply[Right[Nothing, HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], false, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]]](Right.apply[Nothing, HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], false, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]](`right₂`.get.captures)), `right₂`.get.any)) else None
+        }
+        if (left.isDefined.&&(left.get.any)) Some.apply[Sanitised[HSingleton[Left[HSingleton[String], Nothing]]]](Sanitised.apply[HSingleton[Left[HSingleton[String], Nothing]]](HSingleton.apply[Left[HSingleton[String], Nothing]](Left.apply[HSingleton[String], Nothing](left.get.captures)), true)) else if (right.isDefined) Some.apply[Sanitised[HSingleton[Right[Nothing, HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [R >: Nothing <: Boolean] =>> HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], R, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]], false, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]]]]](Sanitised.apply[HSingleton[Right[Nothing, HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [R >: Nothing <: Boolean] =>> HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], R, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]], false, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]]]](HSingleton.apply[Right[Nothing, HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [R >: Nothing <: Boolean] =>> HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], R, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]], false, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]]](Right.apply[Nothing, HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [R >: Nothing <: Boolean] =>> HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], R, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]], false, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]](right.get.captures)), right.get.any)) else None
+      }.get.captures
+      (hchain.value: Either[HSingleton[String], HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [R >: Nothing <: Boolean] =>> HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], R, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]], false, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]]) match {
+        case Left(left) =>
+          Left.apply[String, Nothing](`left₄`.value)
+        case Right(right) =>
+          Right.apply[Nothing, Either[String, Either[String, String]]]((`right₄`.value: Either[HSingleton[String], HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], false, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]]) match {
+            case Left(left) =>
+              Left.apply[String, Nothing](`left₅`.value)
+            case Right(right) =>
+              Right.apply[Nothing, Either[String, String]]((`right₅`.value: Either[HSingleton[String], HSingleton[String]]) match {
+                case Left(left) =>
+                  Left.apply[String, Nothing](`left₆`.value)
+                case Right(right) =>
+                  Right.apply[Nothing, String](`right₆`.value)
+              })
+          })
+      }
+    }))
+  }
+
+  (new $anon(): Regex[Either[String, Either[String, Either[String, String]]]])
+}
