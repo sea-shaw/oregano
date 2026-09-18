@@ -109,9 +109,7 @@ trait AltTypes { this: Tidy =>
             Type.of[AltSingleton[F, G]]
         }
 
-        override def sanitiseCode[R <: Rep: Type](sanitisedLeft: => SanitiseExpr[SingletonOptionType[F][R]], sanitisedRight: => SanitiseExpr[SingletonOptionType[G][R]])(using
-            rep: RepType[R]
-        )(using Quotes): SanitiseExpr[AltBothOptionType[F, G][R]] = {
+        override def sanitiseCode[R <: Rep: Type](sanitisedLeft: => SanitiseExpr[SingletonOptionType[F][R]], sanitisedRight: => SanitiseExpr[SingletonOptionType[G][R]])(using rep: RepType[R])(using Quotes): SanitiseExpr[AltBothOptionType[F, G][R]] = {
             given Type[F] = leftType.innerType
             given Type[G] = rightType.innerType
             given Type[InclusiveOr] = inclusiveOrType
@@ -320,9 +318,7 @@ trait AltTypes { this: Tidy =>
         }
     }
 
-    private def tidyAlt[F[_ <: Rep] <: HNonEmpty: Type, G[_ <: Rep] <: HNonEmpty: Type, R <: Rep: Type, A, B](tidyLeft: TidyFunction[F[R], A], tidyRight: TidyFunction[G[R], B])(using
-        rep: RepType[R]
-    )(using Quotes): TidyFunction[AltSingleton[F, G][R], ?] = {
+    private def tidyAlt[F[_ <: Rep] <: HNonEmpty: Type, G[_ <: Rep] <: HNonEmpty: Type, R <: Rep: Type, A, B](tidyLeft: TidyFunction[F[R], A], tidyRight: TidyFunction[G[R], B])(using rep: RepType[R])(using Quotes): TidyFunction[AltSingleton[F, G][R], ?] = {
         given Type[A] = tidyLeft.tpe
         given Type[B] = tidyRight.tpe
         given Type[InclusiveOr] = inclusiveOrType
