@@ -115,7 +115,7 @@ class PatternBuilder {
             val p = compile(r)
             Pattern.Capture(groupId, p)
         }
-        case ast.NonCapture(flagsOn, flagsOff, r) => compile(r)
+        case ast.NonCapture(flagsOn, flagsOff, r) if flagsOn.isEmpty && flagsOff.isEmpty => compile(r)
 
         // Dot matches any character except newline, there is a flag to change this, could be handled
         // Could keep a Pattern.Dot, but for now, we can use a class that matches all characters except newline as is default
