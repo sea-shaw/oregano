@@ -113,13 +113,7 @@ private def regexCode[F[_ <: Rep] <: HChain](using ast: AST)(regex: ast.Regex[F]
 
                 override def unapply(input: CharSequence): Option[a] = {
                     matchesWithCaps(input).map { caps =>
-                        val groups = caps.grouped(2)
-                            .drop(1)
-                            .map {
-                                case Array(start, end) => if start != -1 && end != -1 then Some(input.subSequence(start, end).toString) else None
-                            }
-                            .toArray
-                        val hchain = ${ regex.getCode('groups, 0)(using RepFalse) }
+                        val hchain = ${ regex.getCode('input, 'caps, 1)(using RepFalse) }
                         ${ tidy('hchain) }
                     }
                 }
