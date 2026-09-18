@@ -90,11 +90,11 @@ class PatternBuilder {
     var numReps = 0 // initially used for caching nested Rep0 loops safely: TODO: doesn't work and isn't neccessary, delete!
 
     def compile(using ast: AST)(regex: ast.Regex[?]): Pattern = regex match {
-        case ast.Lit(c) => Pattern.Lit(c)
+        case ast.Lit(c)           => Pattern.Lit(c)
         case ast.Cat(left, right) => Pattern.Cat(compile(left), compile(right))
-        case ast.Alt(r1, r2) => Pattern.Alt(compile(r1), compile(r2))
-        case ast.Class(d) => Pattern.Class(d)
-        case ast.Star(r, Greedy) => {
+        case ast.Alt(r1, r2)      => Pattern.Alt(compile(r1), compile(r2))
+        case ast.Class(d)         => Pattern.Class(d)
+        case ast.Star(r, Greedy)  => {
             val p = compile(r)
             val idx = numReps
             numReps += 1
