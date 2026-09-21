@@ -1,7 +1,7 @@
 package oregano
 
 import org.scalatest.flatspec.AnyFlatSpec
-import org.scalatest.matchers.should.Matchers.{matchPattern, should}
+import org.scalatest.matchers.should.Matchers.*
 
 class UnapplyTests extends AnyFlatSpec {
   it should "match zero capture groups" in {
@@ -24,31 +24,31 @@ class UnapplyTests extends AnyFlatSpec {
     "abcde" should matchPattern { case r("abcde", "bcd", "c") => }
   }
 
-  it should "match optional patterns" in pending // {
-  //   val r = r"a?"
-  //   "a" should matchPattern { case r(()) => }
-  //   "" should matchPattern { case r(()) => }
-  // }
+  it should "match optional patterns" in {
+    val r = r"a?"
+    "a" should matchPattern { case r(()) => }
+    "" should matchPattern { case r(()) => }
+  }
 
-  it should "match optional capture groups" in pending // {
-  //   val r = r"(a)?"
-  //   "a" should matchPattern { case r(Some("a")) => }
-  //   "" should matchPattern { case r(None) => }
-  // }
+  it should "match optional capture groups" in {
+    val r = r"(a)?"
+    "a" should matchPattern { case r(Some("a")) => }
+    "" should matchPattern { case r(None) => }
+  }
 
-  it should "match nested optional capture groups" in pending // {
-  //   val r = r"(a(b)?)?"
-  //   "" should matchPattern { case r(None) => }
-  //   "a" should matchPattern { case r(Some("a", None)) => }
-  //   "ab" should matchPattern { case r(Some("ab", Some("b"))) => }
-  // }
+  it should "match nested optional capture groups" in {
+    val r = r"(a(b)?)?"
+    "" should matchPattern { case r(None) => }
+    "a" should matchPattern { case r(Some("a", None)) => }
+    "ab" should matchPattern { case r(Some("ab", Some("b"))) => }
+  }
 
-  it should "match optional capture group inside optional non-capture group" in pending // {
-  //   val r = r"(?:(a)?b)?"
-  //   "" should matchPattern { case r(None) => }
-  //   "b" should matchPattern { case r(None) => }
-  //   "ab" should matchPattern { case r(Some("a")) => }
-  // }
+  it should "match optional capture group inside optional non-capture group" in {
+    val r = r"(?:(a)?b)?"
+    "" should matchPattern { case r(None) => }
+    "b" should matchPattern { case r(None) => }
+    "ab" should matchPattern { case r(Some("a")) => }
+  }
 
   it should "match star capture groups" in {
     val r = r"(a)*"
@@ -88,38 +88,38 @@ class UnapplyTests extends AnyFlatSpec {
     "d" should matchPattern { case r(Right(Right(Right("d")))) => }
   }
 
-  it should "match alternative with optional capture group on the left" in pending // {
-  //   val r = r"(a)?|b"
-  //   "a" should matchPattern { case r(Some("a")) => }
-  //   "b" should matchPattern { case r(None) => }
-  // }
+  it should "match alternative with optional capture group on the left" in {
+    val r = r"(a)?|b"
+    "a" should matchPattern { case r(Some("a")) => }
+    "b" should matchPattern { case r(None) => }
+  }
 
-  it should "match alternative with optional capture group on the right" in pending // {
-  //   val r = r"a|(b)?"
-  //   "a" should matchPattern { case r(None) => }
-  //   "b" should matchPattern { case r(Some("b")) => }
-  // }
+  it should "match alternative with optional capture group on the right" in {
+    val r = r"a|(b)?"
+    "a" should matchPattern { case r(None) => }
+    "b" should matchPattern { case r(Some("b")) => }
+  }
 
-  it should "match alternative with optional capture groups on both sides" in pending // {
-  //   val r = r"(a)?|(b)?"
-  //   "a" should matchPattern { case r(Some(Left("a"))) => }
-  //   "b" should matchPattern { case r(Some(Right("b"))) => }
-  //   "" should matchPattern { case r(None) => }
-  // }
+  it should "match alternative with optional capture groups on both sides" in {
+    val r = r"(a)?|(b)?"
+    "a" should matchPattern { case r(Some(Left("a"))) => }
+    "b" should matchPattern { case r(Some(Right("b"))) => }
+    "" should matchPattern { case r(None) => }
+  }
 
-  it should "match alternative with optional capture group on the left and non-optional on the right" in pending // {
-  //   val r = r"(a)?|(b)"
-  //   "a" should matchPattern { case r(Some(Left("a"))) => }
-  //   "b" should matchPattern { case r(Some(Right("b"))) => }
-  //   "" should matchPattern { case r(None) => }
-  // }
+  it should "match alternative with optional capture group on the left and non-optional on the right" in {
+    val r = r"(a)?|(b)"
+    "a" should matchPattern { case r(Some(Left("a"))) => }
+    "b" should matchPattern { case r(Some(Right("b"))) => }
+    "" should matchPattern { case r(None) => }
+  }
 
-  it should "match alternative with non-optional capture group on the left and optional on the right" in pending // {
-  //   val r = r"(a)|(b)?"
-  //   "a" should matchPattern { case r(Some(Left("a"))) => }
-  //   "b" should matchPattern { case r(Some(Right("b"))) => }
-  //   "" should matchPattern { case r(None) => }
-  // }
+  it should "match alternative with non-optional capture group on the left and optional on the right" in {
+    val r = r"(a)|(b)?"
+    "a" should matchPattern { case r(Some(Left("a"))) => }
+    "b" should matchPattern { case r(Some(Right("b"))) => }
+    "" should matchPattern { case r(None) => }
+  }
 
   it should "match 4-way alternative with no capture groups in the middle" in {
     val r = r"(a)|b|c|(d)"
@@ -134,18 +134,18 @@ class UnapplyTests extends AnyFlatSpec {
     "a" should matchPattern { case r(()) => }
   }
 
-  it should "match capture groups with shared optionality" in pending // {
-  //   val r = r"(?:(a)(b))?"
-  //   "ab" should matchPattern { case r(Some("a", "b")) => }
-  //   "" should matchPattern { case r(None) => }
-  // }
+  it should "match capture groups with shared optionality" in {
+    val r = r"(?:(a)(b))?"
+    "ab" should matchPattern { case r(Some("a", "b")) => }
+    "" should matchPattern { case r(None) => }
+  }
 
-  it should "match alternative capture groups inside optional" in pending // {
-  //   val r = r"(?:(a)|(b))?"
-  //   "a" should matchPattern { case r(Some(Left("a"))) => }
-  //   "b" should matchPattern { case r(Some(Right("b"))) => }
-  //   "" should matchPattern { case r(None) => }
-  // }
+  it should "match alternative capture groups inside optional" in {
+    val r = r"(?:(a)|(b))?"
+    "a" should matchPattern { case r(Some(Left("a"))) => }
+    "b" should matchPattern { case r(Some(Right("b"))) => }
+    "" should matchPattern { case r(None) => }
+  }
 
   it should "match nested alternative capture groups" in {
     val r = r"(?:(a)|(b))|(?:(c)|(d))"

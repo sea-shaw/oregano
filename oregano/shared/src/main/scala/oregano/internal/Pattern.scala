@@ -12,6 +12,7 @@ import oregano.internal.ast.{AST, Greedy}
 import oregano.internal.parsing.parser
 
 enum Pattern {
+    case Eps
     case Lit(c: Int)
     case Cat(left: Pattern, right: Pattern)
     case Alt(left: Pattern, right: Pattern)
@@ -94,6 +95,7 @@ class PatternBuilder {
         case ast.Cat(left, right) => Pattern.Cat(compile(left), compile(right))
         case ast.Alt(r1, r2)      => Pattern.Alt(compile(r1), compile(r2))
         case ast.Class(d)         => Pattern.Class(d)
+        case ast.Opt(r, Greedy)   => Pattern.Alt(compile(r), Pattern.Eps)
         case ast.Star(r, Greedy)  => {
             val p = compile(r)
             val idx = numReps
