@@ -3,212 +3,116 @@
     override def matches(input: CharSequence): Boolean = ((`input₂`: CharSequence) => {
       val result: Int = {
         val lp: Int = {
-          val `lp₂`: Int = {
-            val res: Int = if (0.<(`input₂`.length()).&&(`input₂`.charAt(0).toInt.==(97))) {
-              val `res₂`: Int = if (0.+(1).==(`input₂`.length())) 0.+(1) else -1
-
-              (if (`res₂`.>=(0)) `res₂` else -1: Int)
-            } else -1
-
-            (if (res.>=(0)) res else -1: Int)
-          }
-          if (`lp₂`.>=(0)) `lp₂` else {
-            val `res₃`: Int = if (0.<(`input₂`.length()).&&(`input₂`.charAt(0).toInt.==(98))) {
-              val `res₄`: Int = if (0.+(1).==(`input₂`.length())) 0.+(1) else -1
-
-              (if (`res₄`.>=(0)) `res₄` else -1: Int)
-            } else -1
-
-            (if (`res₃`.>=(0)) `res₃` else -1: Int)
-          }
+          val `lp₂`: Int = if (0.<(`input₂`.length()).&&(`input₂`.charAt(0).==(97))) if (0.+(1).==(`input₂`.length())) 0.+(1) else -1 else -1
+          if (`lp₂`.>=(0)) `lp₂` else if (0.<(`input₂`.length()).&&(`input₂`.charAt(0).==(98))) if (0.+(1).==(`input₂`.length())) 0.+(1) else -1 else -1
         }
         if (lp.>=(0)) lp else {
-          val `lp₃`: Int = {
-            val `res₅`: Int = if (0.<(`input₂`.length()).&&(`input₂`.charAt(0).toInt.==(99))) {
-              val `res₆`: Int = if (0.+(1).==(`input₂`.length())) 0.+(1) else -1
-
-              (if (`res₆`.>=(0)) `res₆` else -1: Int)
-            } else -1
-
-            (if (`res₅`.>=(0)) `res₅` else -1: Int)
-          }
-          if (`lp₃`.>=(0)) `lp₃` else {
-            val `res₇`: Int = if (0.<(`input₂`.length()).&&(`input₂`.charAt(0).toInt.==(100))) {
-              val `res₈`: Int = if (0.+(1).==(`input₂`.length())) 0.+(1) else -1
-
-              (if (`res₈`.>=(0)) `res₈` else -1: Int)
-            } else -1
-
-            (if (`res₇`.>=(0)) `res₇` else -1: Int)
-          }
+          val `lp₃`: Int = if (0.<(`input₂`.length()).&&(`input₂`.charAt(0).==(99))) if (0.+(1).==(`input₂`.length())) 0.+(1) else -1 else -1
+          if (`lp₃`.>=(0)) `lp₃` else if (0.<(`input₂`.length()).&&(`input₂`.charAt(0).==(100))) if (0.+(1).==(`input₂`.length())) 0.+(1) else -1 else -1
         }
       }
       result.==(`input₂`.length())
     }).apply(input)
     override def matchesWithCaps(`input₃`: CharSequence): Option[Array[Int]] = ((`input₄`: CharSequence) => {
+      val inputLen: Int = `input₄`.length()
       val groups: Array[Int] = Array.fill[Int](10)(-1)(ClassTag.apply[Int](classOf[Int]))
       groups.update(0, 0)
       val `result₂`: Int = {
         val `lp₄`: Int = {
           val `lp₅`: Int = {
-            val oldVal: Int = groups.apply(2)
-            val curPos: Int = 0
-            val `res₉`: Int = if (0.<(`input₄`.length()).&&(`input₄`.charAt(0).toInt.==(97))) {
-              val `oldVal₂`: Int = groups.apply(3)
-              val `curPos₂`: Int = 0.+(1)
-              val `res₁₀`: Int = if (0.+(1).==(`input₄`.length())) {
-                groups.update(1, 0.+(1))
-                0.+(1)
-              } else -1
+            val savedStart: Int = groups.apply(2)
+            groups.update(2, 0)
+            val res: Int = if (0.<(`input₄`.length()).&&(`input₄`.charAt(0).==(97))) {
+              val savedEnd: Int = groups.apply(3)
+              groups.update(3, 0.+(1))
+              val `res₂`: Int = if (0.+(1).==(inputLen)) 0.+(1) else -1
 
-              (if (`res₁₀`.>=(0)) {
-                groups.update(3, `curPos₂`)
-                `res₁₀`
-              } else {
-                groups.update(3, `oldVal₂`)
+              (if (`res₂`.>=(0)) `res₂` else {
+                groups.update(3, savedEnd)
                 -1
               }: Int)
             } else -1
 
-            (if (`res₉`.>=(0)) {
-              groups.update(2, curPos)
-              `res₉`
-            } else {
-              groups.update(2, oldVal)
+            (if (res.>=(0)) res else {
+              groups.update(2, savedStart)
               -1
             }: Int)
           }
           if (`lp₅`.>=(0)) `lp₅` else {
-            val `oldVal₃`: Int = groups.apply(4)
-            val `curPos₃`: Int = 0
-            val `res₁₁`: Int = if (0.<(`input₄`.length()).&&(`input₄`.charAt(0).toInt.==(98))) {
-              val `oldVal₄`: Int = groups.apply(5)
-              val `curPos₄`: Int = 0.+(1)
-              val `res₁₂`: Int = if (0.+(1).==(`input₄`.length())) {
-                groups.update(1, 0.+(1))
-                0.+(1)
-              } else -1
+            val `savedStart₂`: Int = groups.apply(4)
+            groups.update(4, 0)
+            val `res₃`: Int = if (0.<(`input₄`.length()).&&(`input₄`.charAt(0).==(98))) {
+              val `savedEnd₂`: Int = groups.apply(5)
+              groups.update(5, 0.+(1))
+              val `res₄`: Int = if (0.+(1).==(inputLen)) 0.+(1) else -1
 
-              (if (`res₁₂`.>=(0)) {
-                groups.update(5, `curPos₄`)
-                `res₁₂`
-              } else {
-                groups.update(5, `oldVal₄`)
+              (if (`res₄`.>=(0)) `res₄` else {
+                groups.update(5, `savedEnd₂`)
                 -1
               }: Int)
             } else -1
 
-            (if (`res₁₁`.>=(0)) {
-              groups.update(4, `curPos₃`)
-              `res₁₁`
-            } else {
-              groups.update(4, `oldVal₃`)
+            (if (`res₃`.>=(0)) `res₃` else {
+              groups.update(4, `savedStart₂`)
               -1
             }: Int)
           }
         }
         if (`lp₄`.>=(0)) `lp₄` else {
           val `lp₆`: Int = {
-            val `oldVal₅`: Int = groups.apply(6)
-            val `curPos₅`: Int = 0
-            val `res₁₃`: Int = if (0.<(`input₄`.length()).&&(`input₄`.charAt(0).toInt.==(99))) {
-              val `oldVal₆`: Int = groups.apply(7)
-              val `curPos₆`: Int = 0.+(1)
-              val `res₁₄`: Int = if (0.+(1).==(`input₄`.length())) {
-                groups.update(1, 0.+(1))
-                0.+(1)
-              } else -1
+            val `savedStart₃`: Int = groups.apply(6)
+            groups.update(6, 0)
+            val `res₅`: Int = if (0.<(`input₄`.length()).&&(`input₄`.charAt(0).==(99))) {
+              val `savedEnd₃`: Int = groups.apply(7)
+              groups.update(7, 0.+(1))
+              val `res₆`: Int = if (0.+(1).==(inputLen)) 0.+(1) else -1
 
-              (if (`res₁₄`.>=(0)) {
-                groups.update(7, `curPos₆`)
-                `res₁₄`
-              } else {
-                groups.update(7, `oldVal₆`)
+              (if (`res₆`.>=(0)) `res₆` else {
+                groups.update(7, `savedEnd₃`)
                 -1
               }: Int)
             } else -1
 
-            (if (`res₁₃`.>=(0)) {
-              groups.update(6, `curPos₅`)
-              `res₁₃`
-            } else {
-              groups.update(6, `oldVal₅`)
+            (if (`res₅`.>=(0)) `res₅` else {
+              groups.update(6, `savedStart₃`)
               -1
             }: Int)
           }
           if (`lp₆`.>=(0)) `lp₆` else {
-            val `oldVal₇`: Int = groups.apply(8)
-            val `curPos₇`: Int = 0
-            val `res₁₅`: Int = if (0.<(`input₄`.length()).&&(`input₄`.charAt(0).toInt.==(100))) {
-              val `oldVal₈`: Int = groups.apply(9)
-              val `curPos₈`: Int = 0.+(1)
-              val `res₁₆`: Int = if (0.+(1).==(`input₄`.length())) {
-                groups.update(1, 0.+(1))
-                0.+(1)
-              } else -1
+            val `savedStart₄`: Int = groups.apply(8)
+            groups.update(8, 0)
+            val `res₇`: Int = if (0.<(`input₄`.length()).&&(`input₄`.charAt(0).==(100))) {
+              val `savedEnd₄`: Int = groups.apply(9)
+              groups.update(9, 0.+(1))
+              val `res₈`: Int = if (0.+(1).==(inputLen)) 0.+(1) else -1
 
-              (if (`res₁₆`.>=(0)) {
-                groups.update(9, `curPos₈`)
-                `res₁₆`
-              } else {
-                groups.update(9, `oldVal₈`)
+              (if (`res₈`.>=(0)) `res₈` else {
+                groups.update(9, `savedEnd₄`)
                 -1
               }: Int)
             } else -1
 
-            (if (`res₁₅`.>=(0)) {
-              groups.update(8, `curPos₇`)
-              `res₁₅`
-            } else {
-              groups.update(8, `oldVal₇`)
+            (if (`res₇`.>=(0)) `res₇` else {
+              groups.update(8, `savedStart₄`)
               -1
             }: Int)
           }
         }
       }
-      if (`result₂`.==(`input₄`.length())) Some.apply[Array[Int]](groups) else None
+      if (`result₂`.==(inputLen)) {
+        groups.update(1, `result₂`)
+        Some.apply[Array[Int]](groups)
+      } else None
     }).apply(`input₃`)
     override def findPrefixOf(source: CharSequence): Option[String] = {
       val matchPos: Int = ((startPos: Int, `input₅`: CharSequence) => {
         val `lp₇`: Int = {
-          val `lp₈`: Int = {
-            val `res₁₇`: Int = if (startPos.<(`input₅`.length()).&&(`input₅`.charAt(startPos).toInt.==(97))) {
-              val `res₁₈`: Int = startPos.+(1)
-
-              (if (`res₁₈`.>=(0)) `res₁₈` else -1: Int)
-            } else -1
-
-            (if (`res₁₇`.>=(0)) `res₁₇` else -1: Int)
-          }
-          if (`lp₈`.>=(0)) `lp₈` else {
-            val `res₁₉`: Int = if (startPos.<(`input₅`.length()).&&(`input₅`.charAt(startPos).toInt.==(98))) {
-              val `res₂₀`: Int = startPos.+(1)
-
-              (if (`res₂₀`.>=(0)) `res₂₀` else -1: Int)
-            } else -1
-
-            (if (`res₁₉`.>=(0)) `res₁₉` else -1: Int)
-          }
+          val `lp₈`: Int = if (startPos.<(`input₅`.length()).&&(`input₅`.charAt(startPos).==(97))) startPos.+(1) else -1
+          if (`lp₈`.>=(0)) `lp₈` else if (startPos.<(`input₅`.length()).&&(`input₅`.charAt(startPos).==(98))) startPos.+(1) else -1
         }
         if (`lp₇`.>=(0)) `lp₇` else {
-          val `lp₉`: Int = {
-            val `res₂₁`: Int = if (startPos.<(`input₅`.length()).&&(`input₅`.charAt(startPos).toInt.==(99))) {
-              val `res₂₂`: Int = startPos.+(1)
-
-              (if (`res₂₂`.>=(0)) `res₂₂` else -1: Int)
-            } else -1
-
-            (if (`res₂₁`.>=(0)) `res₂₁` else -1: Int)
-          }
-          if (`lp₉`.>=(0)) `lp₉` else {
-            val `res₂₃`: Int = if (startPos.<(`input₅`.length()).&&(`input₅`.charAt(startPos).toInt.==(100))) {
-              val `res₂₄`: Int = startPos.+(1)
-
-              (if (`res₂₄`.>=(0)) `res₂₄` else -1: Int)
-            } else -1
-
-            (if (`res₂₃`.>=(0)) `res₂₃` else -1: Int)
-          }
+          val `lp₉`: Int = if (startPos.<(`input₅`.length()).&&(`input₅`.charAt(startPos).==(99))) startPos.+(1) else -1
+          if (`lp₉`.>=(0)) `lp₉` else if (startPos.<(`input₅`.length()).&&(`input₅`.charAt(startPos).==(100))) startPos.+(1) else -1
         }
       }).apply(0, source)
       Option.when[String](matchPos.!=(-1))(source.subSequence(0, matchPos).toString())
@@ -219,44 +123,12 @@
       while (pos.<(len)) {
         val `matchPos₂`: Int = ((`startPos₂`: Int, `input₆`: CharSequence) => {
           val `lp₁₀`: Int = {
-            val `lp₁₁`: Int = {
-              val `res₂₅`: Int = if (`startPos₂`.<(`input₆`.length()).&&(`input₆`.charAt(`startPos₂`).toInt.==(97))) {
-                val `res₂₆`: Int = `startPos₂`.+(1)
-
-                (if (`res₂₆`.>=(0)) `res₂₆` else -1: Int)
-              } else -1
-
-              (if (`res₂₅`.>=(0)) `res₂₅` else -1: Int)
-            }
-            if (`lp₁₁`.>=(0)) `lp₁₁` else {
-              val `res₂₇`: Int = if (`startPos₂`.<(`input₆`.length()).&&(`input₆`.charAt(`startPos₂`).toInt.==(98))) {
-                val `res₂₈`: Int = `startPos₂`.+(1)
-
-                (if (`res₂₈`.>=(0)) `res₂₈` else -1: Int)
-              } else -1
-
-              (if (`res₂₇`.>=(0)) `res₂₇` else -1: Int)
-            }
+            val `lp₁₁`: Int = if (`startPos₂`.<(`input₆`.length()).&&(`input₆`.charAt(`startPos₂`).==(97))) `startPos₂`.+(1) else -1
+            if (`lp₁₁`.>=(0)) `lp₁₁` else if (`startPos₂`.<(`input₆`.length()).&&(`input₆`.charAt(`startPos₂`).==(98))) `startPos₂`.+(1) else -1
           }
           if (`lp₁₀`.>=(0)) `lp₁₀` else {
-            val `lp₁₂`: Int = {
-              val `res₂₉`: Int = if (`startPos₂`.<(`input₆`.length()).&&(`input₆`.charAt(`startPos₂`).toInt.==(99))) {
-                val `res₃₀`: Int = `startPos₂`.+(1)
-
-                (if (`res₃₀`.>=(0)) `res₃₀` else -1: Int)
-              } else -1
-
-              (if (`res₂₉`.>=(0)) `res₂₉` else -1: Int)
-            }
-            if (`lp₁₂`.>=(0)) `lp₁₂` else {
-              val `res₃₁`: Int = if (`startPos₂`.<(`input₆`.length()).&&(`input₆`.charAt(`startPos₂`).toInt.==(100))) {
-                val `res₃₂`: Int = `startPos₂`.+(1)
-
-                (if (`res₃₂`.>=(0)) `res₃₂` else -1: Int)
-              } else -1
-
-              (if (`res₃₁`.>=(0)) `res₃₁` else -1: Int)
-            }
+            val `lp₁₂`: Int = if (`startPos₂`.<(`input₆`.length()).&&(`input₆`.charAt(`startPos₂`).==(99))) `startPos₂`.+(1) else -1
+            if (`lp₁₂`.>=(0)) `lp₁₂` else if (`startPos₂`.<(`input₆`.length()).&&(`input₆`.charAt(`startPos₂`).==(100))) `startPos₂`.+(1) else -1
           }
         }).apply(pos, `source₂`)
         if (`matchPos₂`.!=(-1)) return Some.apply[String](`source₂`.subSequence(pos, `matchPos₂`).toString()) else ()
@@ -272,44 +144,12 @@
       while (`pos₂`.<(`len₂`)) {
         val matchEnd: Int = ((`startPos₃`: Int, `input₇`: CharSequence) => {
           val `lp₁₃`: Int = {
-            val `lp₁₄`: Int = {
-              val `res₃₃`: Int = if (`startPos₃`.<(`input₇`.length()).&&(`input₇`.charAt(`startPos₃`).toInt.==(97))) {
-                val `res₃₄`: Int = `startPos₃`.+(1)
-
-                (if (`res₃₄`.>=(0)) `res₃₄` else -1: Int)
-              } else -1
-
-              (if (`res₃₃`.>=(0)) `res₃₃` else -1: Int)
-            }
-            if (`lp₁₄`.>=(0)) `lp₁₄` else {
-              val `res₃₅`: Int = if (`startPos₃`.<(`input₇`.length()).&&(`input₇`.charAt(`startPos₃`).toInt.==(98))) {
-                val `res₃₆`: Int = `startPos₃`.+(1)
-
-                (if (`res₃₆`.>=(0)) `res₃₆` else -1: Int)
-              } else -1
-
-              (if (`res₃₅`.>=(0)) `res₃₅` else -1: Int)
-            }
+            val `lp₁₄`: Int = if (`startPos₃`.<(`input₇`.length()).&&(`input₇`.charAt(`startPos₃`).==(97))) `startPos₃`.+(1) else -1
+            if (`lp₁₄`.>=(0)) `lp₁₄` else if (`startPos₃`.<(`input₇`.length()).&&(`input₇`.charAt(`startPos₃`).==(98))) `startPos₃`.+(1) else -1
           }
           if (`lp₁₃`.>=(0)) `lp₁₃` else {
-            val `lp₁₅`: Int = {
-              val `res₃₇`: Int = if (`startPos₃`.<(`input₇`.length()).&&(`input₇`.charAt(`startPos₃`).toInt.==(99))) {
-                val `res₃₈`: Int = `startPos₃`.+(1)
-
-                (if (`res₃₈`.>=(0)) `res₃₈` else -1: Int)
-              } else -1
-
-              (if (`res₃₇`.>=(0)) `res₃₇` else -1: Int)
-            }
-            if (`lp₁₅`.>=(0)) `lp₁₅` else {
-              val `res₃₉`: Int = if (`startPos₃`.<(`input₇`.length()).&&(`input₇`.charAt(`startPos₃`).toInt.==(100))) {
-                val `res₄₀`: Int = `startPos₃`.+(1)
-
-                (if (`res₄₀`.>=(0)) `res₄₀` else -1: Int)
-              } else -1
-
-              (if (`res₃₉`.>=(0)) `res₃₉` else -1: Int)
-            }
+            val `lp₁₅`: Int = if (`startPos₃`.<(`input₇`.length()).&&(`input₇`.charAt(`startPos₃`).==(99))) `startPos₃`.+(1) else -1
+            if (`lp₁₅`.>=(0)) `lp₁₅` else if (`startPos₃`.<(`input₇`.length()).&&(`input₇`.charAt(`startPos₃`).==(100))) `startPos₃`.+(1) else -1
           }
         }).apply(`pos₂`, toSplit)
         if (matchEnd.!=(-1)) {
