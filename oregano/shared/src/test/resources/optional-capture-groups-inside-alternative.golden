@@ -1,0 +1,168 @@
+{
+  final class $anon() extends Regex[Option[Either[String, String]]] {
+    override def matches(input: CharSequence): Boolean = ((`input₂`: CharSequence) => {
+      val result: Int = {
+        val lp: Int = {
+          val `lp₂`: Int = if (0.<(`input₂`.length()).&&(`input₂`.charAt(0).==(97))) if (0.+(1).==(`input₂`.length())) 0.+(1) else -1 else -1
+          if (`lp₂`.>=(0)) `lp₂` else if (0.==(`input₂`.length())) 0 else -1
+        }
+        if (lp.>=(0)) lp else {
+          val `lp₃`: Int = if (0.<(`input₂`.length()).&&(`input₂`.charAt(0).==(98))) if (0.+(1).==(`input₂`.length())) 0.+(1) else -1 else -1
+          if (`lp₃`.>=(0)) `lp₃` else if (0.==(`input₂`.length())) 0 else -1
+        }
+      }
+      result.==(`input₂`.length())
+    }).apply(input)
+    override def matchesWithCaps(`input₃`: CharSequence): Option[Array[Int]] = ((`input₄`: CharSequence) => {
+      val inputLen: Int = `input₄`.length()
+      val groups: Array[Int] = Array.fill[Int](6)(-1)(ClassTag.apply[Int](classOf[Int]))
+      groups.update(0, 0)
+      val `result₂`: Int = {
+        val `lp₄`: Int = {
+          val `lp₅`: Int = {
+            val savedStart: Int = groups.apply(2)
+            groups.update(2, 0)
+            val res: Int = if (0.<(`input₄`.length()).&&(`input₄`.charAt(0).==(97))) {
+              val savedEnd: Int = groups.apply(3)
+              groups.update(3, 0.+(1))
+              val `res₂`: Int = if (0.+(1).==(inputLen)) 0.+(1) else -1
+
+              (if (`res₂`.>=(0)) `res₂` else {
+                groups.update(3, savedEnd)
+                -1
+              }: Int)
+            } else -1
+
+            (if (res.>=(0)) res else {
+              groups.update(2, savedStart)
+              -1
+            }: Int)
+          }
+          if (`lp₅`.>=(0)) `lp₅` else if (0.==(inputLen)) 0 else -1
+        }
+        if (`lp₄`.>=(0)) `lp₄` else {
+          val `lp₆`: Int = {
+            val `savedStart₂`: Int = groups.apply(4)
+            groups.update(4, 0)
+            val `res₃`: Int = if (0.<(`input₄`.length()).&&(`input₄`.charAt(0).==(98))) {
+              val `savedEnd₂`: Int = groups.apply(5)
+              groups.update(5, 0.+(1))
+              val `res₄`: Int = if (0.+(1).==(inputLen)) 0.+(1) else -1
+
+              (if (`res₄`.>=(0)) `res₄` else {
+                groups.update(5, `savedEnd₂`)
+                -1
+              }: Int)
+            } else -1
+
+            (if (`res₃`.>=(0)) `res₃` else {
+              groups.update(4, `savedStart₂`)
+              -1
+            }: Int)
+          }
+          if (`lp₆`.>=(0)) `lp₆` else if (0.==(inputLen)) 0 else -1
+        }
+      }
+      if (`result₂`.==(inputLen)) {
+        groups.update(1, `result₂`)
+        Some.apply[Array[Int]](groups)
+      } else None
+    }).apply(`input₃`)
+    override def findPrefixOf(source: CharSequence): Option[String] = {
+      val matchPos: Int = ((startPos: Int, `input₅`: CharSequence) => {
+        val `lp₇`: Int = {
+          val `lp₈`: Int = if (startPos.<(`input₅`.length()).&&(`input₅`.charAt(startPos).==(97))) startPos.+(1) else -1
+          if (`lp₈`.>=(0)) `lp₈` else startPos
+        }
+        if (`lp₇`.>=(0)) `lp₇` else {
+          val `lp₉`: Int = if (startPos.<(`input₅`.length()).&&(`input₅`.charAt(startPos).==(98))) startPos.+(1) else -1
+          if (`lp₉`.>=(0)) `lp₉` else startPos
+        }
+      }).apply(0, source)
+      Option.when[String](matchPos.!=(-1))(source.subSequence(0, matchPos).toString())
+    }
+    override def findFirstIn(`source₂`: CharSequence): Option[String] = {
+      val len: Int = `source₂`.length()
+      var pos: Int = 0
+      while (pos.<(len)) {
+        val `matchPos₂`: Int = ((`startPos₂`: Int, `input₆`: CharSequence) => {
+          val `lp₁₀`: Int = {
+            val `lp₁₁`: Int = if (`startPos₂`.<(`input₆`.length()).&&(`input₆`.charAt(`startPos₂`).==(97))) `startPos₂`.+(1) else -1
+            if (`lp₁₁`.>=(0)) `lp₁₁` else `startPos₂`
+          }
+          if (`lp₁₀`.>=(0)) `lp₁₀` else {
+            val `lp₁₂`: Int = if (`startPos₂`.<(`input₆`.length()).&&(`input₆`.charAt(`startPos₂`).==(98))) `startPos₂`.+(1) else -1
+            if (`lp₁₂`.>=(0)) `lp₁₂` else `startPos₂`
+          }
+        }).apply(pos, `source₂`)
+        if (`matchPos₂`.!=(-1)) return Some.apply[String](`source₂`.subSequence(pos, `matchPos₂`).toString()) else ()
+        pos = pos.+(1)
+      }
+      None
+    }
+    override def split(toSplit: CharSequence): Array[String] = {
+      val `result₃`: ArrayBuffer[String] = scala.collection.mutable.ArrayBuffer.empty[String]
+      val `len₂`: Int = toSplit.length()
+      var `pos₂`: Int = 0
+      var lastEnd: Int = 0
+      while (`pos₂`.<(`len₂`)) {
+        val matchEnd: Int = ((`startPos₃`: Int, `input₇`: CharSequence) => {
+          val `lp₁₃`: Int = {
+            val `lp₁₄`: Int = if (`startPos₃`.<(`input₇`.length()).&&(`input₇`.charAt(`startPos₃`).==(97))) `startPos₃`.+(1) else -1
+            if (`lp₁₄`.>=(0)) `lp₁₄` else `startPos₃`
+          }
+          if (`lp₁₃`.>=(0)) `lp₁₃` else {
+            val `lp₁₅`: Int = if (`startPos₃`.<(`input₇`.length()).&&(`input₇`.charAt(`startPos₃`).==(98))) `startPos₃`.+(1) else -1
+            if (`lp₁₅`.>=(0)) `lp₁₅` else `startPos₃`
+          }
+        }).apply(`pos₂`, toSplit)
+        if (matchEnd.!=(-1)) {
+          `result₃`.+=(toSplit.subSequence(lastEnd, `pos₂`).toString())
+          lastEnd = matchEnd
+          `pos₂` = if (matchEnd.==(`pos₂`)) `pos₂`.+(1) else matchEnd
+        } else `pos₂` = `pos₂`.+(1)
+      }
+      if (lastEnd.!=(`len₂`)) {
+        `result₃`.+=(toSplit.subSequence(lastEnd, `len₂`).toString())
+        ()
+      } else ()
+      `result₃`.toArray[String](ClassTag.apply[String](classOf[String]))
+    }
+    override def unapply(`input₈`: CharSequence): Option[Option[Either[String, String]]] = $anon.this.matchesWithCaps(`input₈`).map[Option[Either[String, String]]](((caps: Array[Int]) => {
+      val hchain: HSingleton[Option[HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], false, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]]] = {
+        val left: Option[Sanitised[HSingleton[Option[HSingleton[String]]]]] = {
+          val `caps₂`: Option[Sanitised[HSingleton[String]]] = {
+            val cap: Option[String] = {
+              val l: Int = caps.apply(2)
+              val u: Int = caps.apply(3)
+              if (l.>=(0).&&(u.>=(0))) Some.apply[String](`input₈`.subSequence(l, u).toString()) else None
+            }
+            if (cap.isDefined) Some.apply[Sanitised[HSingleton[String]]](Sanitised.apply[HSingleton[String]](HSingleton.apply[String](cap.get), true)) else None
+          }
+          if (`caps₂`.isDefined) Some.apply[Sanitised[HSingleton[Some[HSingleton[String]]]]](Sanitised.apply[HSingleton[Some[HSingleton[String]]]](HSingleton.apply[Some[HSingleton[String]]](Some.apply[HSingleton[String]](`caps₂`.get.captures)), `caps₂`.get.any)) else Some.apply[Sanitised[HSingleton[None]]](Sanitised.apply[HSingleton[None]](HSingleton.apply[None.type](None), false))
+        }
+        val right: Option[Sanitised[HSingleton[Option[HSingleton[String]]]]] = {
+          val `caps₃`: Option[Sanitised[HSingleton[String]]] = {
+            val `cap₂`: Option[String] = {
+              val `l₂`: Int = caps.apply(4)
+              val `u₂`: Int = caps.apply(5)
+              if (`l₂`.>=(0).&&(`u₂`.>=(0))) Some.apply[String](`input₈`.subSequence(`l₂`, `u₂`).toString()) else None
+            }
+            if (`cap₂`.isDefined) Some.apply[Sanitised[HSingleton[String]]](Sanitised.apply[HSingleton[String]](HSingleton.apply[String](`cap₂`.get), true)) else None
+          }
+          if (`caps₃`.isDefined) Some.apply[Sanitised[HSingleton[Some[HSingleton[String]]]]](Sanitised.apply[HSingleton[Some[HSingleton[String]]]](HSingleton.apply[Some[HSingleton[String]]](Some.apply[HSingleton[String]](`caps₃`.get.captures)), `caps₃`.get.any)) else Some.apply[Sanitised[HSingleton[None]]](Sanitised.apply[HSingleton[None]](HSingleton.apply[None.type](None), false))
+        }
+        if (left.isDefined.&&(left.get.any)) Some.apply[Sanitised[HSingleton[Some[HSingleton[Left[HSingleton[String], Nothing]]]]]](Sanitised.apply[HSingleton[Some[HSingleton[Left[HSingleton[String], Nothing]]]]](HSingleton.apply[Some[HSingleton[Left[HSingleton[String], Nothing]]]](Some.apply[HSingleton[Left[HSingleton[String], Nothing]]](HSingleton.apply[Left[HSingleton[String], Nothing]](Left.apply[HSingleton[String], Nothing](left.get.captures.value.get)))), true)) else if (right.isDefined.&&(right.get.any)) Some.apply[Sanitised[HSingleton[Some[HSingleton[Right[Nothing, HSingleton[String]]]]]]](Sanitised.apply[HSingleton[Some[HSingleton[Right[Nothing, HSingleton[String]]]]]](HSingleton.apply[Some[HSingleton[Right[Nothing, HSingleton[String]]]]](Some.apply[HSingleton[Right[Nothing, HSingleton[String]]]](HSingleton.apply[Right[Nothing, HSingleton[String]]](Right.apply[Nothing, HSingleton[String]](right.get.captures.value.get)))), true)) else Some.apply[Sanitised[HSingleton[None]]](Sanitised.apply[HSingleton[None]](HSingleton.apply[None.type](None), false))
+      }.get.captures
+      val opt: Option[HSingleton[AltRep[[_$1 >: Nothing <: Any] =>> HSingleton[String], [_$1 >: Nothing <: Any] =>> HSingleton[String], false, [A >: Nothing <: Any, B >: Nothing <: Any] =>> Either[Either[A, B], Tuple2[A, B]]]]] = hchain.value
+      if (opt.isDefined) Some.apply[Either[String, String]]((opt.get.value: Either[HSingleton[String], HSingleton[String]]) match {
+        case Left(left) =>
+          Left.apply[String, Nothing](`left₂`.value)
+        case Right(right) =>
+          Right.apply[Nothing, String](`right₂`.value)
+      }) else None
+    }))
+  }
+
+  (new $anon(): Regex[Option[Either[String, String]]])
+}

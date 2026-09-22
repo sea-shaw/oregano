@@ -2,110 +2,64 @@
   final class $anon() extends Regex[Either[String, String]] {
     override def matches(input: CharSequence): Boolean = ((`input₂`: CharSequence) => {
       val result: Int = {
-        val lp: Int = {
-          val res: Int = if (0.<(`input₂`.length()).&&(`input₂`.charAt(0).toInt.==(97))) {
-            val `res₂`: Int = if (0.+(1).==(`input₂`.length())) 0.+(1) else -1
-
-            (if (`res₂`.>=(0)) `res₂` else -1: Int)
-          } else -1
-
-          (if (res.>=(0)) res else -1: Int)
-        }
-        if (lp.>=(0)) lp else {
-          val `res₃`: Int = if (0.<(`input₂`.length()).&&(`input₂`.charAt(0).toInt.==(98))) {
-            val `res₄`: Int = if (0.+(1).==(`input₂`.length())) 0.+(1) else -1
-
-            (if (`res₄`.>=(0)) `res₄` else -1: Int)
-          } else -1
-
-          (if (`res₃`.>=(0)) `res₃` else -1: Int)
-        }
+        val lp: Int = if (0.<(`input₂`.length()).&&(`input₂`.charAt(0).==(97))) if (0.+(1).==(`input₂`.length())) 0.+(1) else -1 else -1
+        if (lp.>=(0)) lp else if (0.<(`input₂`.length()).&&(`input₂`.charAt(0).==(98))) if (0.+(1).==(`input₂`.length())) 0.+(1) else -1 else -1
       }
       result.==(`input₂`.length())
     }).apply(input)
     override def matchesWithCaps(`input₃`: CharSequence): Option[Array[Int]] = ((`input₄`: CharSequence) => {
+      val inputLen: Int = `input₄`.length()
       val groups: Array[Int] = Array.fill[Int](6)(-1)(ClassTag.apply[Int](classOf[Int]))
       groups.update(0, 0)
       val `result₂`: Int = {
         val `lp₂`: Int = {
-          val oldVal: Int = groups.apply(2)
-          val curPos: Int = 0
-          val `res₅`: Int = if (0.<(`input₄`.length()).&&(`input₄`.charAt(0).toInt.==(97))) {
-            val `oldVal₂`: Int = groups.apply(3)
-            val `curPos₂`: Int = 0.+(1)
-            val `res₆`: Int = if (0.+(1).==(`input₄`.length())) {
-              groups.update(1, 0.+(1))
-              0.+(1)
-            } else -1
+          val savedStart: Int = groups.apply(2)
+          groups.update(2, 0)
+          val res: Int = if (0.<(`input₄`.length()).&&(`input₄`.charAt(0).==(97))) {
+            val savedEnd: Int = groups.apply(3)
+            groups.update(3, 0.+(1))
+            val `res₂`: Int = if (0.+(1).==(inputLen)) 0.+(1) else -1
 
-            (if (`res₆`.>=(0)) {
-              groups.update(3, `curPos₂`)
-              `res₆`
-            } else {
-              groups.update(3, `oldVal₂`)
+            (if (`res₂`.>=(0)) `res₂` else {
+              groups.update(3, savedEnd)
               -1
             }: Int)
           } else -1
 
-          (if (`res₅`.>=(0)) {
-            groups.update(2, curPos)
-            `res₅`
-          } else {
-            groups.update(2, oldVal)
+          (if (res.>=(0)) res else {
+            groups.update(2, savedStart)
             -1
           }: Int)
         }
         if (`lp₂`.>=(0)) `lp₂` else {
-          val `oldVal₃`: Int = groups.apply(4)
-          val `curPos₃`: Int = 0
-          val `res₇`: Int = if (0.<(`input₄`.length()).&&(`input₄`.charAt(0).toInt.==(98))) {
-            val `oldVal₄`: Int = groups.apply(5)
-            val `curPos₄`: Int = 0.+(1)
-            val `res₈`: Int = if (0.+(1).==(`input₄`.length())) {
-              groups.update(1, 0.+(1))
-              0.+(1)
-            } else -1
+          val `savedStart₂`: Int = groups.apply(4)
+          groups.update(4, 0)
+          val `res₃`: Int = if (0.<(`input₄`.length()).&&(`input₄`.charAt(0).==(98))) {
+            val `savedEnd₂`: Int = groups.apply(5)
+            groups.update(5, 0.+(1))
+            val `res₄`: Int = if (0.+(1).==(inputLen)) 0.+(1) else -1
 
-            (if (`res₈`.>=(0)) {
-              groups.update(5, `curPos₄`)
-              `res₈`
-            } else {
-              groups.update(5, `oldVal₄`)
+            (if (`res₄`.>=(0)) `res₄` else {
+              groups.update(5, `savedEnd₂`)
               -1
             }: Int)
           } else -1
 
-          (if (`res₇`.>=(0)) {
-            groups.update(4, `curPos₃`)
-            `res₇`
-          } else {
-            groups.update(4, `oldVal₃`)
+          (if (`res₃`.>=(0)) `res₃` else {
+            groups.update(4, `savedStart₂`)
             -1
           }: Int)
         }
       }
-      if (`result₂`.==(`input₄`.length())) Some.apply[Array[Int]](groups) else None
+      if (`result₂`.==(inputLen)) {
+        groups.update(1, `result₂`)
+        Some.apply[Array[Int]](groups)
+      } else None
     }).apply(`input₃`)
     override def findPrefixOf(source: CharSequence): Option[String] = {
       val matchPos: Int = ((startPos: Int, `input₅`: CharSequence) => {
-        val `lp₃`: Int = {
-          val `res₉`: Int = if (startPos.<(`input₅`.length()).&&(`input₅`.charAt(startPos).toInt.==(97))) {
-            val `res₁₀`: Int = startPos.+(1)
-
-            (if (`res₁₀`.>=(0)) `res₁₀` else -1: Int)
-          } else -1
-
-          (if (`res₉`.>=(0)) `res₉` else -1: Int)
-        }
-        if (`lp₃`.>=(0)) `lp₃` else {
-          val `res₁₁`: Int = if (startPos.<(`input₅`.length()).&&(`input₅`.charAt(startPos).toInt.==(98))) {
-            val `res₁₂`: Int = startPos.+(1)
-
-            (if (`res₁₂`.>=(0)) `res₁₂` else -1: Int)
-          } else -1
-
-          (if (`res₁₁`.>=(0)) `res₁₁` else -1: Int)
-        }
+        val `lp₃`: Int = if (startPos.<(`input₅`.length()).&&(`input₅`.charAt(startPos).==(97))) startPos.+(1) else -1
+        if (`lp₃`.>=(0)) `lp₃` else if (startPos.<(`input₅`.length()).&&(`input₅`.charAt(startPos).==(98))) startPos.+(1) else -1
       }).apply(0, source)
       Option.when[String](matchPos.!=(-1))(source.subSequence(0, matchPos).toString())
     }
@@ -114,24 +68,8 @@
       var pos: Int = 0
       while (pos.<(len)) {
         val `matchPos₂`: Int = ((`startPos₂`: Int, `input₆`: CharSequence) => {
-          val `lp₄`: Int = {
-            val `res₁₃`: Int = if (`startPos₂`.<(`input₆`.length()).&&(`input₆`.charAt(`startPos₂`).toInt.==(97))) {
-              val `res₁₄`: Int = `startPos₂`.+(1)
-
-              (if (`res₁₄`.>=(0)) `res₁₄` else -1: Int)
-            } else -1
-
-            (if (`res₁₃`.>=(0)) `res₁₃` else -1: Int)
-          }
-          if (`lp₄`.>=(0)) `lp₄` else {
-            val `res₁₅`: Int = if (`startPos₂`.<(`input₆`.length()).&&(`input₆`.charAt(`startPos₂`).toInt.==(98))) {
-              val `res₁₆`: Int = `startPos₂`.+(1)
-
-              (if (`res₁₆`.>=(0)) `res₁₆` else -1: Int)
-            } else -1
-
-            (if (`res₁₅`.>=(0)) `res₁₅` else -1: Int)
-          }
+          val `lp₄`: Int = if (`startPos₂`.<(`input₆`.length()).&&(`input₆`.charAt(`startPos₂`).==(97))) `startPos₂`.+(1) else -1
+          if (`lp₄`.>=(0)) `lp₄` else if (`startPos₂`.<(`input₆`.length()).&&(`input₆`.charAt(`startPos₂`).==(98))) `startPos₂`.+(1) else -1
         }).apply(pos, `source₂`)
         if (`matchPos₂`.!=(-1)) return Some.apply[String](`source₂`.subSequence(pos, `matchPos₂`).toString()) else ()
         pos = pos.+(1)
@@ -145,24 +83,8 @@
       var lastEnd: Int = 0
       while (`pos₂`.<(`len₂`)) {
         val matchEnd: Int = ((`startPos₃`: Int, `input₇`: CharSequence) => {
-          val `lp₅`: Int = {
-            val `res₁₇`: Int = if (`startPos₃`.<(`input₇`.length()).&&(`input₇`.charAt(`startPos₃`).toInt.==(97))) {
-              val `res₁₈`: Int = `startPos₃`.+(1)
-
-              (if (`res₁₈`.>=(0)) `res₁₈` else -1: Int)
-            } else -1
-
-            (if (`res₁₇`.>=(0)) `res₁₇` else -1: Int)
-          }
-          if (`lp₅`.>=(0)) `lp₅` else {
-            val `res₁₉`: Int = if (`startPos₃`.<(`input₇`.length()).&&(`input₇`.charAt(`startPos₃`).toInt.==(98))) {
-              val `res₂₀`: Int = `startPos₃`.+(1)
-
-              (if (`res₂₀`.>=(0)) `res₂₀` else -1: Int)
-            } else -1
-
-            (if (`res₁₉`.>=(0)) `res₁₉` else -1: Int)
-          }
+          val `lp₅`: Int = if (`startPos₃`.<(`input₇`.length()).&&(`input₇`.charAt(`startPos₃`).==(97))) `startPos₃`.+(1) else -1
+          if (`lp₅`.>=(0)) `lp₅` else if (`startPos₃`.<(`input₇`.length()).&&(`input₇`.charAt(`startPos₃`).==(98))) `startPos₃`.+(1) else -1
         }).apply(`pos₂`, toSplit)
         if (matchEnd.!=(-1)) {
           `result₃`.+=(toSplit.subSequence(lastEnd, `pos₂`).toString())

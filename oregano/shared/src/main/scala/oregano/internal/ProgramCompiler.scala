@@ -132,6 +132,7 @@ class ProgramCompiler {
 //   private val ANY_RUNE = Array(0, Utils.MAX_RUNE)
 
     private def compile(re: Pattern): Frag = re match {
+        case Pattern.Eps    => ??? // nop()
         case Pattern.Lit(c) => rune(c, 0)
         case Pattern.Class(diet) =>
             // val runes = diet.toList.sorted

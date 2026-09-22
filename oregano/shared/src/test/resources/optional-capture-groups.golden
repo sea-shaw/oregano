@@ -2,11 +2,8 @@
   final class $anon() extends Regex[Option[String]] {
     override def matches(input: CharSequence): Boolean = ((`input₂`: CharSequence) => {
       val result: Int = {
-        def self(p: Int): Int = {
-          val step: Int = if (p.<(`input₂`.length()).&&(`input₂`.charAt(p).==(97))) if (p.+(1).!=(p)) self(p.+(1)) else -1 else -1
-          if (step.>=(0)) step else if (p.==(`input₂`.length())) p else -1
-        }
-        self(0)
+        val lp: Int = if (0.<(`input₂`.length()).&&(`input₂`.charAt(0).==(97))) if (0.+(1).==(`input₂`.length())) 0.+(1) else -1 else -1
+        if (lp.>=(0)) lp else if (0.==(`input₂`.length())) 0 else -1
       }
       result.==(`input₂`.length())
     }).apply(input)
@@ -15,29 +12,26 @@
       val groups: Array[Int] = Array.fill[Int](4)(-1)(ClassTag.apply[Int](classOf[Int]))
       groups.update(0, 0)
       val `result₂`: Int = {
-        def `self₂`(`p₂`: Int): Int = {
-          val `step₂`: Int = {
-            val savedStart: Int = groups.apply(2)
-            groups.update(2, `p₂`)
-            val res: Int = if (`p₂`.<(`input₄`.length()).&&(`input₄`.charAt(`p₂`).==(97))) {
-              val savedEnd: Int = groups.apply(3)
-              groups.update(3, `p₂`.+(1))
-              val `res₂`: Int = if (`p₂`.+(1).!=(`p₂`)) `self₂`(`p₂`.+(1)) else -1
+        val `lp₂`: Int = {
+          val savedStart: Int = groups.apply(2)
+          groups.update(2, 0)
+          val res: Int = if (0.<(`input₄`.length()).&&(`input₄`.charAt(0).==(97))) {
+            val savedEnd: Int = groups.apply(3)
+            groups.update(3, 0.+(1))
+            val `res₂`: Int = if (0.+(1).==(inputLen)) 0.+(1) else -1
 
-              (if (`res₂`.>=(0)) `res₂` else {
-                groups.update(3, savedEnd)
-                -1
-              }: Int)
-            } else -1
-
-            (if (res.>=(0)) res else {
-              groups.update(2, savedStart)
+            (if (`res₂`.>=(0)) `res₂` else {
+              groups.update(3, savedEnd)
               -1
             }: Int)
-          }
-          if (`step₂`.>=(0)) `step₂` else if (`p₂`.==(inputLen)) `p₂` else -1
+          } else -1
+
+          (if (res.>=(0)) res else {
+            groups.update(2, savedStart)
+            -1
+          }: Int)
         }
-        `self₂`(0)
+        if (`lp₂`.>=(0)) `lp₂` else if (0.==(inputLen)) 0 else -1
       }
       if (`result₂`.==(inputLen)) {
         groups.update(1, `result₂`)
@@ -46,11 +40,8 @@
     }).apply(`input₃`)
     override def findPrefixOf(source: CharSequence): Option[String] = {
       val matchPos: Int = ((startPos: Int, `input₅`: CharSequence) => {
-        def `self₃`(`p₃`: Int): Int = {
-          val `step₃`: Int = if (`p₃`.<(`input₅`.length()).&&(`input₅`.charAt(`p₃`).==(97))) if (`p₃`.+(1).!=(`p₃`)) `self₃`(`p₃`.+(1)) else -1 else -1
-          if (`step₃`.>=(0)) `step₃` else `p₃`
-        }
-        `self₃`(startPos)
+        val `lp₃`: Int = if (startPos.<(`input₅`.length()).&&(`input₅`.charAt(startPos).==(97))) startPos.+(1) else -1
+        if (`lp₃`.>=(0)) `lp₃` else startPos
       }).apply(0, source)
       Option.when[String](matchPos.!=(-1))(source.subSequence(0, matchPos).toString())
     }
@@ -59,11 +50,8 @@
       var pos: Int = 0
       while (pos.<(len)) {
         val `matchPos₂`: Int = ((`startPos₂`: Int, `input₆`: CharSequence) => {
-          def `self₄`(`p₄`: Int): Int = {
-            val `step₄`: Int = if (`p₄`.<(`input₆`.length()).&&(`input₆`.charAt(`p₄`).==(97))) if (`p₄`.+(1).!=(`p₄`)) `self₄`(`p₄`.+(1)) else -1 else -1
-            if (`step₄`.>=(0)) `step₄` else `p₄`
-          }
-          `self₄`(`startPos₂`)
+          val `lp₄`: Int = if (`startPos₂`.<(`input₆`.length()).&&(`input₆`.charAt(`startPos₂`).==(97))) `startPos₂`.+(1) else -1
+          if (`lp₄`.>=(0)) `lp₄` else `startPos₂`
         }).apply(pos, `source₂`)
         if (`matchPos₂`.!=(-1)) return Some.apply[String](`source₂`.subSequence(pos, `matchPos₂`).toString()) else ()
         pos = pos.+(1)
@@ -77,11 +65,8 @@
       var lastEnd: Int = 0
       while (`pos₂`.<(`len₂`)) {
         val matchEnd: Int = ((`startPos₃`: Int, `input₇`: CharSequence) => {
-          def `self₅`(`p₅`: Int): Int = {
-            val `step₅`: Int = if (`p₅`.<(`input₇`.length()).&&(`input₇`.charAt(`p₅`).==(97))) if (`p₅`.+(1).!=(`p₅`)) `self₅`(`p₅`.+(1)) else -1 else -1
-            if (`step₅`.>=(0)) `step₅` else `p₅`
-          }
-          `self₅`(`startPos₃`)
+          val `lp₅`: Int = if (`startPos₃`.<(`input₇`.length()).&&(`input₇`.charAt(`startPos₃`).==(97))) `startPos₃`.+(1) else -1
+          if (`lp₅`.>=(0)) `lp₅` else `startPos₃`
         }).apply(`pos₂`, toSplit)
         if (matchEnd.!=(-1)) {
           `result₃`.+=(toSplit.subSequence(lastEnd, `pos₂`).toString())

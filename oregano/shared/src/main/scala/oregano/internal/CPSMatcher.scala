@@ -32,6 +32,7 @@ private def dietContains(diet: Diet[Int])(using Quotes): Expr[Int] => Expr[Boole
 
 private object CPSMatcher {
     private def compile(p: Pattern, input: Expr[CharSequence], noCaps: Int, pos: Expr[Int], cont: Expr[Int] => Quotes ?=> Expr[Int], groupsExpr: Option[Expr[Array[Int]]])(using Quotes): Expr[Int] = p match {
+        case Pattern.Eps    => cont(pos)
         case Pattern.Lit(c) => '{if $pos < $input.length && $input.charAt($pos) == ${Expr(c)} then ${cont('{ $pos + 1 })} else -1}
         case Pattern.Class(diet) =>
             val runeCheck: Expr[Int] => Expr[Boolean] = dietContains(diet)
@@ -116,6 +117,7 @@ private object CPSMatcher {
             else (i, _) => if i != -1 then i else -1 // no specific end condition, just return the position
 
         def compile(p: Pattern)(cont: (Int, Array[Int]) => Int): (Int, Array[Int]) => Int = p match {
+            case Pattern.Eps         => cont
             case Pattern.Lit(c)      => (pos, groups) => if pos < inputLen && input.charAt(pos) == c.toChar then cont(pos + 1, groups) else -1
             case Pattern.Class(diet) => (pos, groups) => if pos < inputLen && diet.contains(input.charAt(pos).toInt) then cont(pos + 1, groups) else -1
             case Pattern.Cat(left, right)   => compile(left)(compile(right)(cont))

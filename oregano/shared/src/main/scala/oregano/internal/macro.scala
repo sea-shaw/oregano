@@ -39,12 +39,16 @@ private [internal] def codeCode(strExpr: Expr[String])(using Quotes): Expr[Strin
 }
 
 private [internal] def regexCode[F[_ <: Rep] <: HChain](using ast: AST)(regex: ast.Regex[F])(using Quotes): Expr[oregano.Regex[?]] = {
-    val PatternResult(p, groupCount, flatControlFlow, _) = Pattern.compile(regex)
+    val PatternResult(p, groupCount, _ /* flatControlFlow */, _) = Pattern.compile(regex)
     // report.info(s"expr: $s\nParsley AST: ${ast.toString}\nPattern: ${patternResult.pattern}, groupCount: ${patternResult.groupCount}")
-    val prog = ProgramCompiler.compileRegexp(p, groupCount)
+    lazy val prog = ProgramCompiler.compileRegexp(p, groupCount)
     // report.info(s"Prog:\n$prog")
     //val liftedProgExpr = Expr(prog)
     // println(s"Prog:\n$prog")
+
+    // Default to CPS because opt doesn't work in backtracking prog.
+    // TODO: Fix opt in backtracking prog.
+    val flatControlFlow = false
 
     // backtracking matcher stuff
     val backtrackingMatcherWithCapsExpr: Expr[CharSequence => Option[Array[Int]]] =
