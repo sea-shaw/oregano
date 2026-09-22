@@ -1,136 +1,42 @@
 package oregano.internal.ast
 
-import cats.data.Chain
-import oregano.internal.sanitised.Sanitised
 import scala.quoted.{Expr, Quotes, Type}
 
-trait QTypes { this: Tidy =>
-
-  sealed abstract class QTidy[A](using val tpe: Type[A]) {
-    def get(using Captures)(using Quotes): Expr[A]
-    def getSanitised(using Captures)(using Quotes): Expr[Option[Sanitised[A]]]
-  }
-  object QTidy {
-    def unapply[A](x: QTidy[A]): Tuple1[Type[A]] = Tuple1(x.tpe)
+object QTypes {
+  type Tidy[T <: Tuple] = T match {
+    case EmptyTuple => Unit
+    case h *: t     => TidyNonEmpty[h, t]
   }
 
-  sealed trait QChain {
-    final def elem(using Quotes): QTidy[?] = ???
-    def elems(using Quotes): Chain[QTidy[?]]
+  type TidyNonEmpty[H, T <: Tuple] = T match {
+    case EmptyTuple    => H
+    case NonEmptyTuple => H *: T
   }
 
-  type QEmpty = QEmpty.type
-  case object QEmpty extends QChain {
-    override def elems(using Quotes): Chain[QTidy[?]] = Chain.nil
+  sealed trait QList[T <: Tuple] {
+    def tidyExpr(using Quotes): Expr[Tidy[T]]
   }
 
-  sealed trait QNonEmpty extends QChain
-  case class QCapture[A <: QChain](i: Int, inner: A) extends QNonEmpty {
-    override def elems(using Quotes): Chain[QTidy[?]] = {
-      val head = new QTidy[String] {
-        override def get(using caps: Captures)(using Quotes): Expr[String] = {
-          caps.capture(caps.startIndex(i), caps.endIndex(i))
-        }
+  type QNil = QNil.type
+  case object QNil extends QList[EmptyTuple] {
+    override def tidyExpr(using Quotes): Expr[Unit] = '{ () }
+  }
 
-        override def getSanitised(using caps: Captures)(using Quotes): Expr[Option[Sanitised[String]]] = {
-          '{
-            val l = ${ caps.startIndex(i) }
-            val u = ${ caps.endIndex(i) }
-            if l >= 0 && u >= 0 then Some(Sanitised(${ caps.capture('l, 'u) }, true)) else None
-          }
-        }
-      }
-
-      head +: inner.elems
+  case class QCons[H, T <: Tuple](expr: Expr[H], tpe: Type[H], tail: QList[T]) extends QList[H *: T] {
+    override def tidyExpr(using Quotes): Expr[TidyNonEmpty[H, T]] = tail match {
+      case QNil           => expr
+      case QCons(_, _, _) => tupleExpr(this)
     }
   }
 
-  case class QAppend[A <: QNonEmpty, B <: QNonEmpty](left: A, right: B) extends QNonEmpty {
-    override def elems(using Quotes): Chain[QTidy[?]] = {
-      left.elems ++ right.elems
-    }
-  }
-
-  case class QOption[A <: QNonEmpty](opt: A) extends QNonEmpty {
-    override def elems(using Quotes): Chain[QTidy[?]] = {
-      opt.elem match {
-        case tidy @ QTidy(given Type[a]) => {
-          val elem = new QTidy[Option[a]] {
-            override def get(using Captures)(using Quotes): Expr[Option[a]] = {
-              '{ ${ tidy.getSanitised }.map(_.captures) }
-            }
-
-            override def getSanitised(using Captures)(using Quotes): Expr[Option[Sanitised[Option[a]]]] = {
-              '{
-                ${ tidy.getSanitised } match {
-                  case None                           => Some(Sanitised(None, false))
-                  case Some(Sanitised(captures, any)) => Some(Sanitised(Some(captures), any))
-                }
-              }
-            }
-          }
-          Chain.one(elem)
-        }
+  def tupleExpr[T <: Tuple](qlist: QList[T])(using Quotes): Expr[T] = qlist match {
+    case QNil => '{ EmptyTuple }
+    case QCons(e0, given Type[t0], tail0) => tail0 match {
+      case QNil => '{ Tuple1($e0) }
+      case QCons(e1, given Type[t1], tail1) => tail1 match {
+        case QNil => '{ Tuple2($e0, $e1) }
+        case QCons(_, _, _) => ???
       }
-    }
-  }
-
-  case class QEither[A <: QNonEmpty, B <: QNonEmpty](left: A, right: B) extends QNonEmpty {
-    override def elems(using Quotes): Chain[QTidy[?]] = {
-      val elem = (left.elem, right.elem) match {
-        case (tidyLeft @ QTidy(given Type[a]), tidyRight @ QTidy(given Type[b])) => new QTidy[Either[a, b]] {
-          override def get(using Captures)(using Quotes): Expr[Either[a, b]] = {
-            '{ $getSanitised.get.captures }
-          }
-
-          override def getSanitised(using Captures)(using Quotes): Expr[Option[Sanitised[Either[a, b]]]] = {
-            '{
-              val left = ${ tidyLeft.getSanitised }
-              if (left.isDefined && left.get.any) {
-                Some(Sanitised(Left(left.get.captures), true))
-              } else {
-                val right = ${ tidyRight.getSanitised }
-                if (right.isDefined && right.get.any) {
-                  Some(Sanitised(Right(right.get.captures), true))
-                } else {
-                  None
-                }
-              }
-            }
-          }
-        }
-      }
-      Chain.one(elem)
-    }
-  }
-
-  case class QIor[A <: QNonEmpty, B <: QNonEmpty](left: A, right: B) extends QNonEmpty {
-    override def elems(using Quotes): Chain[QTidy[?]] = {
-      given Type[InclusiveOr] = inclusiveOrType
-      val elem = (left.elem, right.elem) match {
-        case (tidyLeft @ QTidy(given Type[a]), tidyRight @ QTidy(given Type[b])) => new QTidy[InclusiveOr[a, b]] {
-          override def get(using Captures)(using Quotes): Expr[InclusiveOr[a, b]] = {
-            '{ $getSanitised.get.captures }
-          }
-
-          override def getSanitised(using Captures)(using Quotes): Expr[Option[Sanitised[InclusiveOr[a, b]]]] = {
-            '{
-              val left = ${ tidyLeft.getSanitised }
-              val right = ${ tidyRight.getSanitised }
-              if (left.isDefined && left.get.any && right.isDefined && right.get.any) {
-                Some(Sanitised(${ fromBoth('{ left.get.captures }, '{ right.get.captures }) }, true))
-              } else if (left.isDefined && left.get.any) {
-                Some(Sanitised(${ fromLeft('{ left.get.captures }) }, true))
-              } else if (right.isDefined && right.get.any) {
-                Some(Sanitised(${ fromRight('{ right.get.captures }) }, true))
-              } else {
-                None
-              }
-            }
-          }
-        }
-      }
-      Chain.one(elem)
     }
   }
 }
