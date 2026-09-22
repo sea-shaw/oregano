@@ -112,34 +112,8 @@ trait AltTypes { this: Tidy =>
         override def sanitiseCode[R <: Rep: Type](sanitisedLeft: => SanitiseExpr[SingletonOptionType[F][R]], sanitisedRight: => SanitiseExpr[SingletonOptionType[G][R]])(using rep: RepType[R])(using Quotes): SanitiseExpr[AltBothOptionType[F, G][R]] = {
             given Type[F] = leftType.innerType
             given Type[G] = rightType.innerType
-            given Type[InclusiveOr] = inclusiveOrType
 
-            rep match {
-                case RepFalse => '{
-                    val left = $sanitisedLeft
-                    val right = $sanitisedRight
-                    if (left.isDefined && left.get.any) {
-                        Some(Sanitised(HSingleton(Some(HSingleton(Left(left.get.captures.value.get)))), true))
-                    } else if (right.isDefined && right.get.any) {
-                        Some(Sanitised(HSingleton(Some(HSingleton(Right(right.get.captures.value.get)))), true))
-                    } else {
-                        Some(Sanitised(HSingleton(None), false))
-                    }
-                }
-                case RepTrue => '{
-                    val left = $sanitisedLeft
-                    val right = $sanitisedRight
-                    if (left.isDefined && left.get.any && right.isDefined && right.get.any) {
-                        Some(Sanitised(HSingleton(Some(HSingleton(${ fromBoth('{ left.get.captures.value.get }, '{ right.get.captures.value.get }) }))), true))
-                    } else if (left.isDefined && left.get.any) {
-                        Some(Sanitised(HSingleton(Some(HSingleton(${ fromLeft('{ left.get.captures.value.get }) }))), true))
-                    } else if (right.isDefined && right.get.any) {
-                        Some(Sanitised(HSingleton(Some(HSingleton(${ fromRight('{ right.get.captures.value.get }) }))), true))
-                    } else {
-                        Some(Sanitised(HSingleton(None), false))
-                    }
-                }
-            }
+            sanitiseAltOpt(sanitisedLeft, sanitisedRight, getValue, getValue)
         }
 
         override def tidyInner[R <: Rep: Type](using RepType[R])(using Quotes): TidyFunction[AltSingleton[F, G][R], ?] = {
@@ -166,34 +140,8 @@ trait AltTypes { this: Tidy =>
         override def sanitiseCode[R <: Rep: Type](sanitisedLeft: => SanitiseExpr[SingletonOptionType[F][R]], sanitisedRight: => SanitiseExpr[G[R]])(using rep: RepType[R])(using Quotes): SanitiseExpr[AltBothLeftOptionType[F, G][R]] = {
             given Type[F] = leftType.innerType
             given Type[G] = rightRegex.tpe
-            given Type[InclusiveOr] = inclusiveOrType
 
-            rep match {
-                case RepFalse => '{
-                    val left = $sanitisedLeft
-                    val right = $sanitisedRight
-                    if (left.isDefined && left.get.any) {
-                        Some(Sanitised(HSingleton(Some(HSingleton(Left(left.get.captures.value.get)))), true))
-                    } else if (right.isDefined && right.get.any) {
-                        Some(Sanitised(HSingleton(Some(HSingleton(Right(right.get.captures)))), true))
-                    } else {
-                        Some(Sanitised(HSingleton(None), false))
-                    }
-                }
-                case RepTrue => '{
-                    val left = $sanitisedLeft
-                    val right = $sanitisedRight
-                    if (left.isDefined && left.get.any && right.isDefined && right.get.any) {
-                        Some(Sanitised(HSingleton(Some(HSingleton(${ fromBoth('{ left.get.captures.value.get }, '{ right.get.captures }) }))), true))
-                    } else if (left.isDefined && left.get.any) {
-                        Some(Sanitised(HSingleton(Some(HSingleton(${ fromLeft('{ left.get.captures.value.get }) }))), true))
-                    } else if (right.isDefined && right.get.any) {
-                        Some(Sanitised(HSingleton(Some(HSingleton(${ fromRight('{ right.get.captures }) }))), true))
-                    } else {
-                        Some(Sanitised(HSingleton(None), false))
-                    }
-                }
-            }
+            sanitiseAltOpt(sanitisedLeft, sanitisedRight, getValue, identity)
         }
 
         override def tidyInner[R <: Rep: Type](using rep: RepType[R])(using Quotes): TidyFunction[AltSingleton[F, G][R], ?] = {
@@ -220,34 +168,8 @@ trait AltTypes { this: Tidy =>
         override def sanitiseCode[R <: Rep: Type](sanitisedLeft: => SanitiseExpr[F[R]], sanitisedRight: => SanitiseExpr[SingletonOptionType[G][R]])(using rep: RepType[R])(using Quotes): SanitiseExpr[AltBothRightOptionType[F, G][R]] = {
             given Type[F] = leftRegex.tpe
             given Type[G] = rightType.innerType
-            given Type[InclusiveOr] = inclusiveOrType
 
-            rep match {
-                case RepFalse => '{
-                    val left = $sanitisedLeft
-                    val right = $sanitisedRight
-                    if (left.isDefined && left.get.any) {
-                        Some(Sanitised(HSingleton(Some(HSingleton(Left(left.get.captures)))), true))
-                    } else if (right.isDefined && right.get.any) {
-                        Some(Sanitised(HSingleton(Some(HSingleton(Right(right.get.captures.value.get)))), true))
-                    } else {
-                        Some(Sanitised(HSingleton(None), false))
-                    }
-                }
-                case RepTrue => '{
-                    val left = $sanitisedLeft
-                    val right = $sanitisedRight
-                    if (left.isDefined && left.get.any && right.isDefined && right.get.any) {
-                        Some(Sanitised(HSingleton(Some(HSingleton(${ fromBoth('{ left.get.captures }, '{ right.get.captures.value.get }) }))), true))
-                    } else if (left.isDefined && left.get.any) {
-                        Some(Sanitised(HSingleton(Some(HSingleton(${ fromLeft('{ left.get.captures }) }))), true))
-                    } else if (right.isDefined && right.get.any) {
-                        Some(Sanitised(HSingleton(Some(HSingleton(${ fromRight('{ right.get.captures.value.get }) }))), true))
-                    } else {
-                        Some(Sanitised(HSingleton(None), false))
-                    }
-                }
-            }
+            sanitiseAltOpt(sanitisedLeft, sanitisedRight, identity, getValue)
         }
 
         override def tidyInner[R <: Rep: Type](using rep: RepType[R])(using Quotes): TidyFunction[AltSingleton[F, G][R], ?] = {
@@ -316,6 +238,52 @@ trait AltTypes { this: Tidy =>
                 }
             }
         }
+    }
+
+    private def sanitiseAltOpt[
+        F[_ <: Rep] <: HNonEmpty: Type,
+        G[_ <: Rep] <: HNonEmpty: Type,
+        H[_ <: Rep] <: HNonEmpty: Type,
+        I[_ <: Rep] <: HNonEmpty: Type,
+        R <: Rep: Type,
+    ](
+        sanitisedLeft: SanitiseExpr[F[R]],
+        sanitisedRight: SanitiseExpr[G[R]],
+        leftCaptures: Expr[F[R]] => Quotes ?=> Expr[H[R]],
+        rightCaptures: Expr[G[R]] => Quotes ?=> Expr[I[R]],
+    )(using rep: RepType[R])(using Quotes): SanitiseExpr[AltSingletonOption[H, I][R]] = {
+        given Type[InclusiveOr] = inclusiveOrType
+
+        rep match {
+            case RepFalse => '{
+                val left = $sanitisedLeft
+                val right = $sanitisedRight
+                if (left.isDefined && left.get.any) {
+                    Some(Sanitised(HSingleton(Some(HSingleton(Left( ${ leftCaptures( '{ left.get.captures } ) } )))), true))
+                } else if (right.isDefined && right.get.any) {
+                    Some(Sanitised(HSingleton(Some(HSingleton(Right( ${ rightCaptures( '{ right.get.captures } ) } )))), true))
+                } else {
+                    Some(Sanitised(HSingleton(None), false))
+                }
+            }
+            case RepTrue => '{
+                val left = $sanitisedLeft
+                val right = $sanitisedRight
+                if (left.isDefined && left.get.any && right.isDefined && right.get.any) {
+                    Some(Sanitised(HSingleton(Some(HSingleton(${ fromBoth(leftCaptures( '{ left.get.captures } ), rightCaptures( '{ right.get.captures } )) }))), true))
+                } else if (left.isDefined && left.get.any) {
+                    Some(Sanitised(HSingleton(Some(HSingleton(${ fromLeft(leftCaptures( '{ left.get.captures } )) }))), true))
+                } else if (right.isDefined && right.get.any) {
+                    Some(Sanitised(HSingleton(Some(HSingleton(${ fromRight(rightCaptures( '{ right.get.captures } )) }))), true))
+                } else {
+                    Some(Sanitised(HSingleton(None), false))
+                }
+            }
+        }
+    }
+
+    private def getValue[F[_ <: Rep] <: HNonEmpty: Type, R <: Rep: Type](expr: Expr[SingletonOptionType[F][R]])(using Quotes): Expr[F[R]] = {
+        '{ $expr.value.get }
     }
 
     private def tidyAlt[F[_ <: Rep] <: HNonEmpty: Type, G[_ <: Rep] <: HNonEmpty: Type, R <: Rep: Type, A, B](tidyLeft: TidyFunction[F[R], A], tidyRight: TidyFunction[G[R], B])(using rep: RepType[R])(using Quotes): TidyFunction[AltSingleton[F, G][R], ?] = {
