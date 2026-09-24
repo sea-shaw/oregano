@@ -2,7 +2,6 @@ package oregano.internal
 
 /* Heterogeneous data structure with constant time concatenation. See cats Chain
    for the non-heterogeneous version. */
-// TODO: cats copyright notice?
 object hchain {
     sealed trait HChain
 

@@ -4,6 +4,7 @@ import cats.data.Ior
 import oregano.internal.ast.AST
 import scala.quoted.{Expr, Quotes, Type}
 
+/* Implementation of `AST` using `cats.data.Ior`. */
 private object Catnip extends AST {
     type InclusiveOr = Ior
 

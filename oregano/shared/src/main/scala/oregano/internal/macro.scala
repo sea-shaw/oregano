@@ -23,6 +23,8 @@ private [oregano] def compileMacro(s: String)(using Quotes): Expr[oregano.Regex[
         case Failure(err) => report.errorAndAbort(err)
 }
 
+/* Returns a string containing a repesentation of the generated code. Used for
+   golden testing. */
 private [internal] inline def code(inline regex: String): String = ${ codeCode('regex) }
 private [internal] def codeCode(strExpr: Expr[String])(using Quotes): Expr[String] = {
     import quotes.reflect.{Position, Printer, asTerm, report}

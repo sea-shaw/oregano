@@ -18,6 +18,7 @@ trait AltTypes { this: Tidy =>
     type AltSingleton[F[_ <: Rep] <: HNonEmpty, G[_ <: Rep] <: HNonEmpty] = [R <: Rep] =>> HSingleton[AltRep[F, G, R, InclusiveOr]]
     type AltSingletonOption[F[_ <: Rep] <: HNonEmpty, G[_ <: Rep] <: HNonEmpty] = [R <: Rep] =>> HSingleton[Option[AltSingleton[F, G][R]]]
 
+    /* Type of an `Alt` node with left type `F` and right type `G`. */
     protected sealed trait AltType[F[_ <: Rep] <: HChain, G[_ <: Rep] <: HChain, H[_ <: Rep] <: HChain] { this: NodeType[H] =>
         final val asNodeType: NodeType[H] & AltType[F, G, H] = this
         def sanitiseCode[R <: Rep: Type](sanitisedLeft: => SanitiseExpr[F[R]], sanitisedRight: => SanitiseExpr[G[R]])(using RepType[R])(using Quotes): SanitiseExpr[H[R]]
@@ -197,6 +198,7 @@ trait AltTypes { this: Tidy =>
             given Type[InclusiveOr] = inclusiveOrType
 
             rep match {
+                /* Not repeated, so at most one side can contain a match. */
                 case RepFalse => '{
                     val left = $sanitisedLeft
                     val right = $sanitisedRight
@@ -208,6 +210,7 @@ trait AltTypes { this: Tidy =>
                         None
                     }
                 }
+                /* Repeated, so both sides can contain matches. */
                 case RepTrue => '{
                     val left = $sanitisedLeft
                     val right = $sanitisedRight
@@ -240,6 +243,7 @@ trait AltTypes { this: Tidy =>
         }
     }
 
+    /* Implementation of `sanitiseCode` where one or both sides are optional. */
     private def sanitiseAltOpt[
         F[_ <: Rep] <: HNonEmpty: Type,
         G[_ <: Rep] <: HNonEmpty: Type,
@@ -286,12 +290,14 @@ trait AltTypes { this: Tidy =>
         '{ $expr.value.get }
     }
 
+    /* Impelemntation of `tiyFunction` for an `Alt` node. */
     private def tidyAlt[F[_ <: Rep] <: HNonEmpty: Type, G[_ <: Rep] <: HNonEmpty: Type, R <: Rep: Type, A, B](tidyLeft: TidyFunction[F[R], A], tidyRight: TidyFunction[G[R], B])(using rep: RepType[R])(using Quotes): TidyFunction[AltSingleton[F, G][R], ?] = {
         given Type[A] = tidyLeft.tpe
         given Type[B] = tidyRight.tpe
         given Type[InclusiveOr] = inclusiveOrType
 
         rep match {
+            /* Not repeated, so map over `Either`. */
             case RepFalse => new TidyFunction[AltSingleton[F, G][R], Either[A, B]] {
                 override def apply(chain: Expr[AltSingleton[F, G][R]])(using Quotes): Expr[Either[A, B]] = {
                     '{
@@ -302,6 +308,7 @@ trait AltTypes { this: Tidy =>
                     }
                 }
             }
+            /* Repeated, so map over `InclusiveOr` using `bimap`. */
             case RepTrue => new TidyFunction[AltSingleton[F, G][R], InclusiveOr[A, B]] {
                 override def apply(chain: Expr[AltSingleton[F, G][R]])(using Quotes): Expr[InclusiveOr[A, B]] = {
                     bimap(tidyLeft(_), tidyRight(_))('{ $chain.value })

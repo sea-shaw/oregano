@@ -2,7 +2,7 @@ package oregano.internal.parsing
 
 import cats.collections.{Diet, Range}
 import cats.data.NonEmptyList
-import oregano.internal.ast.{AST, Greedy, Reluctant, Possessive}
+import oregano.internal.ast.{AST, Greedy, Lazy, Possessive}
 import oregano.internal.parsing.bridges.*
 import parsley.{Parsley, Result}
 import parsley.character.{hexDigit, octDigit}
@@ -140,7 +140,7 @@ object parser {
     private val keyChars = Set('(', ')', '{', '}', '[', '.', '*', '+', '?', '\\', '|', '$', '^')
 
     private lazy val postfixOps = (Opt from '?') | (Star from '*') | (Plus from '+') | numericalQuantifier
-    private lazy val quantifierType = ('?' as Reluctant) | ('+' as Possessive) | pure(Greedy)
+    private lazy val quantifierType = ('?' as Lazy) | ('+' as Possessive) | pure(Greedy)
 
     private lazy val numericalQuantifier = NumericalQuantifier('{' ~> int, option(',' ~> option(int)) <~ '}')
     private lazy val int = lexer.lexeme.natural.decimal32[Int]

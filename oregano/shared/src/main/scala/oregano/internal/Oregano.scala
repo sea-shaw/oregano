@@ -5,6 +5,8 @@ import scala.quoted.{Expr, Quotes, Type}
 
 type EitherIor[+A, +B] = Either[Either[A, B], (A, B)]
 
+/* Implementation of `AST` using `Either[Either[A, B], (A, B)]` for
+   `InclusiveOr`. */
 private object Oregano extends AST {
     type InclusiveOr = EitherIor
 

@@ -18,7 +18,7 @@ trait CapturingTypes { this: Tidy =>
 
     protected object CapturingType {
         /* Returns the correct `CapturingType` for the type of `inner`. Only
-       possible because of flow typing for GADTs. */
+           possible because of flow typing for GADTs. */
         def apply[F[_ <: Rep] <: HChain](inner: Tidiable[F]): CapturingType[F, ?] = {
             inner.nodeType match {
                 case _: HEmptyType       => CapturingSingleton

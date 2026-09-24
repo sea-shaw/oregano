@@ -33,7 +33,7 @@ trait Rep0Types { this: Tidy =>
         }
     }
 
-    /* (?:(A)?)* */
+    /* (A?)* */
     private type Rep0OptType[F[_ <: Rep] <: HNonEmpty] = SingletonOptionType[Const[F[true]]]
     private class Rep0Opt[F[_ <: Rep] <: HNonEmpty](inner: SingletonOption[F]) extends Rep0Type[SingletonOptionType[F], Rep0OptType[F]] with SingletonOption[Const[F[true]]] {
         override def innerType(using Quotes): Type[Const[F[true]]] = {
