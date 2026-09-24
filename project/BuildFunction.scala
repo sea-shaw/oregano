@@ -10,8 +10,8 @@ object BuildFunction {
                               |
                               |import scala.quoted.{Expr, Quotes, Type, quotes}
                               |
-                              |trait BuildFunction { this: Tidy =>
-                              |    override protected final def buildFunction[L <: Leaves](types: Types[L])(using Quotes): BuildFunction[L, ?] = {
+                              |private [ast] trait BuildFunction { this: Tidy =>
+                              |    override private [ast] final def buildFunction[L <: Leaves](types: Types[L])(using Quotes): BuildFunction[L, ?] = {
                               |        types match {
                               |            case TNil => new BuildFunction[LNil, Unit] {
                               |                override def apply(leaves: LNil)(using Quotes): Expr[Unit] = {

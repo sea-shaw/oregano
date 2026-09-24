@@ -121,12 +121,12 @@ trait Tidy {
 
     /* HList of AST nodes. Used to construct a flatten function in linear time.
      `C` is the type of an HList of the `HChain` types of each node. */
-    protected sealed trait Nodes[C <: Chains] {
+    private [ast] sealed trait Nodes[C <: Chains] {
         /* Returns a function to flatten `chains: C` onto `leaves: L`. */
         def flattenFunction[L <: Leaves](types: Types[L])(using Quotes): FlattenFunction[C, L, ?]
     }
 
-    protected case object NNil extends Nodes[CNil] {
+    private [ast] case object NNil extends Nodes[CNil] {
         override def flattenFunction[L <: Leaves](types: Types[L])(using Quotes): FlattenFunction[CNil, L, ?] = {
             buildFunction(types) match {
                 case build @ BuildFunction(given Type[a]) => new FlattenFunction[CNil, L, a] {
@@ -138,7 +138,7 @@ trait Tidy {
         }
     }
 
-    protected case class NCons[F[_ <: Rep] <: HChain, R <: Rep: Type, C <: Chains](head: Tidiable[F], rep: RepType[R], tail: Nodes[C]) extends Nodes[CCons[F[R], C]] {
+    private [ast] case class NCons[F[_ <: Rep] <: HChain, R <: Rep: Type, C <: Chains](head: Tidiable[F], rep: RepType[R], tail: Nodes[C]) extends Nodes[CCons[F[R], C]] {
         override def flattenFunction[L <: Leaves](types: Types[L])(using Quotes): FlattenFunction[CCons[F[R], C], L, ?] = {
             given RepType[R] = rep
             head.flattenFunction(tail, types)
@@ -146,22 +146,22 @@ trait Tidy {
     }
 
     /* HList of `Expr`s of `HChain`s. */
-    protected sealed trait Chains
-    protected type CNil = CNil.type
-    protected case object CNil extends Chains
-    protected case class CCons[A <: HChain, C <: Chains](head: Expr[A], tail: C) extends Chains
+    private [ast] sealed trait Chains
+    private [ast] type CNil = CNil.type
+    private [ast] case object CNil extends Chains
+    private [ast] case class CCons[A <: HChain, C <: Chains](head: Expr[A], tail: C) extends Chains
 
     /* HList of `Type`s. `L` is the type of an HList of `Expr`s of the
      corresponding types.*/
-    protected sealed trait Types[L <: Leaves]
-    protected case object TNil extends Types[LNil]
-    protected case class TCons[A, L <: Leaves](head: Type[A], tail: Types[L]) extends Types[LCons[A, L]]
+    private [ast] sealed trait Types[L <: Leaves]
+    private [ast] case object TNil extends Types[LNil]
+    private [ast] case class TCons[A, L <: Leaves](head: Type[A], tail: Types[L]) extends Types[LCons[A, L]]
 
     /* HList of `Expr`s. */
-    protected sealed trait Leaves
-    protected type LNil = LNil.type
-    protected case object LNil extends Leaves
-    protected case class LCons[A, L <: Leaves](head: Expr[A], tail: L) extends Leaves
+    private [ast] protected sealed trait Leaves
+    private [ast] protected type LNil = LNil.type
+    private [ast] protected case object LNil extends Leaves
+    private [ast] protected case class LCons[A, L <: Leaves](head: Expr[A], tail: L) extends Leaves
 
     /* Function that tidies an `HChain` type into `Unit`, a single value, or a
      tuple. */
@@ -177,34 +177,34 @@ trait Tidy {
 
     /* Function that flattens chains of type `C` onto leaves of type `L`,
      returning `Unit`, a single value, or a tuple. */
-    protected abstract class FlattenFunction[C <: Chains, L <: Leaves, A](using val tpe: Type[A]) {
+    private [ast] abstract class FlattenFunction[C <: Chains, L <: Leaves, A](using val tpe: Type[A]) {
         def apply(chains: C, leaves: L)(using Quotes): Expr[A]
     }
-    protected object FlattenFunction {
+    private [ast] object FlattenFunction {
         def unapply[C <: Chains, L <: Leaves, A](flattenFunction: FlattenFunction[C, L, A]): Tuple1[Type[A]] = Tuple1(flattenFunction.tpe)
     }
 
     /* Constructs `Unit`, a single value, or a tuple from leaves of type L. */
-    protected abstract class BuildFunction[L <: Leaves, A](using val tpe: Type[A]) {
+    private [ast] abstract class BuildFunction[L <: Leaves, A](using val tpe: Type[A]) {
         def apply(leaves: L)(using Quotes): Expr[A]
     }
-    protected object BuildFunction {
+    private [ast] object BuildFunction {
         def unapply[L <: Leaves, A](buildFunction: BuildFunction[L, A]): Tuple1[Type[A]] = Tuple1(buildFunction.tpe)
     }
 
     /* Implementation of `buildFunction` is source-generated. Generator is in
      project/BuildFunction.scala. Generated code is compiled to
      oregano/jvm/target/scala-3.7.4/src_managed/main/scala/oregano/internal/ast/BuildFunction.scala */
-    protected def buildFunction[L <: Leaves](types: Types[L])(using Quotes): BuildFunction[L, ?]
+    private [ast] def buildFunction[L <: Leaves](types: Types[L])(using Quotes): BuildFunction[L, ?]
 
     /* Result of `sanitiseCode` for an empty node. Equivalent to `pure(HEmpty)`
      for the `SanitisedT[_]` applicative. */
-    protected final def sanitiseEmpty(using Quotes): SanitiseExpr[HEmpty] = {
+    private [ast] final def sanitiseEmpty(using Quotes): SanitiseExpr[HEmpty] = {
         '{ Some(Sanitised(HEmpty, false)) }
     }
 
     /* Result of `sanitiseCode` for a node with type `HSingleton[Option[_]]` */
-    protected final def sanitiseOpt[F[_ <: Rep] <: HNonEmpty: Type, R <: Rep: Type](sanitised: SanitiseExpr[F[R]])(using Quotes): SanitiseExpr[SingletonOptionType[F][R]] = {
+    private [ast] final def sanitiseOpt[F[_ <: Rep] <: HNonEmpty: Type, R <: Rep: Type](sanitised: SanitiseExpr[F[R]])(using Quotes): SanitiseExpr[SingletonOptionType[F][R]] = {
         '{
             val caps = $sanitised
             if (caps.isDefined) {
@@ -215,7 +215,7 @@ trait Tidy {
         }
     }
 
-    protected final def getOpt[F[_ <: Rep] <: HNonEmpty: Type, R <: Rep: Type](sanitised: SanitiseExpr[F[R]])(using Quotes): Expr[SingletonOptionType[F][R]] = {
+    private [ast] final def getOpt[F[_ <: Rep] <: HNonEmpty: Type, R <: Rep: Type](sanitised: SanitiseExpr[F[R]])(using Quotes): Expr[SingletonOptionType[F][R]] = {
         '{
             val opt = $sanitised
             HSingleton(if opt.isDefined then Some(opt.get.captures) else None)

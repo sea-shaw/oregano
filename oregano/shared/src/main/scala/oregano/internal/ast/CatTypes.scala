@@ -4,7 +4,7 @@ import oregano.internal.hchain.*
 import oregano.internal.sanitised.*
 import scala.quoted.{Expr, Quotes, Type}
 
-trait CatTypes { this: Tidy =>
+private [ast] trait CatTypes { this: Tidy =>
     /* Type of the `Cat` node with left type `F` and right type `G`. */
     protected sealed trait CatType[F[_ <: Rep] <: HChain, G[_ <: Rep] <: HChain, H[_ <: Rep] <: HChain] { this: NodeType[H] =>
         final val asNodeType: NodeType[H] & CatType[F, G, H] = this

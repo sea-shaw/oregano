@@ -4,7 +4,7 @@ import oregano.internal.hchain.*
 import oregano.internal.sanitised.*
 import scala.quoted.{Expr, Quotes, Type}
 
-trait OptTypes { this: Tidy =>
+private [ast] trait OptTypes { this: Tidy =>
     /* Type of an `Opt` node. */
     protected sealed trait OptType[F[_ <: Rep] <: HChain, G[_ <: Rep] <: HChain] { this: NodeType[G] =>
         final val asNodeType: NodeType[G] & OptType[F, G] = this

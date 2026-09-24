@@ -9,12 +9,12 @@ import scala.quoted.{Expr, Quotes, Type}
    capture A, B, or both.
    This needs to be oustide the trait otherwise the compiler complains about
    a missing `Type` instance. */
-type AltRep[F[_ <: Rep] <: HChain, G[_ <: Rep] <: HChain, R <: Rep, InclusiveOr[+_ <: HChain, +_ <: HChain]] = R match {
+private [ast] type AltRep[F[_ <: Rep] <: HChain, G[_ <: Rep] <: HChain, R <: Rep, InclusiveOr[+_ <: HChain, +_ <: HChain]] = R match {
     case false => Either[F[R], G[R]]
     case true  => InclusiveOr[F[R], G[R]]
 }
 
-trait AltTypes { this: Tidy =>
+private [ast] trait AltTypes { this: Tidy =>
     type AltSingleton[F[_ <: Rep] <: HNonEmpty, G[_ <: Rep] <: HNonEmpty] = [R <: Rep] =>> HSingleton[AltRep[F, G, R, InclusiveOr]]
     type AltSingletonOption[F[_ <: Rep] <: HNonEmpty, G[_ <: Rep] <: HNonEmpty] = [R <: Rep] =>> HSingleton[Option[AltSingleton[F, G][R]]]
 

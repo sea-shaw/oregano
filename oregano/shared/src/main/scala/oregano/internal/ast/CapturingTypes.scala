@@ -4,7 +4,7 @@ import oregano.internal.hchain.*
 import oregano.internal.sanitised.*
 import scala.quoted.{Expr, Quotes, Type}
 
-trait CapturingTypes { this: Tidy =>
+private [ast] trait CapturingTypes { this: Tidy =>
     /* Type of a capturing node with inner type `F`. */
     protected sealed trait CapturingType[F[_ <: Rep] <: HChain, G[_ <: Rep] <: HChain] { this: NodeType[G] =>
         /* Outside of this scope, `CapturingType` is not a subtype of `NodeType` so
