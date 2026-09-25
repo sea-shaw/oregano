@@ -2,7 +2,7 @@ package oregano.internal
 
 /* Heterogeneous data structure with constant time concatenation. See cats Chain
    for the non-heterogeneous version. */
-object hchain {
+private object hchain {
     sealed trait HChain
 
     /* Empty HChain. Cannot appear inside an `HAppend`. */

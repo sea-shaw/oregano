@@ -3,7 +3,7 @@ package oregano.internal.parsing
 import parsley.errors.{DefaultErrorBuilder, ErrorBuilder}
 import parsley.errors.tokenextractors.TillNextWhitespace
 
-object errors {
+private [internal] object errors {
     case class Pos(line: Int, offset: Int, width: Int)
     case class PosError(msg: String, pos: Pos)
     case class PosErrorInfoLines(lines: Seq[String], pos: Pos)

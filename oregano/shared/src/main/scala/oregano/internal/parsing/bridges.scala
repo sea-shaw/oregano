@@ -9,7 +9,7 @@ import parsley.bridges.ParserSingletonBridge
 import parsley.errors.combinator.*
 import parsley.templates.{PureParserBridge1, PureParserBridge2, PureParserBridge3}
 
-object bridges {
+private object bridges {
 
     type ToRegex = (ast: AST) ?=> ast.Regex[?]
 

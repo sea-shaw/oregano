@@ -16,7 +16,7 @@ import parsley.syntax.all.*
 import parsley.token.Lexer
 import parsley.token.descriptions.{LexicalDesc, NumericDesc}
 
-object parser {
+private [internal] object parser {
 
     def parse[Err: ErrorBuilder](s: String)(using ast: AST): Result[Err, ast.Regex[?]] = {
         regex.parse(s).map(_(using ast))

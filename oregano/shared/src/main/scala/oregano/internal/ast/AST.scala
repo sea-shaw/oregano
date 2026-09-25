@@ -5,7 +5,7 @@ import oregano.internal.hchain.*
 import oregano.internal.sanitised.*
 import scala.quoted.{Expr, Type, Quotes}
 
-class Captures(str: Expr[CharSequence], indices: Expr[Array[Int]]) {
+private [internal] class Captures(str: Expr[CharSequence], indices: Expr[Array[Int]]) {
     def startIndex(i: Int)(using Quotes): Expr[Int] = '{ $indices(${ Expr(2 * i) }) }
     def endIndex(i: Int)(using Quotes): Expr[Int] = '{ $indices(${ Expr(2 * i + 1) }) }
     def capture(i: Expr[Int], j: Expr[Int])(using Quotes): Expr[String] = '{ $str.subSequence($i, $j).toString }
@@ -13,7 +13,7 @@ class Captures(str: Expr[CharSequence], indices: Expr[Array[Int]]) {
 
 /* Trait containig the definition of the `AST` nodes. Implemented by `Oregano`
    and `Catnip`. Path-dependent types prevent mixing nodes between the two. */
-trait AST extends Tidy, BuildFunction, EmptyTypes, CapturingTypes, CatTypes, AltTypes, OptTypes, Rep1Types, Rep0Types {
+private [internal] trait AST extends Tidy, BuildFunction, EmptyTypes, CapturingTypes, CatTypes, AltTypes, OptTypes, Rep1Types, Rep0Types {
     sealed abstract class Regex[F[_ <: Rep] <: HChain](nodeType: NodeType[F]) extends Tidiable[F](nodeType) {
         /* Number of capturing groups, including discarded ones. */
         val numCaptures: Int
