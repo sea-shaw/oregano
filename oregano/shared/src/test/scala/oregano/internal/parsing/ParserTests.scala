@@ -3,8 +3,9 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  */
-package oregano.internal
+package oregano.internal.parsing
 
+import oregano.internal.Oregano
 import oregano.internal.ast.{AST, Greedy}
 import oregano.internal.parsing.bridges.allSet
 import oregano.internal.parsing.parser
