@@ -8,19 +8,19 @@ package oregano.internal
 import oregano.internal.ast.{AST, Captures, Rep, RepFalse}
 import oregano.internal.hchain.HChain
 import oregano.internal.parsing.parser
+import oregano.internal.parsing.errors.{PosError, PosErrorBuilder}
 import parsley.{Success, Failure}
+import parsley.errors.ErrorBuilder
 import scala.quoted.*
 
-private [oregano] def compileMacro(s: String)(using Quotes): Expr[oregano.Regex[?]] = {
-    import quotes.reflect.report
+private [oregano] def compileMacro(s: String, expr: Expr[String])(using Quotes): Expr[oregano.Regex[?]] = {
     given AST = Oregano
-    parser.parse(s) match
-        case Success(ast) => {
-            // report.info(s"$ast")
-            // val patternResult = Pattern.compile(ast)
-            regexCode(ast)
-        }
-        case Failure(err) => report.errorAndAbort(err)
+    given ErrorBuilder[PosError] = PosErrorBuilder
+
+    parser.parse(s) match {
+        case Success(ast) => regexCode(ast)
+        case Failure(err) => reportError(err, s, expr)
+    }
 }
 
 /* Returns a string containing a repesentation of the generated code. Used for
@@ -141,4 +141,28 @@ private def regexCode[F[_ <: Rep] <: HChain](using ast: AST)(regex: ast.Regex[F]
             }
         }
     }
+}
+
+/* Reports the parser error at the correct position in the string in the source
+   file. Only works for single-line strings using the `r` interpolator. */
+private def reportError(err: PosError, s: String, expr: Expr[String])(using Quotes): Nothing = {
+    import quotes.reflect.{Position, report, asTerm}
+
+    val (before, after) = s.splitAt(err.pos.offset)
+    val exprPos = expr.asTerm.pos
+    val start = exprPos.start + exprWidth(before)
+    val end = start + exprWidth(after.take(err.pos.width))
+    val pos = Position(exprPos.sourceFile, start, end)
+
+    report.errorAndAbort(err.msg, pos)
+}
+
+/* Calculates the width of the expression representing `s`, given that `s` is
+   used in an interpolated string. `$` and `"` must be written as `$$` and `$"`,
+   so count them twice. */
+// TODO: Only works for the string-interpolated version `r"..."`. Calling
+//       `StringContext("...").r()` explicitly will result in an incorrect
+//       position, but who would do that?
+private def exprWidth(s: String): Int = {
+    s.length + s.count(c => c == '$' || c == '"')
 }

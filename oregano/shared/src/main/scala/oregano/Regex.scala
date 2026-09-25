@@ -44,7 +44,7 @@ private def isInlineable(regExpr: Expr[StringContext])(using Quotes): Expr[Regex
     import quotes.reflect.{Position, report}
     regExpr match {
         // use the macro, inlineable
-        case '{ StringContext.apply( ${ Expr(s) } ) } => internal.compileMacro(s)
+        case '{ StringContext.apply(${ expr @ Expr(s) } ) } => internal.compileMacro(s, expr)
         // fallback to runtime compilation
         // case _ => '{ Regex.runtime($regExpr) }
         case _ => report.errorAndAbort("Regex string must be a compile-time constant", Position.ofMacroExpansion)
@@ -56,4 +56,4 @@ private def isInlineable(regExpr: Expr[StringContext])(using Quotes): Expr[Regex
 
 // this, annoyingly, has to be here or else the splice above complains that it's in a different scope
 private def compileMacro(s: Expr[String])(using Quotes): Expr[Regex[?]] =
-  internal.compileMacro(s.valueOrAbort)
+  internal.compileMacro(s.valueOrAbort, s)
