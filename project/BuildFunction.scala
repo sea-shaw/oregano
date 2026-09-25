@@ -1,35 +1,35 @@
 import sbt.*
 
 object BuildFunction {
-
     private val minSize = 2
     private val maxSize = 22
     private val indentSize = 4
 
-    private val content = s"""|package oregano.internal.ast
-                              |
-                              |import scala.quoted.{Expr, Quotes, Type, quotes}
-                              |
-                              |private [ast] trait BuildFunction { this: Tidy =>
-                              |    override private [ast] final def buildFunction[L <: Leaves](types: Types[L])(using Quotes): BuildFunction[L, ?] = {
-                              |        types match {
-                              |            case TNil => new BuildFunction[LNil, Unit] {
-                              |                override def apply(leaves: LNil)(using Quotes): Expr[Unit] = {
-                              |                    '{ () }
-                              |                }
-                              |            }
-                              |            case TCons(given Type[t0], tail0) => tail0 match {
-                              |                case TNil => new BuildFunction[LCons[t0, LNil], t0] {
-                              |                    override def apply(leaves: LCons[t0, LNil])(using Quotes): Expr[t0] = {
-                              |                        leaves.head
-                              |                    }
-                              |                }
-                              |${tconsCase(minSize).indent(4 * indentSize).stripLineEnd}
-                              |            }
-                              |        }
-                              |    }
-                              |}
-                              |""".stripMargin
+    private val content =
+        s"""|package oregano.internal.ast
+            |
+            |import scala.quoted.{Expr, Quotes, Type, quotes}
+            |
+            |private trait BuildFunction { this: Tidy =>
+            |    override private [ast] final def buildFunction[L <: Leaves](types: Types[L])(using Quotes): BuildFunction[L, ?] = {
+            |        types match {
+            |            case TNil => new BuildFunction[LNil, Unit] {
+            |                override def apply(leaves: LNil)(using Quotes): Expr[Unit] = {
+            |                    '{ () }
+            |                }
+            |            }
+            |            case TCons(given Type[t0], tail0) => tail0 match {
+            |                case TNil => new BuildFunction[LCons[t0, LNil], t0] {
+            |                    override def apply(leaves: LCons[t0, LNil])(using Quotes): Expr[t0] = {
+            |                        leaves.head
+            |                    }
+            |                }
+            |${tconsCase(minSize).indent(4 * indentSize).stripLineEnd}
+            |            }
+            |        }
+            |    }
+            |}
+            |""".stripMargin
 
     def gen(dir: File): Seq[File] = {
         val file = filename(dir)

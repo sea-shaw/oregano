@@ -25,8 +25,8 @@ private [oregano] def compileMacro(s: String)(using Quotes): Expr[oregano.Regex[
 
 /* Returns a string containing a repesentation of the generated code. Used for
    golden testing. */
-private [internal] inline def code(inline regex: String): String = ${ codeCode('regex) }
-private [internal] def codeCode(strExpr: Expr[String])(using Quotes): Expr[String] = {
+private inline def code(inline regex: String): String = ${ codeCode('regex) }
+private def codeCode(strExpr: Expr[String])(using Quotes): Expr[String] = {
     import quotes.reflect.{Position, Printer, asTerm, report}
     strExpr match {
         case Expr(s) => {
@@ -40,7 +40,7 @@ private [internal] def codeCode(strExpr: Expr[String])(using Quotes): Expr[Strin
     }
 }
 
-private [internal] def regexCode[F[_ <: Rep] <: HChain](using ast: AST)(regex: ast.Regex[F])(using Quotes): Expr[oregano.Regex[?]] = {
+private def regexCode[F[_ <: Rep] <: HChain](using ast: AST)(regex: ast.Regex[F])(using Quotes): Expr[oregano.Regex[?]] = {
     val PatternResult(p, groupCount, _ /* flatControlFlow */, _) = Pattern.compile(regex)
     // report.info(s"expr: $s\nParsley AST: ${ast.toString}\nPattern: ${patternResult.pattern}, groupCount: ${patternResult.groupCount}")
     lazy val prog = ProgramCompiler.compileRegexp(p, groupCount)
